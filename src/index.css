@@ -1,0 +1,99 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 5% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 5% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 5% 20%;
+
+    --primary: 260 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 260 84% 60%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 240 5% 45%;
+
+    --accent: 250 45% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5% 90%;
+    --input: 240 5% 90%;
+    --ring: 260 84% 60%;
+
+    --radius: 0.6rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+
+  h1 {
+    @apply text-4xl sm:text-5xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl sm:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl sm:text-2xl;
+  }
+
+  section {
+    @apply py-16;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-6 py-3 rounded-md hover:bg-primary/90 transition-colors;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-6 py-3 rounded-md hover:bg-secondary/80 transition-colors;
+  }
+
+  .card-hover {
+    @apply hover:shadow-soft-lg transition-shadow duration-300;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold mb-6 relative;
+  }
+  
+  .section-title::after {
+    @apply content-[''] absolute left-0 bottom-0 h-1 w-16 bg-accent rounded-full;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
