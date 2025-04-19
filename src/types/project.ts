@@ -10,4 +10,5 @@ export interface Project {
   visualizar: string;
   time: string;
   producao: string;
+  disclaimer: string;
 }

@@ -75,16 +75,38 @@ const project = projects.find(p => String(p.id) === id);
              )}
            
           </div>
+          <div> 
+          {project.disclaimer ? (
+                <div>
+                {project.disclaimer}
+                </div>
+          ):(
+             null
+          )
+          }
+          </div>
         </div>
 
         {/* Hero Image */}
-        <div className="w-full h-[50vh] md:h-[60vh] rounded-xl overflow-hidden mb-12 shadow-soft-lg">
+        <div className="w-full h-[50vh] md:h-[100%] rounded-xl overflow-hidden mb-12 shadow-soft-lg">
+          
           <img 
             src={project.desafio}
             alt={project.title}
             className="w-full h-full object-cover"
           />
         </div>
+        <div> 
+          {project.disclaimer ? (
+                <div style={{display:'flex', width:'100%', height:'50px', justifyContent:'center', alignItems:'center', gap:'60px'}}>
+                <button>Visualizar protótipo</button>
+                <button>Visualizar em produção</button>
+                </div>
+          ):(
+             null
+          )
+          }
+          </div>
       </div>
     </div>
   );
