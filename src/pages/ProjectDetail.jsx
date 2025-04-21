@@ -88,7 +88,7 @@ const project = projects.find(p => String(p.id) === id);
         </div>
 
         {/* Hero Image */}
-        <div className="w-full h-[50vh] md:h-[100%] rounded-xl overflow-hidden mb-12 shadow-soft-lg">
+        <div className="w-full  md:h-[100%] rounded-xl overflow-hidden mb-12 shadow-soft-lg">
           
           <img 
             src={project.desafio}
