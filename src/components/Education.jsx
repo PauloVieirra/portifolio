@@ -20,7 +20,7 @@ const educationData = [
 
 const certificationsData = [
   { 
-    imagem:"../public/goo.png",
+    imagem:"../goo.png",
     title: "Certificado - Empatia, Definição, Ideação",
     issuer: "Google",
     year: "2025 - Treinamento",
@@ -44,7 +44,7 @@ const certificationsData = [
 
 const certificationsData2 = [
   { 
-    imagem:"../../public/unicornio.png",
+    imagem:"../unicornio.png",
     title: "Certificado em UI Design e Figma 2022 - UX Unicórnio ",
     issuer: "UX Unicórnio",
     year: "2022 - Treinamento",
