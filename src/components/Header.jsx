@@ -37,9 +37,9 @@ const Header = () => {
               
             </Link>
           )}
-
+            
           {/* Desktop Nav */}
-          {isHomePage && <nav className="md:flex gap-2" style={{display:'flex', width:"100%", paddingLeft:"60px"}}>
+          {isHomePage && <nav className="hidden md:flex gap-2 w-full pl-[60px]">
             <a href="#home" className="font-medium hover:text-primary transition-colors px-3 py-2">
               Início
             </a>
@@ -59,7 +59,7 @@ const Header = () => {
 
           {/* Mobile menu button */}
           {isHomePage && (            
-            <button className="hidden [@media(max-width:500px)]:block text-gray-700" onClick={toggleMenu}>
+            <button className="md:hidden text-gray-700" onClick={toggleMenu}>
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           )}

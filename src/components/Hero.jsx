@@ -7,7 +7,7 @@ const Hero = () => {
     <section id="home" className="pt-32 pb-16 md:pt-40 md:pb-20 min-h-screen flex items-center"  style={{display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid md:grid-cols-2 gap-10 items-center">
-          <div className="animate-fade-in">
+          <div className="animate-fade-in" >
             <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               Front-end
               <br></br>
@@ -16,7 +16,7 @@ const Hero = () => {
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
               Combinando expertise em design com implementação técnica para criar experiências de usuário bonitas, funcionais e intuitivas. Faço a ponte entre design e desenvolvimento.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap" style={{display:'flex', width:"100%", backgroundColor:"#dedede", alignItems:'center', gap:'24px'}} >
               <a href="#contact" className="btn-primary">
                 Entre em Contato
               </a>

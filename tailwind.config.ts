@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -15,7 +14,7 @@ export default {
 			center: true,
 			padding: '2rem',
 			screens: {
-				'sm': '640px',
+				'sm': '520px',
 				'md': '768px',
 				'lg': '1024px',
 				'xl': '1280px',
@@ -23,6 +22,9 @@ export default {
 			}
 		},
 		extend: {
+			screens: {
+				max520: { max: '520px' }, // 👈 adicionado aqui
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
