@@ -11,4 +11,5 @@ export interface Project {
   time: string;
   producao: string;
   disclaimer: string;
+  iframes: string;
 }

@@ -88,7 +88,9 @@ const project = projects.find(p => String(p.id) === id);
         </div>
 
         {/* Hero Image */}
-        <div className="w-full  md:h-[100%] rounded-xl overflow-hidden mb-12 shadow-soft-lg">
+        <div className="w-full  md:h-[100%] rounded-xl overflow-hidden mb-8 shadow-soft-lg">
+
+        <iframe style={{width:'100%', height:'150vh'}}  src={project.iframes} allowfullscreen></iframe>
           
           <img 
             src={project.desafio}
