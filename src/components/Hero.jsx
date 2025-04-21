@@ -16,7 +16,7 @@ const Hero = () => {
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
               Combinando expertise em design com implementação técnica para criar experiências de usuário bonitas, funcionais e intuitivas. Faço a ponte entre design e desenvolvimento.
             </p>
-            <div className="flex flex-wrap" style={{display:'flex', width:"100%", backgroundColor:"#dedede", alignItems:'center', gap:'24px'}} >
+            <div className="flex " style={{display:'flex', width:"100%",  alignItems:'center', gap:'24px'}} >
               <a href="#contact" className="btn-primary">
                 Entre em Contato
               </a>
