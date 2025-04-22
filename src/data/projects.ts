@@ -57,7 +57,7 @@ export const projects: Project[] = [
   deskresearch: "Initial research and analysis of existing emotional support solutions in the market",
   visualizar:"",
   time:"2 dias",
-  producao:"https://drive.google.com/drive/folders/1SNNffLGrTrL7CgLi5R1kAjkdQoYef82Q?usp=sharing",
+  producao:"https://www.figma.com/proto/Z8LVNhvAUxwG92LxdBPyc6/DJI3?page-id=0%3A1&node-id=6-2&viewport=484%2C132%2C0.1&t=cRryP0rYzaLEClF5-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=6%3A2",
   disclaimer:"",
   iframes: "https://embed.figma.com/proto/Z8LVNhvAUxwG92LxdBPyc6/DJI3?page-id=0%3A1&node-id=6-2&viewport=484%2C132%2C0.1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=6%3A2&embed-host=share",
 },
