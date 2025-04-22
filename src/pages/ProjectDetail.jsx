@@ -50,8 +50,10 @@ const project = projects.find(p => String(p.id) === id);
             </div>
              {project.visualizar ? (
                  <div className="flex items-center">
+                   <div  className="btn-secondary inline-flex items-center"> 
                  <LinkIcon size={16} className="mr-2" />
-                 <a href={project.visualizar} target='_blank' className="hover:text-primary">Visualizar protótipo</a>
+                 <a href={project.visualizar} target='_blank' className="hover:text-secundary">Visualizar protótipo</a>
+                 </div>
                </div>
    
              ):(
@@ -63,8 +65,11 @@ const project = projects.find(p => String(p.id) === id);
 
               {project.producao ? (
                  <div className="flex items-center" alt="teste">
-                 <Link2 size={16} className="mr-2" />
-                 <a href={project.producao} target='_blank' className="hover:text-primary"> Visualizar em produção</a>
+                  <div  className="btn-primary inline-flex items-center"> 
+                 <Link2 size={16} className="mr-2"/>
+                 <a href={project.producao} target='_blank' > Visualizar em produção</a>
+                 </div>
+               
                </div>
    
              ):(
