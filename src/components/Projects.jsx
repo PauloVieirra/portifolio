@@ -12,15 +12,15 @@ const Projects = () => {
     <section id="projects" className="py-20">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Projetos em Destaque</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Projetos UX/UI</h2>
           <div className="h-1 w-20 bg-primary mx-auto mb-6 rounded-full"></div>
           <p className="text-muted-foreground text-lg">
             Uma seleção dos meus trabalhos recentes combinando excelência em design e implementação técnica
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-        {projects.slice(0, 4).map((project) => (
+        <div className="grid md:grid-cols-3 gap-8">
+        {projects.slice(0, 6).map((project) => (
             <Link 
               to={`/project/${project.id}`} 
               key={project.id}

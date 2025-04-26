@@ -32,14 +32,7 @@ const certificationsData = [
     issuer: "PUCRS",
     year: "2024 - Treinamento",
     description: "Diretrizes adaptativas - Pontos de partida - UX remoto - Lei de Norman - Design bom X Design ruim - Problemas e soluções - Futuro do Design UX - Modelos conceituais, - Usuários: características e necessidades- Interface e interação - Acessibilidade - Experiência do usuário - Metas, necessidades e requisitos - Design e prototipaçãoMinistrantes: Marcelo Soares Pimentae Don Norman."
-  },
-  { 
-    imagem:"../accessibility.png",
-    title: "Design Acessivel",
-    issuer: "UXCEL",
-    year: "2024 - Treinamento",
-    description: "Deficiências neurológicas: dislexia, ansiedade, epilepsia, autismo. Design inclusivo para cada condição específica.Práticas em multimídia, cores, texto, formulários, links, tabelas e listas. Certificado atestando compreensão em acessibilidade.Estatísticas globais de deficiência e benefícios do design inclusivo."
-  },
+  }
 ];
 
 const certificationsData2 = [
@@ -56,7 +49,18 @@ const certificationsData2 = [
     issuer: "UXCEL",
     year: "2024 - Treinamento",
     description: "Diretrizes específicas para iOS e Android, domínio de elementos-chave como layouts, tipografia, cores e ícones, criação de interfaces visualmente atraentes e funcionais, design para toque e padrões de aplicativos móveis, conhecimento e aplicação de design responsivo e adaptativo, habilidades de criação de wireframes, protótipos e testes de usuários, capacidade de transformar conceitos em soluções práticas, e aplicação dessas habilidades em projetos reais de design móvel."
-  },,
+  },
+];
+
+const certificationsData3 = [
+  
+  { 
+    imagem:"../accessibility.png",
+    title: "Design Acessivel",
+    issuer: "UXCEL",
+    year: "2024 - Treinamento",
+    description: "Deficiências neurológicas: dislexia, ansiedade, epilepsia, autismo. Design inclusivo para cada condição específica.Práticas em multimídia, cores, texto, formulários, links, tabelas e listas. Certificado atestando compreensão em acessibilidade.Estatísticas globais de deficiência e benefícios do design inclusivo."
+  },
   { 
     imagem:"../fundamentos.png",
     title: "Fundamentos de experiência do usuário",
@@ -118,7 +122,10 @@ const Education = () => {
           </h3>
          </div>
 
-    <div className="grid lg:grid-cols-2 gap-12">
+    <div className="grid lg:grid-cols-3 gap-12">
+
+
+
         <div className="space-y-6">
               {certificationsData.map((item, index) => (
                 <div key={index} className="bg-white p-6 rounded-xl shadow-soft relative">
@@ -141,11 +148,8 @@ const Education = () => {
         </div>
           
 
-        <div>
-
-           
-            
-            <div className="space-y-6">
+    
+        <div className="space-y-6">
               {certificationsData2.map((item, index) => (
                 <div key={index} className="bg-white p-6 rounded-xl shadow-soft relative">
                   <div className="absolute top-6 -left-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
@@ -164,8 +168,30 @@ const Education = () => {
                   <p>{item.description}</p>
                 </div>
               ))}
-            </div>
-          </div>
+       </div>
+
+       
+       <div className="space-y-6">
+              {certificationsData3.map((item, index) => (
+                <div key={index} className="bg-white p-6 rounded-xl shadow-soft relative">
+                  <div className="absolute top-6 -left-3 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                  </div>
+                  <img src={item.imagem} style={{ display:'flex', width:'100%', borderRadius:"12px"}}  />
+                  <h4 className="text-xl font-bold mb-1">{item.title}</h4>
+                  <div className="flex items-center text-muted-foreground mb-4">
+                    <span>{item.issuer}</span>
+                    <span className="mx-2">•</span>
+                    <span className="flex items-center">
+                      <Calendar size={14} className="mr-1" />
+                      {item.year}
+                    </span>
+                  </div>
+                  <p>{item.description}</p>
+                </div>
+              ))}
+       </div>
+       
 
 
           
