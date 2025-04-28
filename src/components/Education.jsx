@@ -54,20 +54,21 @@ const certificationsData2 = [
 
 const certificationsData3 = [
   
+  
+  { 
+    imagem:"../pesquisa.png",
+    title: "Realize pesquisas de UX e teste os primeiros conceitos",
+    issuer: "Google",
+    year: "2025 - Treinamento",
+    description: "Neste curso intensivo de Pesquisa em UX do Google, aprendi a usar ferramentas e técnicas para melhorar a experiência do usuário em produtos digitais. O curso cobriu desde o planejamento de estudos até a análise de dados qualitativos e quantitativos. Ao longo das aulas, desenvolvi habilidades para entender as necessidades dos usuários, realizar entrevistas, testes de usabilidade e interpretar resultados para impactar o design de interfaces."
+  },
   { 
     imagem:"../accessibility.png",
     title: "Design Acessivel",
     issuer: "UXCEL",
     year: "2024 - Treinamento",
     description: "Deficiências neurológicas: dislexia, ansiedade, epilepsia, autismo. Design inclusivo para cada condição específica.Práticas em multimídia, cores, texto, formulários, links, tabelas e listas. Certificado atestando compreensão em acessibilidade.Estatísticas globais de deficiência e benefícios do design inclusivo."
-  },
-  { 
-    imagem:"../fundamentos.png",
-    title: "Fundamentos de experiência do usuário",
-    issuer: "Google",
-    year: "2025 - Treinamento",
-    description: "O curso abordou os fundamentos da experiência do usuário, explorando princípios de usabilidade, acessibilidade, arquitetura da informação e design centrado no ser humano."
-  },
+  }
 ];
 
 const Education = () => {
@@ -133,7 +134,7 @@ const Education = () => {
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
                   <img src={item.imagem} style={{ display:'flex', width:'100%', borderRadius:"12px"}}  />
-                  <h4 className="text-xl font-bold mb-1">{item.title}</h4>
+                  <h4 className="text-xl font-bold mb-1 mt-4">{item.title}</h4>
                   <div className="flex items-center text-muted-foreground mb-4">
                     <span>{item.issuer}</span>
                     <span className="mx-2">•</span>
@@ -156,7 +157,7 @@ const Education = () => {
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
                   <img src={item.imagem} style={{ display:'flex', width:'100%', borderRadius:"12px"}}  />
-                  <h4 className="text-xl font-bold mb-1">{item.title}</h4>
+                  <h4 className="text-xl font-bold mb-1 mt-4">{item.title}</h4>
                   <div className="flex items-center text-muted-foreground mb-4">
                     <span>{item.issuer}</span>
                     <span className="mx-2">•</span>
@@ -178,7 +179,7 @@ const Education = () => {
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
                   <img src={item.imagem} style={{ display:'flex', width:'100%', borderRadius:"12px"}}  />
-                  <h4 className="text-xl font-bold mb-1">{item.title}</h4>
+                  <h4 className="text-xl font-bold mb-1 mt-4">{item.title}</h4>
                   <div className="flex items-center text-muted-foreground mb-4">
                     <span>{item.issuer}</span>
                     <span className="mx-2">•</span>
