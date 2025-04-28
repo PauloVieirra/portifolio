@@ -57,7 +57,7 @@ const certificationsData3 = [
   
   { 
     imagem:"../pesquisa.png",
-    title: "Realize pesquisas de UX e teste os primeiros conceitos",
+    title: "Pesquisas de UX",
     issuer: "Google",
     year: "2025 - Treinamento",
     description: "Neste curso intensivo de Pesquisa em UX do Google, aprendi a usar ferramentas e técnicas para melhorar a experiência do usuário em produtos digitais. O curso cobriu desde o planejamento de estudos até a análise de dados qualitativos e quantitativos. Ao longo das aulas, desenvolvi habilidades para entender as necessidades dos usuários, realizar entrevistas, testes de usabilidade e interpretar resultados para impactar o design de interfaces."
