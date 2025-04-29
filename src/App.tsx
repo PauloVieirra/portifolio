@@ -9,6 +9,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 import AllProjects from "./pages/AllProjects";
 import Header from "./components/Header";
+import AllCertificates from "./pages/AllCertificates";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/project/:id" element={<ProjectDetail />} />
               <Route path="/all-projects" element={<AllProjects />} />
+              <Route path="/all-certificate" element={<AllCertificates />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

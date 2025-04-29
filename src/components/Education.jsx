@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { GraduationCap, Award, Calendar, Medal } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const educationData = [
   {
@@ -64,7 +65,7 @@ const certificationsData3 = [
   },
   { 
     imagem:"../accessibility.png",
-    title: "Design Acessivel",
+    title: "Design Acessível",
     issuer: "UXCEL",
     year: "2024 - Treinamento",
     description: "Deficiências neurológicas: dislexia, ansiedade, epilepsia, autismo. Design inclusivo para cada condição específica.Práticas em multimídia, cores, texto, formulários, links, tabelas e listas. Certificado atestando compreensão em acessibilidade.Estatísticas globais de deficiência e benefícios do design inclusivo."
@@ -72,6 +73,7 @@ const certificationsData3 = [
 ];
 
 const Education = () => {
+  const navigate = useNavigate();
   return (
     <section id="education" className="py-20 bg-gradient-to-b from-white to-secondary/30">
 
@@ -197,7 +199,18 @@ const Education = () => {
 
           
         </div>
+        
       </div>
+      <div className="text-center mt-12">
+          <button
+            onClick={() => navigate('/all-certificate')}
+            className="btn-secondary inline-flex items-center"
+            style={{marginTop:'32px'}}
+          >
+           
+            Ver Todos os Treinamentos
+          </button>
+        </div>
     </section>
   );
 };

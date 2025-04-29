@@ -1,36 +1,63 @@
-export const projects = [
+export const certificates = [
     {
         id: 1,
-        title: "Redesign de App Bancário",
-        description: "Uma reformulação completa da UX de um aplicativo bancário móvel, com foco em acessibilidade e facilidade de uso.",
-        image: "https://source.unsplash.com/photo-1460925895917-afdab827c52f",
-        category: "Aplicativo Móvel",
-        categoria: "Aplicativo Móvel", 
-        tools: ["Figma", "React Native", "Framer Motion"]
+        title: "Pesquisas de UX",
+        description: "Neste curso intensivo de Pesquisa em UX do Google, aprendi a usar ferramentas e técnicas para melhorar a experiência do usuário em produtos digitais. O curso cobriu desde o planejamento de estudos até a análise de dados qualitativos e quantitativos. Ao longo das aulas, desenvolvi habilidades para entender as necessidades dos usuários, realizar entrevistas, testes de usabilidade e interpretar resultados para impactar o design de interfaces.",
+        image: "../pesquisa.png",
+        category: "UX Research",
+        institution: "Google", 
+        data:"2025",
+        tools: ["Persona", "Insights", "Usabilidade", "Documentação"]
     },
     {
         id: 2,
-        title: "Plataforma E-commerce",
-        description: "Design e implementação completa de uma plataforma de e-commerce responsiva com filtragem avançada.",
-        image: "https://source.unsplash.com/photo-1524178232363-1fb2b075b655",
-        category: "Aplicação Web",
-        tools: ["Sketch", "React", "TailwindCSS"]
+        title: "Design centrado no usuário",
+        description: "Diretrizes adaptativas - Pontos de partida - UX remoto - Lei de Norman - Design bom X Design ruim - Problemas e soluções - Futuro do Design UX - Modelos conceituais, - Usuários: características e necessidades- Interface e interação - Acessibilidade - Experiência do usuário - Metas, necessidades e requisitos - Design e prototipaçãoMinistrantes: Marcelo Soares Pimentae Don Norman.",
+        image: "../pucrs.png",
+        category: "UX Design",
+        institution: "PUCRS", 
+        data:"2024",
+        tools: ["Inovação", "Problema X Solução", "Usabilidade", "Acessibilidade"]
     },
     {
         id: 3,
-        title: "Dashboard de Saúde",
-        description: "Um painel abrangente para profissionais de saúde monitorarem os sinais vitais e o progresso dos pacientes.",
-        image: "https://source.unsplash.com/photo-1576091160550-2173dba999ef",
-        category: "Dashboard",
-        tools: ["Adobe XD", "Angular", "D3.js"]
+        title: "UI Design e Figma",
+        description: "UI Design para Android & IOS Usabilidade Mente Humana e Psicologia digitalHeurísticas e TrendsHierarquia VisualCores, Tipografia e GridsWireframes, Protótipos e HandoffProcessos UI do Briefing à Alta FidelidadeProtótipos para Sites, Apps, Sistemas e Dashboards.",
+        image: "../unicornio.png",
+        category: "UI Design",
+        institution: "UX Unicórnio", 
+        data:"2022",
+        tools: ["Figma", "Auto Layout", "Variáveis", "Tokens"]
     },
     {
         id: 4,
-        title: "Sistema de Controle Residencial 3",
-        description: "Interface intuitiva para controle de dispositivos domésticos inteligentes com reconhecimento de voz e gestos.",
-        image: "https://source.unsplash.com/photo-1558002038-1055e2e89a94",
-        category: "Interface IoT",
-        tools: ["Figma", "React", "Three.js"]
+        title: "Mobile Design",
+        description: "Diretrizes específicas para iOS e Android, domínio de elementos-chave como layouts, tipografia, cores e ícones, criação de interfaces visualmente atraentes e funcionais, design para toque e padrões de aplicativos móveis, conhecimento e aplicação de design responsivo e adaptativo, habilidades de criação de wireframes, protótipos e testes de usuários, capacidade de transformar conceitos em soluções práticas, e aplicação dessas habilidades em projetos reais de design móvel.",
+        image: "../mobile.png",
+        category: "UI Design",
+        institution: "UXCEL", 
+        data:"2024",
+        tools: ["Figma", "Auto Layout", "Variáveis", "Tokens"]
+    },
+    {
+        id: 5,
+        title: "Empatia, Definição, Ideação",
+        description: "O curso abordou temas centrais como empatia com usuários para entender necessidades reais, definição de problemas com base em pontos de dor e geração de ideias para soluções centradas no usuário.",
+        image: "../goo.png",
+        category: "UX Design",
+        institution: "Google", 
+        data:"2024",
+        tools: ["Escuta ativa", "Sensibilidade cultural", "Capacidade analítica", "Pensamento divergente", "Criatividade", "Colaboração" ]
+    },
+    {
+        id: 6,
+        title: "Design Acessível",
+        description: "Deficiências neurológicas: dislexia, ansiedade, epilepsia, autismo. Design inclusivo para cada condição específica.Práticas em multimídia, cores, texto, formulários, links, tabelas e listas. Certificado atestando compreensão em acessibilidade.Estatísticas globais de deficiência e benefícios do design inclusivo.",
+        image: "../accessibility.png",
+        category: "UX Design",
+        institution: "UXCEL", 
+        data:"2024",
+        tools: ["Escuta ativa", "Sensibilidade cultural", "Capacidade analítica", "Pensamento divergente", "Criatividade", "Colaboração" ]
     }
 ];
 
