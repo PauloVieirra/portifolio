@@ -28,7 +28,7 @@ export const projects: Project[] = [
     visualizar:"https://www.figma.com/proto/EuO4EE3r75wrUxBcf7f8Rj/Rav---Add?page-id=42%3A1481&node-id=591-5212&viewport=287%2C383%2C0.27&t=zCBB1L4JZynuKfkh-1&scaling=min-zoom&content-scaling=fixed",
     time:"2 dia",
     producao:"",
-    disclaimer:"O projeto é um protótipo inicial para um gerador de relatório, nessa etapa estávamos iniciando a conversão do wireframe para alta fidelidade, as etapas foram implementadas por equipes diferentes.",
+    disclaimer:"Este projeto é um protótipo inicial de um gerador de relatórios. Nessa fase, estávamos começando a transição do wireframe para a interface de alta fidelidade, focando em traduzir a estrutura inicial em uma proposta visual mais próxima do produto final. As etapas do processo foram implementadas por equipes diferentes, o que exigiu alinhamento constante para garantir consistência nas decisões de design e desenvolvimento.",
     iframes: "https://embed.figma.com/proto/EuO4EE3r75wrUxBcf7f8Rj/Rav---Add?page-id=42%3A1481&node-id=591-5212&viewport=287%2C383%2C0.27&scaling=min-zoom&content-scaling=fixed&embed-host=share",
 
    },
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     visualizar:"https://www.figma.com/proto/cyv7kv8JtCYPZb6XugxGek/SEA?page-id=0%3A1&node-id=125-6608&viewport=704%2C434%2C0.24&t=nqrKtBetnUw7dym1-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=125%3A6608",
     time:"2 Semanas",
     producao:"",
-    disclaimer:"",
+    disclaimer:"Este estudo de caso foi desenvolvido para uma empresa da área de Recursos Humanos com o objetivo de melhorar a comunicação interna entre o RH e os funcionários. A proposta central era criar uma solução que ajudasse a manter o engajamento dos colaboradores com as metas da empresa, ao mesmo tempo em que oferecesse suporte ao seu crescimento profissional. O projeto passou por todas as etapas do processo de UX, desde a pesquisa inicial até a entrega de um protótipo de alta fidelidade. Foram realizadas entrevistas, testes de usabilidade, mapeamento de jornada e validação de conceitos com usuários reais. Também criamos wireframes, simulamos o envio de notificações, e garantimos que a solução fosse responsiva e acessível para diferentes perfis de uso. Mais do que um produto, o projeto se consolidou como uma ferramenta estratégica para fortalecer a cultura organizacional e facilitar o dia a dia dos times de RH e dos próprios colaboradores.",
     iframes: "https://embed.figma.com/proto/cyv7kv8JtCYPZb6XugxGek/SEA?page-id=1%3A3&node-id=1-4&viewport=-205%2C530%2C0.14&scaling=min-zoom&content-scaling=fixed&embed-host=share",
 },
 {
@@ -59,7 +59,7 @@ export const projects: Project[] = [
   visualizar:"",
   time:"2 dias",
   producao:"https://www.figma.com/proto/Z8LVNhvAUxwG92LxdBPyc6/DJI3?page-id=0%3A1&node-id=6-2&viewport=484%2C132%2C0.1&t=cRryP0rYzaLEClF5-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=6%3A2",
-  disclaimer:"",
+  disclaimer:"Este é um protótipo de site de vendas para o DJI Inspire, desenvolvido no Figma com foco em usabilidade, consistência e boa comunicação visual. Foram utilizadas técnicas modernas de prototipagem, como o uso de AutoLayout para garantir responsividade em diferentes tamanhos de tela e Variantes para simular estados de componentes de forma organizada e eficiente. A estrutura do conteúdo foi pensada para oferecer clareza na navegação e facilitar a tomada de decisão do usuário, valorizando tanto o produto quanto a experiência de compra. O projeto reflete boas práticas de design digital e atenção aos detalhes na construção de interfaces funcionais e intuitivas.",
   iframes: "https://embed.figma.com/proto/Z8LVNhvAUxwG92LxdBPyc6/DJI3?page-id=0%3A1&node-id=6-2&viewport=484%2C132%2C0.1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=6%3A2&embed-host=share",
 },
 {
@@ -74,7 +74,7 @@ export const projects: Project[] = [
     visualizar:"https://www.figma.com/proto/qKKJ2N7OBmkSpe3oWMeRZA/cinemove?page-id=1%3A2&node-id=1-6&viewport=238%2C310%2C0.32&t=fDDhKRBzYFCojIvr-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A4",
     time:"12 Semanas",
     producao:"https://orsheep.vercel.app/",
-    disclaimer:"O projeto esta carregando...",
+    disclaimer:"Este projeto é uma solução completa de suporte digital para atendimento, cardápio e delivery. Fui responsável por todas as etapas, desde o UX até o front-end, incluindo a criação da interface (UI), estruturação do banco de dados e desenvolvimento da aplicação. A proposta surgiu da necessidade de otimizar o atendimento em estabelecimentos que trabalham com pedidos digitais, oferecendo uma experiência simples, rápida e acessível tanto para o cliente quanto para o negócio. O fluxo foi desenhado com base em pesquisas de uso, priorizando clareza nas etapas do pedido e facilidade na navegação. A interface foi prototipada no Figma, com foco em responsividade, acessibilidade e consistência visual. No desenvolvimento, trabalhei a integração entre front-end e banco de dados, garantindo que as informações do cardápio e dos pedidos fossem atualizadas em tempo real, com uma experiência fluida para o usuário. O resultado é um sistema funcional, pensado para ser usado em dispositivos móveis, com foco em performance e facilidade de manutenção.",
     iframes: "https://embed.figma.com/proto/8aRxfIQowOigK8FRTO824t/Orsheep?page-id=1%3A8&node-id=1-9&viewport=305%2C424%2C0.2&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A9&embed-host=share",
 },
 {
@@ -89,7 +89,7 @@ export const projects: Project[] = [
     visualizar:"",
     time: "2 Semanas",
     producao:"",
-    disclaimer:"O projeto esta carregando...",
+    disclaimer:"Este projeto teve como objetivo entender o comportamento do usuário e o fluxo de atendimento em restaurantes, para então desenvolver uma solução automatizada que facilitasse o processo de reserva e cancelamento de mesas. A partir de pesquisas com usuários e observação do atendimento tradicional, foi possível mapear os principais pontos de atrito e transformar esse cenário em uma experiência mais simples, rápida e eficiente. O aplicativo foi pensado para reduzir a dependência de interações manuais, dando mais autonomia ao cliente e otimizando o tempo da equipe do restaurante.",
     iframes: "https://embed.figma.com/proto/6TOs57dxOREXh8yf4jbQSE/EBAC-CASE?page-id=0%3A1&node-id=1-586&viewport=452%2C3456%2C0.16&scaling=min-zoom&content-scaling=fixed&embed-host=share",
 },
 {
@@ -104,7 +104,7 @@ export const projects: Project[] = [
     visualizar:"https://www.figma.com/proto/m5tWXpYCTX3p3AKXa2JOYf/PuraMel?page-id=0%3A1&node-id=42-367&viewport=-110%2C293%2C0.24&t=ec3dOhTYPM4LrXqY-1&scaling=min-zoom&content-scaling=fixed",
     time:"1 dia",
     producao:"",
-    disclaimer:"O projeto esta carregando...",
+    disclaimer:"Este foi um projeto pontual, mas com grande impacto para a imagem do contratante. Criei o rótulo e a logomarca de um produto artesanal de mel, produzido por um pequeno empreendedor local. O objetivo era transmitir a qualidade e o cuidado do produto de forma clara e atrativa, valorizando suas origens e fortalecendo a presença da marca no ponto de venda. Apesar de ser um projeto de menor escala, ele teve um valor simbólico importante, tanto para mim quanto para o cliente. Desenvolver algo tão significativo e ver o resultado ganhando forma na embalagem foi uma experiência muito gratificante.",
     iframes: "https://embed.figma.com/proto/m5tWXpYCTX3p3AKXa2JOYf/PuraMel?page-id=0%3A1&node-id=42-367&viewport=-110%2C293%2C0.24&scaling=min-zoom&content-scaling=fixed&embed-host=share",
 },
 {
@@ -119,7 +119,7 @@ export const projects: Project[] = [
     visualizar:"",
     time:"4 semanas",
     producao:"https://drive.google.com/drive/folders/1SNNffLGrTrL7CgLi5R1kAjkdQoYef82Q?usp=sharing",
-    disclaimer:"",
+    disclaimer:"Este projeto foi uma análise detalhada de acessibilidade na intranet do Sebrae Nacional, com foco em garantir conformidade com os níveis da WCAG (Web Content Accessibility Guidelines). O principal objetivo foi tornar a plataforma mais inclusiva, assegurando que todos os usuários, independentemente de suas limitações, pudessem ter uma experiência digital mais justa e acessível. A análise envolveu tanto avaliações manuais quanto automáticas, além da revisão de componentes específicos da interface. Foram documentadas orientações práticas para correções e melhorias, com o intuito de apoiar a equipe técnica na implementação de boas práticas de acessibilidade. No link Visualizar em Produção, é possível acessar as pastas com os componentes avaliados, os relatórios de testes e as recomendações de ajustes.",
     iframes: "https://embed.figma.com/proto/KYxpChDfLfeCxRAtV5COu8/Untitled?page-id=0%3A1&node-id=2-2&viewport=272%2C63%2C0.53&scaling=min-zoom&content-scaling=fixed&embed-host=share",
   
    },
