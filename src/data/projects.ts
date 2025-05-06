@@ -137,6 +137,21 @@ export const projects: Project[] = [
     producao:"",
     disclaimer:"A proposta do teste - implementar o modo dark no aplicativo de forma simples, A implementação do modo escuro no protótipo tem como principal objetivo testar a viabilidade e a aceitação desse recurso entre os usuários. Além de ser uma tendência consolidada em aplicativos modernos, o modo escuro oferece benefícios reais de usabilidade, como o conforto visual em ambientes com pouca luz e a economia de bateria em dispositivos com telas OLED. Ao incluir essa funcionalidade no protótipo, mesmo de forma simples, é possível observar como os usuários interagem com a interface em diferentes condições de luminosidade, analisar possíveis impactos na legibilidade dos conteúdos e validar se a personalização da aparência contribui positivamente para a experiência geral. Testar esse recurso desde a fase inicial do desenvolvimento também permite identificar ajustes necessários no design, na paleta de cores e na hierarquia visual. Isso evita retrabalhos no futuro e garante uma experiência mais inclusiva e agradável para diferentes perfis de usuários.",
     iframes: "https://embed.figma.com/proto/qKKJ2N7OBmkSpe3oWMeRZA/cinemove?page-id=1%3A2&node-id=1-6&viewport=153%2C318%2C0.34&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A4&embed-host=share",
+},
+{
+  id: "10",
+  title: "Dashboard",
+  description: "Protótipo desenvolvido no curso UX Google - Treinamento.",
+  image: "../dash.png",
+  category: "UI Design",
+  tools: ["Figma"],
+  desafio: "",
+  deskresearch: "",
+  visualizar:"https://www.figma.com/proto/HZnGKXFpJ2Hm2VxQScXCUf/Dasboard?page-id=5%3A42&node-id=5-43&viewport=286%2C292%2C0.57&t=Amu23B9UcusRhLJF-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=5%3A43",
+  time:"2 dia",
+  producao:"",
+  disclaimer:"Este protótipo foi desenvolvido como parte do curso profissional de UX Design do Google, utilizando o Figma como principal ferramenta. O objetivo do projeto foi criar um dashboard funcional, responsivo e acessível, aplicando os princípios avançados de design de interface e experiência do usuário. Durante o desenvolvimento, foram aplicadas diversas técnicas avançadas que reforçam tanto a qualidade visual quanto a usabilidade da interface: Responsividade: O layout foi pensado para se adaptar a diferentes tamanhos de tela (desktop, tablet e mobile), utilizando componentes fluidos com Auto Layout para garantir consistência e escalabilidade. Acessibilidade: Cores com bom contraste, tamanho de fonte adequado e hierarquia visual clara foram utilizados para facilitar a leitura e navegação para todos os usuários, incluindo pessoas com baixa visão. Paleta de Cores Harmônica: A escolha das cores seguiu critérios de equilíbrio visual e legibilidade. Foram aplicadas cores primárias, secundárias e neutras com base em sistemas de design escaláveis, garantindo coesão e profissionalismo. Uso de Variáveis (Tokens de Design): Foram empregadas variáveis para cores, espaçamentos e tipografia, otimizando a manutenção e a consistência em todo o projeto. Auto Layout e Componentização Avançada: Todos os elementos seguem uma lógica de Auto Layout, garantindo alinhamento automático, padding e responsividade interna. Os componentes foram criados com variantes e estados interativos, facilitando a prototipação e a iteração rápida. Tipografia e Hierarquia Visual: A escolha das fontes respeita critérios de legibilidade e cria uma hierarquia clara, ajudando o usuário a entender a estrutura da informação de forma intuitiva. Prototipação com Interatividade: O projeto também inclui fluxos navegáveis e interações realistas no Figma, possibilitando testes de usabilidade e simulação da experiência do usuário final. Este exercício foi essencial para consolidar práticas modernas de design de interface e refinar habilidades como organização de sistemas, criação de componentes reutilizáveis e design centrado no usuário.",
+  iframes: "https://embed.figma.com/proto/HZnGKXFpJ2Hm2VxQScXCUf/Dasboard?page-id=5%3A42&node-id=5-43&viewport=286%2C292%2C0.57&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=5%3A43&embed-host=share",
 }
   
 ];
