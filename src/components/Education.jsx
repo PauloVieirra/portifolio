@@ -20,12 +20,12 @@ const educationData = [
 ];
 
 const certificationsData = [
-  { 
-    imagem:"../goo.png",
-    title: "Certificado - Empatia, Definição, Ideação",
+   { 
+    imagem:"../googleux.png",
+    title: "Certificado - UX Design",
     issuer: "Google",
-    year: "2025 - Treinamento",
-    description: "O curso abordou temas centrais como empatia com usuários para entender necessidades reais, definição de problemas com base em pontos de dor e geração de ideias para soluções centradas no usuário."
+    year: "2025 - Curso",
+    description: "O curso de UX Design do Google aborda temas como pesquisa com usuários, criação de personas, definição de problemas, ideação, desenvolvimento de wireframes e protótipos, testes de usabilidade e princípios de design centrado no usuário, além de introduzir ferramentas como Figma e Adobe XD."
   },
   { 
     imagem:"../pucrs.png",

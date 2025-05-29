@@ -1,5 +1,15 @@
 export const certificates = [
     {
+        id: 0,
+        title: "Google UX Design",
+        description: "Neste curso intensivo de Pesquisa em UX do Google, aprendi a usar ferramentas e técnicas para melhorar a experiência do usuário em produtos digitais. O curso cobriu desde o planejamento de estudos até a análise de dados qualitativos e quantitativos. Ao longo das aulas, desenvolvi habilidades para entender as necessidades dos usuários, realizar entrevistas, testes de usabilidade e interpretar resultados para impactar o design de interfaces.",
+        image: "../googleux.png",
+        category: "UX Design",
+        institution: "Google", 
+        data:"2025",
+        tools: ["Persona", "Insights", "Usabilidade", "Documentação"]
+    },
+    {
         id: 1,
         title: "Pesquisas de UX",
         description: "Neste curso intensivo de Pesquisa em UX do Google, aprendi a usar ferramentas e técnicas para melhorar a experiência do usuário em produtos digitais. O curso cobriu desde o planejamento de estudos até a análise de dados qualitativos e quantitativos. Ao longo das aulas, desenvolvi habilidades para entender as necessidades dos usuários, realizar entrevistas, testes de usabilidade e interpretar resultados para impactar o design de interfaces.",
