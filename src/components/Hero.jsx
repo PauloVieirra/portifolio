@@ -30,7 +30,7 @@ const Hero = () => {
             <div >
               <div >
                 <img 
-                  src="../logo.png" 
+                  src="../imagempaulo.png" 
                   alt="Engenheiro UX trabalhando" 
                   style={{ display:'flex', width:'90%', borderRadius:"12px"}} 
                 />
