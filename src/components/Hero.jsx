@@ -19,11 +19,17 @@ const Hero = () => {
   </div>
 
   {/* Área degradê com texto dentro (mobile) */}
-  <div className="absolute inset-x-0 bottom-0 pb-10 h-[50%] bg-gradient-to-t from-black via-black/70 to-transparent flex items-end md:static md:bg-none md:h-auto">
+  <div className="absolute inset-x-0 bottom-0 pb-10 h-[68%] bg-gradient-to-t from-black via-black/70 to-transparent flex items-end md:static md:bg-none md:h-auto">
     <div className="container mx-auto px-4 md:px-6 relative z-10">
       <div className="grid md:grid-cols-2 gap-10 items-center">
         {/* Texto */}
         <div className="animate-fade-in text-white md:text-black ">
+          <h1 className="md:hidden mb-0 text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
+            <span className="text-primary" style={{color:"#a872ebff"}}>Paulo Vieira</span>
+          </h1>
+            <h1 className="hidden md:flex mb-4 text-2xl md:text-5xl lg:text-6xl font-light leading-tight">
+            <span className="text-primary" style={{color:"#720eecff"}}>Paulo Vieira</span>
+          </h1>
           <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             <span className="text-primary" style={{color:"#8330f0ff"}}>Product Design</span>
           </h1>
