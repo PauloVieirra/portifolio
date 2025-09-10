@@ -9,12 +9,12 @@ const Hero = () => {
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div className="animate-fade-in" >
             <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              Front-end
+             
               <br></br>
-              <span className="text-primary">Ux/Ui Design </span>
+              <span className="text-primary">Product Design </span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
-              Combinando expertise em design com implementação técnica para criar experiências de usuário bonitas, funcionais e intuitivas.
+              Atuo unindo design e tecnologia para entregar soluções simples, úteis e eficientes. Minha abordagem prioriza o usuário final, transformando necessidades reais em serviços funcionais e produtos intuitivos. Acredito que a boa experiência se reflete diretamente em resultados — seja na satisfação do cliente, nos números da empresa ou na gestão dos processos.
             </p>
             <div style={{display:'flex', width:"100%",  alignItems:'center', gap:'24px'}} >
               <a href="#projects" className="btn-primary">
