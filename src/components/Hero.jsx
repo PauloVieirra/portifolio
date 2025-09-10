@@ -14,13 +14,10 @@ const Hero = () => {
               <span className="text-primary">Ux/Ui Design </span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
-              Combinando expertise em design com implementação técnica para criar experiências de usuário bonitas, funcionais e intuitivas. Faço a ponte entre design e desenvolvimento.
+              Combinando expertise em design com implementação técnica para criar experiências de usuário bonitas, funcionais e intuitivas.
             </p>
             <div style={{display:'flex', width:"100%",  alignItems:'center', gap:'24px'}} >
-              <a href="#contact" className="btn-primary">
-                Entre em Contato
-              </a>
-              <a href="#projects" className="btn-secondary">
+              <a href="#projects" className="btn-primary">
                 Meus Projetos
               </a>
             </div>
