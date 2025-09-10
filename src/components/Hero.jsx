@@ -14,32 +14,29 @@ const Hero = () => {
     <img
       src="../imagempaulo.png"
       alt="Engenheiro UX trabalhando"
-      className="w-full h-full object-cover"
+      className="w-full h-full object-cover pt-20"
     />
   </div>
 
   {/* Área degradê com texto dentro (mobile) */}
-  <div className="absolute inset-x-0 bottom-0 pb-10 h-[68%] bg-gradient-to-t from-black via-black/70 to-transparent flex items-end md:static md:bg-none md:h-auto">
+  <div className="absolute inset-x-0 bottom-0 pb-10 h-[68%] bg-gradient-to-t from-white via-white/60 to-transparent flex items-end md:static md:bg-none md:h-auto">
     <div className="container mx-auto px-4 md:px-6 relative z-10">
       <div className="grid md:grid-cols-2 gap-10 items-center">
         {/* Texto */}
         <div className="animate-fade-in text-white md:text-black ">
-          <h1 className="md:hidden mb-0 text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
-            <span className="text-primary" style={{color:"#a872ebff"}}>Paulo Vieira</span>
+          <h1 className="md:hidden mb-2 text-4xl md:text-5xl lg:text-6xl font-regular ">
+            <span className="text-primary" style={{color:"#653e94ff"}}>Paulo Vieira</span>
           </h1>
-            <h1 className="hidden md:flex mb-4 text-2xl md:text-5xl lg:text-6xl font-light leading-tight">
-            <span className="text-primary" style={{color:"#720eecff"}}>Paulo Vieira</span>
+            <h1 className="hidden md:flex mb-4 text-2xl md:text-5xl lg:text-6xl font-light ">
+            <span className="text-primary" style={{color:"#653e94ff"}}>Paulo Vieira</span>
           </h1>
-          <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            <span className="text-primary" style={{color:"#8330f0ff"}}>Product Design</span>
+          <h1 className="mb-4 text-4xl md:text-5xl lg:text-6xl font-bold">
+            <span className="text-primary" style={{color:"#653e94ff"}}>Product Design</span>
           </h1>
-          <p className="text-lg md:text-xl text-white-800 md:text-muted-foreground mb-8 max-w-2xl">
-            Atuo unindo design e tecnologia para entregar soluções simples, úteis
-            e eficientes. Minha abordagem prioriza o usuário final, transformando
-            necessidades reais em serviços funcionais e produtos intuitivos.
-            Acredito que a boa experiência se reflete diretamente em resultados,
-            seja na satisfação do cliente, nos números da empresa ou na gestão dos
-            processos.
+          <p className="text-lg md:text-xl text-gray-800 md:text-muted-foreground mb-8 max-w-2xl">
+            Integrando UX e UI para criar soluções digitais 
+            que sejam ao mesmo tempo funcionais e visualmente intuitivas, minha abordagem
+             coloca o usuário no centro do processo.
           </p>
           <div className="flex gap-6 ">
             <a href="#projects" className="btn-primary">
@@ -50,14 +47,15 @@ const Hero = () => {
 
         {/* Imagem lateral (desktop) */}
         <div className="hidden md:block relative animate-slide-in">
-          <div className="absolute -z-10 top-10 -right-10 w-72 h-72 rounded-full blur-3xl"/>
+          <div className="absolute -z-10 top-40 -right-10 w-72 h-72 rounded-full blur-3xl"/>
           <img
             src="../imagempaulo.png"
             alt="Engenheiro UX trabalhando"
-            className="w-11/12 rounded-xl"
+            className="w-11/12  rounded-xl"
           
           />
         </div>
+
       </div>
     </div>
   </div>
