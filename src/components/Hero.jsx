@@ -14,7 +14,7 @@ const Hero = () => {
               <span className="text-primary">Product Design </span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl">
-              Atuo unindo design e tecnologia para entregar soluções simples, úteis e eficientes. Minha abordagem prioriza o usuário final, transformando necessidades reais em serviços funcionais e produtos intuitivos. Acredito que a boa experiência se reflete diretamente em resultados — seja na satisfação do cliente, nos números da empresa ou na gestão dos processos.
+              Atuo unindo design e tecnologia para entregar soluções simples, úteis e eficientes. Minha abordagem prioriza o usuário final, transformando necessidades reais em serviços funcionais e produtos intuitivos. Acredito que a boa experiência se reflete diretamente em resultados, seja na satisfação do cliente, nos números da empresa ou na gestão dos processos.
             </p>
             <div style={{display:'flex', width:"100%",  alignItems:'center', gap:'24px'}} >
               <a href="#projects" className="btn-primary">
