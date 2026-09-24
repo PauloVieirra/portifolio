@@ -4,12 +4,18 @@ import { renderLogin } from './login.js';
 import { renderProjects } from './projects.js';
 import { renderArticles } from './articles.js';
 import { renderTimeline } from './timeline.js';
+import { renderHero } from './hero.js';
+import { renderServices } from './services.js';
+import { renderContact } from './contact.js';
 
 /* hash → [menu label, screen renderer]. Screens receive the view element and render into it. */
 export const SECTIONS = {
   projetos: ['Projetos', renderProjects],
   artigos: ['Artigos', renderArticles],
   trajetoria: ['Trajetória', renderTimeline],
+  hero: ['Hero', renderHero],
+  servicos: ['Serviços', renderServices],
+  contato: ['Contato', renderContact],
 };
 
 const app = document.getElementById('admin');
