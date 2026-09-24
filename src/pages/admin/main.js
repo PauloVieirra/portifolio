@@ -2,10 +2,14 @@ import { supabase } from '../../lib/supabase.js';
 import { h } from './ui.js';
 import { renderLogin } from './login.js';
 import { renderProjects } from './projects.js';
+import { renderArticles } from './articles.js';
+import { renderTimeline } from './timeline.js';
 
 /* hash → [menu label, screen renderer]. Screens receive the view element and render into it. */
 export const SECTIONS = {
   projetos: ['Projetos', renderProjects],
+  artigos: ['Artigos', renderArticles],
+  trajetoria: ['Trajetória', renderTimeline],
 };
 
 const app = document.getElementById('admin');
