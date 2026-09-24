@@ -1,0 +1,105 @@
+/* Wiki list — shared by projetos.html and artigos.html.
+   Search (from 3 letters), combinable tag filters (AND), sort, 5-per-page pager.
+   Behaviour: components/wiki.js */
+:root {
+  --search-mark-bg: var(--aurora-lilac-fill);
+  --search-mark-text: var(--fg);
+}
+
+/* =========================================================
+   1. HEADER + SEARCH
+   ========================================================= */
+.wiki-head { padding-block: clamp(32px, 6vw, 80px) clamp(24px, 3vw, 40px); display: grid; gap: 20px; }
+.wiki-title { font-size: clamp(var(--typography-size-h1), 6vw, var(--typography-size-display-1)); font-weight: var(--typography-weight-regular); }
+.wiki-title strong { font-weight: var(--typography-weight-bold); }
+
+.search { position: relative; display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 8px 0 24px; border-radius: var(--radius-pill); margin-top: 16px; transition: box-shadow .3s, border-color .3s; }
+.search:focus-within { border-color: var(--eyebrow-text); box-shadow: 0 0 0 4px var(--aurora-lilac-fill), 0 24px 48px -28px var(--shadow-glass); }
+.search svg { flex: none; width: 20px; height: 20px; stroke: var(--muted); }
+.search input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font: inherit; font-size: 18px; color: var(--fg); outline: none; }
+.search input::placeholder { color: var(--muted); }
+.search input::-webkit-search-cancel-button { display: none; }
+.search-clear { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--button-ghost-border); background: var(--button-ghost-bg); cursor: pointer; font-size: 18px; color: var(--fg); display: grid; place-items: center; transition: opacity .25s, transform .25s var(--ease-out); }
+.search-clear[hidden] { display: none; }
+.search-clear:hover { transform: scale(1.06); }
+.search-hint { font-size: 13px; color: var(--muted); min-height: 20px; padding-left: 24px; transition: color .25s; }
+
+/* =========================================================
+   2. FILTERS (combinable, AND) + TOOLBAR
+   ========================================================= */
+.wiki-filters { display: grid; gap: 16px; padding-bottom: 24px; }
+.wiki-filters .filters { margin: 0; }
+.filter { display: inline-flex; align-items: center; gap: 8px; }
+.filter .ct { font-size: 12px; opacity: .6; font-variant-numeric: tabular-nums; }
+.filter[aria-pressed="true"] .ct { opacity: .8; }
+.filter[aria-pressed="true"]::before { content: "✓"; font-size: 12px; }
+.filter:disabled { opacity: .35; cursor: default; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 16px; border-top: 1px solid var(--border-glass); }
+.result-count { font-size: 14px; color: var(--muted); }
+.result-count b { color: var(--fg); font-weight: var(--typography-weight-medium); }
+.toolbar-actions { display: flex; align-items: center; gap: 16px; }
+.link-btn { border: 0; background: none; padding: 8px 0; font: inherit; font-size: 14px; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.link-btn:hover { color: var(--fg); }
+.link-btn[hidden] { display: none; }
+.sort { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+.sort select { height: 40px; padding: 0 16px; border-radius: var(--radius-pill); border: 1px solid var(--button-ghost-border); background: var(--button-ghost-bg); font: inherit; font-size: 14px; color: var(--fg); cursor: pointer; }
+
+/* =========================================================
+   3. LIST — one project per row
+   ========================================================= */
+.entries { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.entry { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 12px; border-radius: var(--radius-lg); transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out); }
+.entry:hover { transform: translateY(-3px); box-shadow: 0 30px 60px -36px var(--shadow-glass); }
+.entry:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+.entry .cover { aspect-ratio: 16 / 9; }
+.entry .cover-ui { width: min(64%, 220px); padding: 14px; gap: 8px; }
+.entry .cover-ui .ln { height: 6px; }
+.entry:hover .cover::before { transform: translate(18%, 10%) scale(1.1); }
+.entry:hover .cover img { transform: scale(1.04); }
+.entry-body { display: grid; align-content: center; gap: 10px; padding: 4px 8px 8px; }
+.entry-meta { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.entry-body h2 { font-size: var(--typography-size-h4); letter-spacing: -0.02em; line-height: 1.25; }
+.entry-body p.sum { font-size: 16px; line-height: 1.5; color: var(--muted); max-width: 64ch; }
+.entry-tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 4px 0 0; }
+.entry-tags li { font-size: 12px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--button-ghost-border); }
+.entry-tags li.is-on { border-color: var(--eyebrow-text); color: var(--eyebrow-text); }
+.entry-go { display: none; }
+mark { background: var(--search-mark-bg); color: var(--search-mark-text); border-radius: 4px; padding: 0 2px; }
+
+/* Rows enter with a staggered lift + un-blur on every page / filter change */
+.entry-in { animation: entry-in .6s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms); }
+@keyframes entry-in { from { opacity: 0; transform: translateY(20px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+
+.empty { padding: clamp(40px, 6vw, 72px) clamp(24px, 4vw, 48px); border-radius: var(--radius-lg); display: grid; gap: 16px; justify-items: start; }
+.empty h2 { font-size: var(--typography-size-h4); letter-spacing: -0.02em; }
+.empty p { color: var(--muted); max-width: 48ch; }
+
+/* =========================================================
+   4. PAGINATION — 5 per page
+   ========================================================= */
+.pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-block: 40px clamp(64px, 8vw, 120px); }
+.pager[hidden] { display: none; }
+.pager-range { font-size: 14px; color: var(--muted); }
+.pager-nav { display: flex; align-items: center; gap: 8px; }
+.page-btn { min-width: 44px; height: 44px; padding: 0 12px; border-radius: var(--radius-pill); display: grid; place-items: center; cursor: pointer; font: inherit; font-size: 14px; font-variant-numeric: tabular-nums; color: var(--fg); border: 1px solid var(--button-ghost-border); background: var(--button-ghost-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color .3s, color .3s, transform .3s var(--ease-out); }
+.page-btn:hover:not(:disabled):not([aria-current]) { background: var(--surface-glass-strong-bg); transform: translateY(-2px); }
+.page-btn[aria-current="page"] { background: var(--button-primary-bg); color: var(--button-primary-text); border-color: var(--button-primary-bg); }
+.page-btn:disabled { opacity: .35; cursor: default; }
+
+/* =========================================================
+   5. RESPONSIVE — DS breakpoints (412 / 834 / 1440)
+   ========================================================= */
+@media (min-width: 600px) {
+  .entry { grid-template-columns: 200px 1fr; align-items: center; gap: 24px; }
+  .entry .cover { aspect-ratio: 4 / 3; }
+}
+@media (min-width: 834px) {
+  .entry { grid-template-columns: 280px 1fr 56px; padding: 16px; gap: 32px; }
+  .entry-go { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--button-ghost-border); font-size: 18px; transition: transform .4s var(--ease-out), background-color .3s; }
+  .entry:hover .entry-go { transform: translateX(4px); background: var(--surface-glass-strong-bg); }
+}
+@media (max-width: 599px) {
+  .search { height: 56px; padding-left: 20px; }
+  .search input { font-size: 16px; }
+  .pager { justify-content: center; }
+}

@@ -1,0 +1,27 @@
+/* Page stylesheet — shared layers first, in the original cascade order, then this screen. */
+@import '../tokens/tokens.css';
+@import '../components.css';
+@import '../article.css';
+
+/* Byline + tags under the intro */
+.byline { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+.author { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.author .brand-mark { flex: none; }
+.author b { display: block; font-weight: var(--typography-weight-medium); }
+.author span { color: var(--muted); }
+.art-tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
+.art-tags a { display: inline-block; font-size: 12px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--button-ghost-border); transition: border-color .25s, color .25s; }
+.art-tags a:hover { border-color: var(--eyebrow-text); color: var(--eyebrow-text); }
+.art-cover { view-transition-name: article-cover; }
+
+/* Pull quote inside a section */
+.pull { margin: 12px 0 0; padding: 4px 0 4px clamp(20px, 3vw, 32px); border-left: 2px solid var(--eyebrow-text); font-size: clamp(22px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -0.02em; font-weight: var(--typography-weight-medium); }
+
+/* End: related project + next article side by side on desktop */
+.end-grid { display: grid; gap: 16px; }
+.related .cover { aspect-ratio: 21 / 9; }
+@media (min-width: 1024px) {
+  .end-grid { grid-template-columns: 1fr 1fr; }
+  .end-grid .next-card { grid-template-columns: 1fr; gap: 16px; }
+  .end-grid .next-card .cover { aspect-ratio: 21 / 9; }
+}

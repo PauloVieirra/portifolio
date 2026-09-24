@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projeto — Paulo Vieira · UX IA Engineer</title>
+<meta name="description" content="Estudo de caso do portfólio de Paulo Vieira, UX IA Engineer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/styles/pages/projeto.css">
+<!-- Case-study page — one template for every project, picked by projeto.html?p=<id>.
+     Reader styles: src/styles/article.css -->
+<script type="module" src="/src/pages/projeto.js" blocking="render"></script>
+</head>
+<body data-scene="hero">
+<div class="page-frame">
+
+  <div class="read-progress" id="readProgress" aria-hidden="true"></div>
+
+  <!-- Aurora overlays (decorative) -->
+  <div class="aurora" aria-hidden="true">
+    <div class="blob blob-violet"></div>
+    <div class="blob blob-blue"></div>
+    <div class="blob blob-mint"></div>
+    <div class="blob blob-peach"></div>
+    <div class="blob blob-rose"></div>
+    <div class="veil"></div>
+    <div class="grain"></div>
+  </div>
+
+  <header class="topnav" id="topnav">
+    <div class="container topnav-inner">
+      <a href="index.html" class="brand" aria-label="Paulo Vieira — início">
+        <span class="brand-mark">PV</span> Paulo Vieira
+      </a>
+      <nav class="nav-links" aria-label="Seções">
+        <a href="index.html">Home</a>
+        <a href="projetos.html" class="is-active" aria-current="page">Projetos</a>
+        <a href="artigos.html">Artigos</a>
+        <a href="index.html#servicos">Serviços</a>
+        <a href="index.html#trajetoria">Trajetória</a>
+        <a href="index.html#contato">Contato</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="index.html#trajetoria" class="btn btn-ghost btn-sm">Currículo</a>
+        <a href="index.html#contato" class="btn btn-primary btn-sm">Vamos conversar</a>
+        <button class="nav-toggle" data-open-overlay="menu" aria-label="Abrir menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Rendered from src/data/projects.js -->
+  <main id="content"></main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span class="num" id="year">2026</span> Paulo Vieira · UX IA Engineer</span>
+      <a href="projetos.html">← Todos os projetos</a>
+    </div>
+  </footer>
+
+  <!-- Overlay: mobile menu -->
+  <div class="drawer" data-overlay="menu" data-overlay-display="flex" style="display:none">
+    <div class="drawer-panel glass" role="dialog" aria-modal="true" aria-label="Menu">
+      <button class="drawer-close" data-overlay-close="" aria-label="Fechar menu">×</button>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="projetos.html" class="is-active" aria-current="page">Projetos</a>
+        <a href="artigos.html">Artigos</a>
+        <a href="index.html#servicos">Serviços</a>
+        <a href="index.html#trajetoria">Trajetória</a>
+        <a href="index.html#contato">Contato</a>
+      </nav>
+      <a href="index.html#contato" class="btn btn-primary" style="justify-content:center">Vamos conversar</a>
+    </div>
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,22 @@
+/* Espaçamento — gerado a partir de variables.json. Edite pelo Design System, não aqui. */
+:root {
+  --container-size-resolu-o-resolu-o: 412px;
+  --grid-layout-margin: 16px;
+  --grid-layout-gutter: 16px;
+  --spacing-padding-xs: 4px;
+  --spacing-padding-sm: 8px;
+  --spacing-padding-md: 12px;
+  --spacing-padding-lg: 16px;
+  --spacing-padding-xl: 24px;
+  --spacing-padding-2xl: 32px;
+  --spacing-padding-3xl: 48px;
+  --spacing-padding-4xl: 64px;
+  --spacing-margin-xs: 4px;
+  --spacing-margin-sm: 8px;
+  --spacing-margin-md: 12px;
+  --spacing-margin-lg: 16px;
+  --spacing-margin-xl: 24px;
+  --spacing-margin-2xl: 32px;
+  --spacing-margin-3xl: 48px;
+  --spacing-margin-4xl: 64px;
+}

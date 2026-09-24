@@ -1,0 +1,19 @@
+/* Tipografia — gerado a partir de variables.json. Edite pelo Design System, não aqui. */
+:root {
+  --typography-font-family-font-family: Inter;
+  --typography-size-display-1: 52px;
+  --typography-size-display-2: 44px;
+  --typography-size-h1: 32px;
+  --typography-size-h2: 28px;
+  --typography-size-h3: 24px;
+  --typography-size-h4: 20px;
+  --typography-size-h5: 20px;
+  --typography-size-h6: 16px;
+  --typography-weight-regular: 400;
+  --typography-weight-medium: 500;
+  --typography-weight-bold: 700;
+  --typography-detected-sizes-size-22: 22px;
+  --typography-detected-sizes-size-15: 15px;
+  --typography-detected-sizes-size-9: 9px;
+  --typography-detected-sizes-size-11: 11px;
+}

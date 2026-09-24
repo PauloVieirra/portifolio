@@ -1,0 +1,88 @@
+/* Article reader — shared by projeto.html (case studies) and artigo.html (articles).
+   Header, cover that approaches on scroll, sticky index + reading column, end CTA, next card. */
+
+/* =========================================================
+   1. READING PROGRESS
+   ========================================================= */
+.read-progress { position: fixed; inset: 0 0 auto; height: 2px; z-index: 25; transform-origin: left; transform: scaleX(var(--read, 0)); background: var(--fg); }
+
+/* =========================================================
+   2. ARTICLE HEADER
+   ========================================================= */
+.art-head { padding-block: clamp(32px, 6vw, 80px) clamp(32px, 5vw, 64px); display: grid; gap: 24px; }
+.back-link { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); transition: color .25s, gap .3s var(--ease-out); }
+.back-link:hover { color: var(--fg); gap: 12px; }
+.art-title { font-size: clamp(var(--typography-size-h1), 6vw, var(--typography-size-display-1)); font-weight: var(--typography-weight-bold); max-width: 16ch; }
+.art-intro { font-size: clamp(18px, 1.8vw, 24px); line-height: 1.5; color: var(--muted); max-width: 44ch; font-weight: var(--typography-weight-regular); }
+.art-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 24px; margin: 8px 0 0; padding: 24px; border-radius: var(--radius-lg); }
+.art-facts dt { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.art-facts dd { margin: 0; font-size: 14px; line-height: 1.5; }
+.art-facts .wide { grid-column: 1 / -1; }
+.art-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* Hero cover: approaches the reader as it scrolls into view (--near set in JS) */
+.art-cover { --near: 1; aspect-ratio: 16 / 10; border-radius: var(--radius-lg); view-transition-name: project-cover;
+  transform: scale(calc(.94 + .06 * var(--near))); box-shadow: 0 40px 80px -40px var(--shadow-glass); }
+.art-cover .cover-ui { width: min(52%, 420px); translate: -50% calc(-50% + (1 - var(--near)) * 40px); }
+
+/* =========================================================
+   3. BODY — sticky index + reading column
+   ========================================================= */
+.art-body { display: grid; grid-template-columns: 1fr; gap: 48px; padding-block: clamp(56px, 8vw, 112px); }
+.toc { display: none; }
+.prose { display: grid; gap: clamp(48px, 6vw, 80px); max-width: 720px; }
+.challenge { margin: 0; padding: clamp(24px, 3vw, 32px); border-radius: var(--radius-lg); display: grid; gap: 12px; }
+.challenge p:not(.eyebrow) { font-size: clamp(20px, 2vw, 24px); line-height: 1.5; letter-spacing: -0.01em; }
+.prose-sec { display: grid; gap: 20px; scroll-margin-top: 112px; }
+.prose-sec h2 { font-size: var(--typography-size-h3); letter-spacing: -0.02em; }
+.prose-sec p { font-size: 18px; line-height: 1.75; }
+.figure { margin: 12px 0 0; display: grid; gap: 12px; }
+.figure .cover { aspect-ratio: 16 / 10; }
+.figure figcaption { font-size: 14px; color: var(--muted); }
+.deliver-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+.deliver-list li { font-size: 14px; padding: 8px 16px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--button-ghost-border); }
+
+/* =========================================================
+   4. END — CTA + next project
+   ========================================================= */
+.art-end { display: grid; gap: 16px; padding-bottom: clamp(64px, 8vw, 120px); }
+.end-cta { border-radius: var(--radius-lg); padding: clamp(32px, 5vw, 64px); display: grid; gap: 20px; justify-items: start; }
+.end-cta h2 { font-size: clamp(var(--typography-size-h2), 4vw, 48px); font-weight: var(--typography-weight-regular); }
+.end-cta h2 strong { font-weight: var(--typography-weight-bold); }
+.next-card { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: center; border-radius: var(--radius-lg); padding: 12px; transition: transform .5s var(--ease-out); }
+.next-card:hover { transform: translateY(-4px); }
+.next-card .cover { aspect-ratio: 21 / 9; }
+.next-card .cover-ui { width: min(60%, 280px); padding: 16px; }
+.next-card:hover .cover::before { transform: translate(18%, 10%) scale(1.1); }
+.next-info { display: grid; gap: 8px; padding: 8px 12px 12px; }
+.next-info h3 { font-size: var(--typography-size-h4); letter-spacing: -0.02em; line-height: 1.25; }
+.next-info .go { font-size: 14px; color: var(--muted); }
+.next-card:hover .go { color: var(--fg); }
+
+/* Not-found state */
+.not-found { padding-block: clamp(80px, 14vw, 180px); display: grid; gap: 20px; justify-items: start; }
+
+/* =========================================================
+   5. RESPONSIVE — DS breakpoints (412 / 834 / 1440)
+   ========================================================= */
+@media (min-width: 600px) {
+  .art-facts { grid-template-columns: repeat(3, 1fr); }
+  .art-facts .wide { grid-column: auto; }
+}
+@media (min-width: 834px) {
+  .art-cover { aspect-ratio: 21 / 9; }
+  .art-facts { grid-template-columns: repeat(4, 1fr); }
+  .next-card { grid-template-columns: 1.2fr 1fr; gap: 32px; padding: 16px; }
+  .next-card .cover { aspect-ratio: 16 / 9; }
+}
+@media (min-width: 1024px) {
+  .art-body { grid-template-columns: 220px minmax(0, 720px); justify-content: start; gap: clamp(64px, 10vw, 160px); }
+  .toc { display: grid; align-content: start; gap: 4px; position: sticky; top: 112px; align-self: start; }
+  .toc .eyebrow { margin-bottom: 12px; }
+  .toc a { position: relative; padding: 8px 0 8px 16px; font-size: 14px; color: var(--muted); border-left: 1px solid var(--border-glass); transition: color .25s, border-color .25s; }
+  .toc a.is-active { color: var(--fg); border-left-color: var(--fg); }
+  .toc .btn { margin-top: 24px; justify-self: start; }
+}
+@media (max-width: 411px) {
+  .art-actions .btn { flex: 1 1 100%; justify-content: center; }
+}

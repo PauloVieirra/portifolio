@@ -1,0 +1,8 @@
+/* Índice de tokens do projeto.
+   Este é o arquivo que as telas linkam (../tokens/tokens.css).
+   Os tokens em si vivem nos arquivos por categoria importados abaixo. */
+@import './cores.css';
+@import './typography.css';
+@import './spacing.css';
+@import './effects.css';
+@import './other.css';

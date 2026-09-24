@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paulo Vieira — UX IA Engineer</title>
+<meta name="description" content="Portfólio de Paulo Vieira, UX IA Engineer: produtos com IA, design systems e engenharia de interface.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="components/components.css">
+<style>
+/* Screen-specific styles. Shared tokens/components: components/components.css */
+
+/* =========================================================
+   6. HERO
+   ========================================================= */
+.hero { overflow-x: clip; padding-block: clamp(40px, 7vw, 96px) clamp(64px, 8vw, 120px); min-height: min(92vh, 900px); display: flex; align-items: stretch; }
+.hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+.hero-copy { display: grid; gap: 24px; justify-items: start; }
+.hero-title { font-size: clamp(var(--typography-size-display-2), 6vw, 88px); font-weight: var(--typography-weight-regular); line-height: 1.02; letter-spacing: -0.045em; }
+.hero-title strong { display: block; font-weight: var(--typography-weight-bold); }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+
+/* Visual: portrait standing on the section floor, glass disc behind,
+   KPI bubbles orbiting on a tilted ellipse (positioned in JS). */
+.hero-visual {
+  --bubble: clamp(88px, 8.6vw, 128px);
+  position: relative; width: min(100%, 600px); aspect-ratio: 5 / 6;
+  justify-self: center; align-self: end;
+  margin-bottom: calc(clamp(64px, 8vw, 120px) * -1);
+}
+.orbit-disc {
+  position: absolute; left: 50%; top: 58%; width: 96%; aspect-ratio: 1; translate: -50% -50%;
+  border-radius: 50%; z-index: 0;
+  background: radial-gradient(circle at 34% 28%, var(--surface-glass-strong-bg), var(--surface-glass-bg) 58%, transparent 74%);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  animation: disc-breathe 9s ease-in-out infinite;
+}
+@keyframes disc-breathe { 50% { scale: 1.03; } }
+.orbit-path {
+  position: absolute; left: 50%; top: 60%; width: var(--orbit-w, 100%); height: var(--orbit-h, 44%); translate: -50% -50%; rotate: -10deg;
+  border-radius: 50%; border: 1px solid var(--orbit-path-border); opacity: .7; z-index: 0; pointer-events: none;
+}
+.portrait {
+  --portrait-zoom: 1.42;
+  position: absolute; inset: 0; z-index: 2; display: flex; justify-content: center; align-items: flex-start; pointer-events: none;
+  /* Tighter framing (head to waist): the photo is scaled up and the legs are cropped at the section floor. */
+  clip-path: inset(-50% -50% 0 -50%);
+  -webkit-mask-image: linear-gradient(to bottom, var(--fg) 80%, transparent);
+          mask-image: linear-gradient(to bottom, var(--fg) 80%, transparent);
+}
+.portrait img {
+  height: calc(100% * var(--portrait-zoom)); width: auto; max-width: none; flex: none; margin-top: -6%;
+  object-fit: contain; object-position: center top;
+}
+.portrait-fallback { position: absolute; left: 50%; top: 56%; translate: -50% -50%; font-size: clamp(64px, 10vw, 120px); font-weight: 300; letter-spacing: -0.06em; color: var(--eyebrow-text); opacity: .35; line-height: 1; }
+.hero-visual.has-photo .portrait-fallback { display: none; }
+
+.kpi {
+  position: absolute; left: 0; top: 0; z-index: 3;
+  width: var(--bubble); height: var(--bubble);
+  margin: calc(var(--bubble) / -2) 0 0 calc(var(--bubble) / -2);
+  display: grid; place-content: center; gap: 4px; padding: 8px; text-align: center;
+  border-radius: 50%; border: 2px solid var(--kpi-rim-border); cursor: pointer; color: var(--fg);
+  /* Bubble body: clear centre, lilac tint pooling toward the rim. */
+  background: radial-gradient(circle at 50% 42%, var(--kpi-bubble-core-bg) 0 52%, var(--kpi-bubble-tint-bg) 86%, var(--kpi-rim-glow) 100%);
+  backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow:
+    0 24px 48px -20px var(--shadow-glass),
+    inset 0 0 0 1px var(--kpi-rim-glow),
+    inset 0 -14px 28px -12px var(--kpi-inner-glow),
+    inset 0 10px 22px -14px var(--kpi-highlight-fill);
+  transition: border-color .4s var(--ease-out), box-shadow .4s var(--ease-out);
+  will-change: transform, opacity;
+  isolation: isolate;
+}
+/* Iridescent film along the edge, slowly drifting like a soap bubble. */
+.kpi::before {
+  content: ""; position: absolute; inset: -2px; border-radius: 50%; z-index: -1; pointer-events: none;
+  background: conic-gradient(from 0deg, var(--kpi-sheen-violet), transparent 18%, var(--kpi-sheen-blue) 34%, transparent 50%, var(--kpi-sheen-mint) 66%, transparent 82%, var(--kpi-sheen-violet));
+  -webkit-mask-image: radial-gradient(circle, transparent 62%, var(--fg) 72%, transparent 76%);
+          mask-image: radial-gradient(circle, transparent 62%, var(--fg) 72%, transparent 76%);
+  animation: bubble-sheen 14s linear infinite;
+}
+/* Specular highlight: the curved window reflection near the top-left. */
+.kpi::after {
+  content: ""; position: absolute; left: 16%; top: 11%; width: 30%; height: 16%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, var(--kpi-highlight-fill), transparent 70%);
+  rotate: -28deg; opacity: .85;
+}
+@keyframes bubble-sheen { to { rotate: 360deg; } }
+.kpi:hover { border-color: var(--kpi-active-border); }
+.kpi[aria-pressed="true"] {
+  border-color: var(--kpi-active-border);
+  box-shadow:
+    0 28px 56px -20px var(--shadow-glass),
+    inset 0 0 0 1px var(--kpi-rim-glow),
+    inset 0 -14px 28px -12px var(--kpi-inner-glow),
+    inset 0 10px 22px -14px var(--kpi-highlight-fill),
+    0 0 0 8px var(--kpi-active-halo);
+}
+@media (prefers-reduced-motion: reduce) { .kpi::before { animation: none; } }
+.kpi-value { font-size: calc(var(--bubble) * .27); font-weight: var(--typography-weight-bold); letter-spacing: -0.04em; line-height: 1; }
+.kpi-label { font-size: clamp(10px, calc(var(--bubble) * .1), 13px); color: var(--muted); line-height: 1.2; letter-spacing: -0.01em; }
+
+/* Satellite tags: each bubble's related topics. They orbit their bubble on a
+   small tilted ellipse (small + translucent), and fan out into a list hugging
+   the bubble's right edge when it is selected. Positioned per frame in JS;
+   the <ul> stays static so every tag can sit in front of / behind its bubble. */
+.kpi-tags { list-style: none; margin: 0; padding: 0; }
+.kpi-tag {
+  position: absolute; left: 0; top: 0; z-index: 3;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  max-width: var(--tag-max, 220px); height: 28px; padding: 0 12px 0 8px;
+  font-size: 12px; font-weight: var(--typography-weight-medium); letter-spacing: -0.01em; color: var(--kpi-tag-text);
+  border-radius: var(--radius-pill); border: 1px solid var(--kpi-tag-border);
+  background: var(--kpi-tag-bg);
+  backdrop-filter: blur(12px) saturate(140%); -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 8px 20px -12px var(--kpi-tag-shadow);
+  transform-origin: 0 50%; pointer-events: none; will-change: transform, opacity;
+}
+.kpi-tag span { overflow: hidden; text-overflow: ellipsis; }
+.kpi-tag svg { width: 16px; height: 16px; flex: none; color: var(--kpi-tag-icon); }
+@media (min-width: 834px) { .kpi-tag { height: 32px; font-size: 13px; gap: 8px; } }
+
+/* =========================================================
+   7. PROJECTS — gallery grid
+   ========================================================= */
+/* Carousel: full-bleed track, the active slide is centred and its neighbours peek in at the
+   edges (Gestalt continuity). JS writes --p (0 → far, 1 → centred) and --o (signed offset)
+   on every slide as the track scrolls; the "approach" is a scroll-linked scale/fade. */
+.carousel { container-type: inline-size; position: relative; --slide-w: min(86cqi, 1180px); --slide-gap: clamp(16px, 2cqi, 32px); }
+.projects-grid { display: flex; gap: var(--slide-gap); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 24px calc((100cqi - var(--slide-w)) / 2) 40px; scroll-padding-inline: calc((100cqi - var(--slide-w)) / 2); outline: none; }
+.projects-grid::-webkit-scrollbar { display: none; }
+.projects-grid.is-free { scroll-snap-type: none; }   /* snap off while dragging and while the release glide runs */
+.projects-grid.is-dragging { cursor: grabbing; user-select: none; }
+/* Horizontal case card: cover on one side, data on the other. Stacks below 834px. */
+.project { --p: 1; --o: 0; flex: 0 0 var(--slide-w); scroll-snap-align: center; position: relative; border-radius: var(--radius-lg); padding: 12px; display: grid; grid-template-columns: 1fr; gap: 24px; cursor: pointer; text-align: left;
+  transform: scale(calc(.88 + .12 * var(--p))); opacity: calc(.4 + .6 * var(--p)); transform-origin: calc(50% - var(--o) * 50%) 50%;
+  box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--shadow-glass) calc(var(--p) * 100%), transparent); transition: opacity .4s; }
+.project:not(.is-active) .project-body { pointer-events: none; }
+.project.is-hidden { display: none; }
+/* depth: the cover mock drifts against the scroll direction */
+.project .cover-ui { translate: calc(-50% + var(--o) * -40px) -50%; }
+.project .cover::before { translate: calc(var(--o) * 24%) 0; }
+.carousel-bar { display: flex; align-items: center; gap: 24px; margin-top: 8px; }
+.carousel-count { font-size: 14px; color: var(--muted); min-width: 64px; }
+.carousel-count b { color: var(--fg); font-weight: var(--typography-weight-medium); }
+.carousel-line { position: relative; flex: 1; height: 2px; border-radius: 2px; background: var(--border-glass); overflow: hidden; }
+.carousel-line i { position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--progress, 0)); background: var(--fg); border-radius: inherit; }
+.carousel-nav { display: flex; gap: 8px; }
+.carousel-btn { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 18px; color: var(--fg); border: 1px solid var(--button-ghost-border); background: var(--button-ghost-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color .3s, opacity .3s, transform .3s var(--ease-out); }
+.carousel-btn:hover:not(:disabled) { background: var(--surface-glass-strong-bg); transform: scale(1.06); }
+.carousel-btn:disabled { opacity: .35; cursor: default; }
+.project:hover .cover img { transform: scale(1.04); }
+.project:hover .cover::before { transform: translate(18%, 10%) scale(1.1); }
+.project:hover .cover::after  { transform: translate(-14%, -12%) scale(1.15); }
+.project:hover .cover-ui { transform: scale(1.04) translateY(-4px); }
+.project-body { display: grid; align-content: center; gap: 16px; padding: 0 8px 8px; }
+.project-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; font-size: 12px; color: var(--muted); }
+.project h3 { font-size: var(--typography-size-h3); letter-spacing: -0.02em; line-height: 1.25; }
+.project p { color: var(--muted); font-size: 16px; line-height: 1.5; text-wrap: pretty; }
+.project-deliver { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+.project-deliver li { font-size: 13px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--border-glass); }
+.project .project-stack { font-size: 13px; color: var(--muted); }
+/* Whole card links to the article page via a stretched link; the CTA link sits above it */
+.project-open { color: inherit; cursor: pointer; }
+.project-open::after { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: 1; }
+.project-open:focus-visible { outline: none; }
+.project:has(.project-open:focus-visible) { outline: 2px solid var(--fg); outline-offset: 4px; }
+.project-foot { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 8px; border-top: 1px solid var(--border-glass); }
+.project-more { font-size: 13px; color: var(--muted); transition: color .3s; }
+.project.is-active:hover .project-more { color: var(--fg); }
+@media (min-width: 834px) {
+  .project { grid-template-columns: 1.35fr 1fr; gap: 40px; padding: 16px; }
+  .cover { aspect-ratio: auto; min-height: 400px; }
+  .project-body { padding: 24px 24px 24px 0; }
+}
+@media (min-width: 1440px) { .cover { min-height: 460px; } }
+
+
+/* =========================================================
+   7a. FEATURED PROJECTS — bento: one lead case + two stacked
+   ========================================================= */
+/* The cover fills the whole card; a glass panel floats over the animated colour fields.
+   Hover lifts the card (via `translate`, so it never fights the .reveal transform),
+   drifts the fields and opens the summary. Touch screens always show the summary. */
+.works { display: grid; grid-template-columns: 1fr; gap: var(--grid-layout-gutter, 16px); }
+.work { position: relative; min-height: 380px; border-radius: var(--radius-lg); overflow: hidden; isolation: isolate; display: grid; align-items: end; padding: 12px; color: var(--fg); background: var(--surface);
+  transition: opacity .9s var(--ease-out), transform .9s var(--ease-out), filter .9s var(--ease-out), translate .6s var(--ease-out), box-shadow .6s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms), calc(var(--i, 0) * 90ms), calc(var(--i, 0) * 90ms), 0s, 0s; }
+.work:hover { translate: 0 -4px; box-shadow: 0 40px 80px -40px var(--shadow-glass); }
+.work:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+.works .cover { position: absolute; inset: 0; aspect-ratio: auto; min-height: 0; border-radius: 0; z-index: 0; }
+.works .cover-ui { top: 28%; width: min(64%, 360px); }
+.work--lead { min-height: 440px; }
+.work:hover .cover img { transform: scale(1.04); }
+.work:hover .cover::before { transform: translate(18%, 10%) scale(1.1); }
+.work:hover .cover::after  { transform: translate(-14%, -12%) scale(1.15); }
+.work:hover .cover-ui { transform: scale(1.04) translateY(-6px); }
+.work-go { position: absolute; top: 16px; right: 16px; z-index: 1; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; transition: transform .5s var(--ease-out), background-color .3s; }
+.work:hover .work-go, .work:focus-visible .work-go { transform: rotate(-45deg); background: var(--surface-glass-strong-bg); }
+.work-panel { position: relative; z-index: 1; border-radius: calc(var(--radius-lg) - 8px); padding: 20px 24px; display: grid; gap: 8px; }
+.work-meta { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--muted); }
+.work h3 { font-size: var(--typography-size-h4); letter-spacing: -0.02em; line-height: 1.25; }
+.work-more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s var(--ease-out); }
+.work-more > div { overflow: hidden; display: grid; gap: 12px; }
+.work--lead .work-more, .work:hover .work-more, .work:focus-visible .work-more { grid-template-rows: 1fr; }
+@media (hover: none) { .work-more { grid-template-rows: 1fr; } }
+.work-more p { padding-top: 4px; color: var(--muted); font-size: 15px; line-height: 1.5; text-wrap: pretty; }
+.work-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0 0 4px; margin: 0; }
+.work-tags li { font-size: 12px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--border-glass); }
+.works-more { grid-column: 1 / -1; border-radius: var(--radius-lg); padding: 16px 16px 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.works-more p { font-size: 15px; color: var(--muted); }
+.works-more b { color: var(--fg); font-weight: var(--typography-weight-medium); }
+@media (min-width: 834px) {
+  .works { grid-template-columns: 7fr 5fr; grid-template-rows: repeat(2, minmax(320px, auto)); }
+  .works .cover-ui { top: 36%; width: min(60%, 360px); }
+  .work--lead { grid-row: span 2; min-height: 660px; padding: 16px; }
+  .work--lead h3 { font-size: var(--typography-size-h3); }
+  .work--lead .work-panel { padding: 24px 28px; max-width: 560px; }
+}
+@media (prefers-reduced-motion: reduce) { .work, .work-go, .work-more { transition: none; } }
+
+
+/* =========================================================
+   8. SERVICES
+   ========================================================= */
+.services { display: grid; grid-template-columns: 1fr; gap: var(--grid-layout-gutter, 16px); }
+.service { border-radius: var(--radius-lg); padding: clamp(24px, 3vw, 40px); display: grid; gap: 16px; align-content: start; transition: transform .5s var(--ease-out), background-color .4s; }
+.service:hover { transform: translateY(-4px); background: var(--surface-glass-strong-bg); }
+.service .idx { font-size: 12px; color: var(--muted); letter-spacing: .12em; }
+.service h3 { font-size: var(--typography-size-h3); letter-spacing: -0.02em; }
+.service p { color: var(--muted); font-size: 15px; }
+.service ul { list-style: none; margin: 8px 0 0; padding: 16px 0 0; border-top: 1px solid var(--border); display: grid; gap: 8px; font-size: 14px; }
+.skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; }
+.skills .chip { transition: transform .3s var(--ease-out), background-color .3s; }
+.skills .chip:hover { transform: translateY(-2px); background: var(--surface-glass-strong-bg); }
+
+/* =========================================================
+   9. TIMELINE
+   ========================================================= */
+.timeline { position: relative; display: grid; gap: 0; }
+.timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
+.timeline .progress { position: absolute; left: 7px; top: 8px; width: 1px; height: calc((100% - 16px) * var(--tl, 0)); background: var(--fg); transition: height .2s linear; }
+.tl-item { position: relative; display: grid; grid-template-columns: 1fr; gap: 8px; padding: 0 0 48px 40px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before { content: ""; position: absolute; left: 0; top: 6px; width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); transition: background-color .4s, border-color .4s; }
+.tl-item.is-in::before { background: var(--aurora-lilac-fill); border-color: var(--eyebrow-text); }
+.tl-when { font-size: 13px; color: var(--muted); }
+.tl-item h3 { font-size: var(--typography-size-h4); letter-spacing: -0.02em; }
+.tl-item .org { color: var(--muted); font-size: 15px; }
+.tl-item p { color: var(--muted); max-width: 60ch; font-size: 15px; margin-top: 4px; }
+
+/* =========================================================
+   10. CONTACT
+   ========================================================= */
+.contact-card { border-radius: calc(var(--radius-lg) + 8px); padding: clamp(24px, 5vw, 64px); display: grid; grid-template-columns: 1fr; gap: 48px; }
+.contact-card .section-title { font-size: clamp(36px, 5vw, 64px); }
+.contact-side { display: grid; gap: 24px; align-content: start; }
+.email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.email { font-size: clamp(16px, 1.6vw, 20px); font-weight: var(--typography-weight-medium); border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+.socials { display: flex; flex-wrap: wrap; gap: 8px; }
+.form { display: grid; gap: 16px; }
+.field { display: grid; gap: 8px; }
+.field label { font-size: 13px; color: var(--muted); }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 48px; padding: 12px 16px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass); background: var(--surface-glass-strong-bg); outline: none;
+  transition: border-color .25s, box-shadow .25s;
+}
+.field textarea { min-height: 128px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--eyebrow-text); box-shadow: 0 0 0 4px var(--aurora-lilac-fill); }
+.field.has-error input, .field.has-error textarea { border-color: var(--status-danger-text); }
+.field .err { font-size: 12px; color: var(--status-danger-text); min-height: 0; }
+.form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.form-foot small { color: var(--muted); font-size: 12px; }
+.form-success { display: none; gap: 12px; align-content: center; min-height: 320px; text-align: left; }
+.form-success h3 { font-size: var(--typography-size-h3); }
+.form-wrap.is-sent .form { display: none; }
+.form-wrap.is-sent .form-success { display: grid; animation: pop-in .5s var(--ease-out); }
+
+
+/* =========================================================
+   11. RESPONSIVE — DS breakpoints (412 / 834 / 1440)
+   ========================================================= */
+@media (max-width: 833px) {
+  .hero-visual { width: min(100%, 460px); }
+}
+@media (max-width: 411px) {
+  .hero-cta .btn { flex: 1 1 100%; justify-content: center; }
+}
+@media (min-width: 834px) {
+  .services { grid-template-columns: repeat(3, 1fr); }
+  .tl-item { grid-template-columns: 200px 1fr; gap: 32px; }
+  .contact-card { grid-template-columns: 1fr 1.1fr; gap: 64px; }
+}
+@media (min-width: 1024px) {
+  .hero-grid { grid-template-columns: 1.05fr 1fr; gap: 48px; }
+  .hero-visual { justify-self: end; }
+}
+
+/* =========================================================
+   12. FIT TO VIEWPORT — every home section fits one screen
+   ========================================================= */
+/* Each section is at least one screen tall (under the sticky menu) and its content is sized
+   against the viewport height, so nothing spills past the fold. Where a column of cards cannot
+   fit on a phone, the cards become a horizontal swipe rail that peeks the next card. */
+:root { --nav-h: 96px; --fit-h: calc(100vh - var(--nav-h)); --fit-pad: clamp(24px, 5vh, 64px); }
+@supports (height: 100svh) { :root { --fit-h: calc(100svh - var(--nav-h)); --fit-pad: clamp(24px, 5svh, 64px); } }
+main > section, main > section.section { min-height: var(--fit-h); scroll-margin-top: var(--nav-h); display: flex; flex-direction: column; justify-content: center; padding-block: var(--fit-pad); }
+main .section-head { gap: 12px; max-width: 880px; margin-bottom: clamp(16px, 3.5svh, 48px); }
+main .section-title { font-size: clamp(var(--typography-size-h2), min(4.4vw, 6svh), 56px); line-height: 1.1; }
+
+/* Hero: the portrait is sized by the free height and stands on the section floor */
+main > .hero { min-height: var(--fit-h); justify-content: flex-end; padding-block: clamp(16px, 4svh, 48px) 0; }
+.hero-title { font-size: clamp(40px, min(6vw, 8svh), 88px); }
+.hero-copy { gap: clamp(12px, 2.4svh, 24px); }
+.hero-cta { margin-top: clamp(0px, 1svh, 16px); }
+.hero-visual { margin-bottom: 0; width: min(100%, 600px, calc((var(--fit-h) - clamp(16px, 4svh, 48px)) * 5 / 6)); }
+
+/* Projects: the bento fills the free height */
+.works-more { margin-top: var(--grid-layout-gutter, 16px); padding-block: 12px; }
+@media (min-width: 834px) {
+  #projetos { height: var(--fit-h); }
+  #projetos > .container { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  #projetos .works { flex: 1; min-height: 0; grid-template-rows: 1fr 1fr; }
+  .work, .work--lead { min-height: 0; }
+  .work:not(.work--lead) .work-more p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+}
+@media (min-width: 834px) and (max-height: 900px) {
+  .work:not(.work--lead) .work-tags, #artigos .project p.project-stack { display: none; }
+  #artigos .project p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+}
+@media (min-width: 834px) and (max-height: 760px) { .form .field textarea { min-height: 64px; } }
+@media (min-width: 834px) and (max-width: 1023px) {
+  .hero-visual { width: min(100%, 460px, calc((var(--fit-h) - 440px) * 5 / 6)); }
+}
+
+/* Articles: title and "see all" share a row; the cover height follows the viewport */
+#artigos .section-head { grid-template-columns: 1fr auto; align-items: end; max-width: none; }
+#artigos .section-head .eyebrow { grid-column: 1 / -1; }
+#artigos .section-title { font-size: clamp(var(--typography-size-h2), min(4vw, 5svh), 52px); }
+#artigos .section-head .btn { justify-self: end !important; }
+#artigos .filters { margin-bottom: 0; }
+#artigos .projects-grid { padding-block: 8px clamp(12px, 2svh, 24px); }
+#artigos .carousel-bar { margin-top: 0; }
+@media (min-width: 834px) {
+  #artigos .cover { min-height: clamp(220px, calc(var(--fit-h) - 460px), 460px); }
+  #artigos .project { padding: 12px; }
+  #artigos .project-body { gap: clamp(8px, 1.6svh, 16px); padding-block: 12px; }
+}
+
+/* Services */
+.service { padding: clamp(20px, 3.4svh, 40px); gap: clamp(8px, 1.6svh, 16px); }
+.service ul { padding-top: clamp(8px, 1.6svh, 16px); }
+.skills { margin-top: clamp(16px, 3svh, 40px); }
+
+/* Timeline: heading beside the list on wide screens */
+.tl-item { padding-bottom: clamp(16px, 3.4svh, 40px); }
+@media (min-width: 1024px) {
+  #trajetoria > .container { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 64px; align-items: center; }
+  #trajetoria .section-head { margin-bottom: 0; }
+  #trajetoria .tl-item { grid-template-columns: 160px 1fr; gap: 24px; }
+}
+
+/* Contact */
+.contact-card { padding: clamp(20px, min(5vw, 6svh), 64px); gap: clamp(20px, 4svh, 64px); }
+.contact-card .section-title { font-size: clamp(26px, min(5vw, 5.8svh), 60px); }
+.contact-side { gap: clamp(12px, 2.4svh, 24px); }
+.form { gap: clamp(8px, 1.6svh, 16px); }
+.field { gap: 4px; }
+.field textarea { min-height: clamp(72px, 12svh, 128px); }
+.form-success { min-height: 0; }
+
+/* Phones and small tablets */
+@media (max-width: 833px) {
+  main .section-title { font-size: clamp(26px, 7.6vw, 36px); }
+  .hero-grid { gap: 16px; }
+  .hero-title { font-size: clamp(36px, min(11vw, 6.4svh), 52px); }
+  .hero .lead { font-size: 15px; }
+  .hero-visual { width: min(100%, 460px, calc((var(--fit-h) - 424px) * 5 / 6)); }
+  /* swipe rails: cards peek the next one (continuity) */
+  #projetos .works, .services { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-inline: calc(var(--page-pad) * -1); padding-inline: var(--page-pad); scroll-padding-inline: var(--page-pad); padding-bottom: 8px; }
+  #projetos .works::-webkit-scrollbar, .services::-webkit-scrollbar, .skills::-webkit-scrollbar { display: none; }
+  .work, .service { scroll-snap-align: start; }
+  .work, .work--lead { min-height: clamp(280px, calc(var(--fit-h) - 340px), 460px); }
+  .skills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--page-pad) * -1); padding-inline: var(--page-pad); }
+  .skills .chip { flex: none; }
+  #artigos .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--page-pad) * -1); padding-inline: var(--page-pad); }
+  #artigos .filters .filter { flex: none; }
+  #artigos .cover { aspect-ratio: auto; height: clamp(110px, calc(var(--fit-h) - 600px), 220px); }
+  #artigos .project { gap: 12px; }
+  #artigos .project-body { gap: 8px; }
+  #artigos .project p { font-size: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  #artigos .project p.project-stack { display: none; }
+  .tl-item { gap: 2px; }
+  .tl-item p { font-size: 14px; }
+  main > section.section { padding-block: 20px; }
+  .contact-card .lead { display: none; }
+  .email-row { flex-wrap: nowrap; }
+  .email { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .socials { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .socials .chip { flex: none; }
+  .form-foot { flex-wrap: nowrap; }
+  .form-foot small { flex: 1; font-size: 11px; line-height: 1.35; }
+  .form-foot .btn { flex: none; }
+  #artigos .section-head { grid-template-columns: 1fr auto; align-items: center; }
+  #artigos .section-head .eyebrow { grid-column: 1; grid-row: 1; }
+  #artigos .section-head .btn { grid-column: 2; grid-row: 1; justify-self: end !important; }
+  #artigos .section-head .section-title { grid-column: 1 / -1; }
+  #artigos .project-deliver { display: none; }
+  #artigos .project p { -webkit-line-clamp: 2; }
+  #artigos .project-foot .btn { min-height: 40px; padding-block: 8px; }
+  .carousel-btn { width: 40px; height: 40px; }
+  .tl-item { padding-left: 32px; }
+  .tl-item .tl-when { position: absolute; right: 0; top: 4px; }
+  .tl-item h3 { padding-right: 104px; }
+  .form { grid-template-columns: 1fr 1fr; }
+  .form .field:nth-child(n+3), .form-foot { grid-column: 1 / -1; }
+}
+/* short phones (≈ 740px tall and below) */
+@media (max-width: 833px) and (max-height: 800px) {
+  #artigos .project-body > p:not(.project-stack) { display: none; }
+  #artigos .section-title { font-size: 24px; }
+  .tl-item { padding-bottom: 12px; }
+  .tl-item p { font-size: 13px; line-height: 1.4; }
+  #trajetoria .section-head, #artigos .section-head { margin-bottom: 12px; }
+  .contact-card { gap: 16px; }
+  .contact-side { gap: 8px; }
+  .field textarea { min-height: 64px; }
+  .field label { font-size: 12px; }
+  .field input, .field select { min-height: 44px; padding-block: 8px; }
+}
+</style>
+</head>
+<body data-scene="hero">
+<div class="od-frame" data-od-frame>
+
+  <!-- Aurora overlays (decorative) -->
+  <div class="aurora" aria-hidden="true">
+    <div class="blob blob-violet"></div>
+    <div class="blob blob-blue"></div>
+    <div class="blob blob-mint"></div>
+    <div class="blob blob-peach"></div>
+    <div class="blob blob-rose"></div>
+    <div class="veil"></div>
+    <div class="grain"></div>
+  </div>
+
+  <header class="topnav" id="topnav" data-od-id="topnav">
+    <div class="container topnav-inner">
+      <a href="#inicio" class="brand" aria-label="Paulo Vieira — início">
+        <span class="brand-mark">PV</span> Paulo Vieira
+      </a>
+      <nav class="nav-links" aria-label="Seções">
+        <a href="#inicio" data-nav="hero">Home</a>
+        <a href="projetos.html">Projetos</a>
+        <a href="artigos.html">Artigos</a>
+        <a href="#servicos" data-nav="servicos">Serviços</a>
+        <a href="#trajetoria" data-nav="trajetoria">Trajetória</a>
+        <a href="#contato" data-nav="contato">Contato</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="#trajetoria" class="btn btn-ghost btn-sm">Currículo</a>
+        <a href="#contato" class="btn btn-primary btn-sm">Vamos conversar</a>
+        <button class="nav-toggle" data-od-open-overlay="menu" aria-label="Abrir menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+
+    <!-- HERO -->
+    <section class="hero" id="inicio" data-od-id="hero" data-scene="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow reveal">UX IA Engineer</p>
+          <h1 class="hero-title reveal" style="--i:1">
+            <strong>Design</strong> simples para produtos reais
+          </h1>
+          <p class="lead reveal" style="--i:2">Crio interfaces claras e funcionais para startups e marcas que valorizam o essencial.</p>
+          <div class="hero-cta reveal" style="--i:3">
+            <a href="#projetos" class="btn btn-primary">Ver projetos <span class="arrow" aria-hidden="true">→</span></a>
+            <a href="#contato" class="btn btn-ghost">Contato</a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal" style="--i:2" id="heroVisual" data-od-id="hero-orbit">
+          <div class="orbit-disc" aria-hidden="true"><span class="portrait-fallback">PV</span></div>
+          <div class="orbit-path" aria-hidden="true"></div>
+          <div class="portrait">
+            <img src="assets/images/paulo-retrato.png" alt="Paulo Vieira sorrindo, de óculos e camisa verde, com as mãos nos bolsos" width="693" height="1040" fetchpriority="high" onload="document.getElementById('heroVisual').classList.add('has-photo')" onerror="this.remove()">
+          </div>
+          <!-- Tag icons (stroke = currentColor) -->
+          <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+            <defs>
+              <symbol id="i-atom" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></symbol>
+              <symbol id="i-js" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M11 9v6.2a1.8 1.8 0 0 1-3.2 1.1M18 9.6a2 2 0 0 0-1.8-.9c-1 0-1.8.6-1.8 1.5 0 2 3.8 1.3 3.8 3.6 0 1-.9 1.7-2 1.7a2.3 2.3 0 0 1-2-1"/></symbol>
+              <symbol id="i-expo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19 10.3 6.2a2 2 0 0 1 3.4 0L21 19"/><path d="M7.5 19 12 11.5l4.5 7.5"/></symbol>
+              <symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"/><path d="M4.5 5.5v13c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-13M4.5 12c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5"/></symbol>
+              <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M13.5 2.5 4.5 13.5h7l-1 8 9-11h-7z"/></symbol>
+              <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7zM19 16c.3 1.8.9 2.4 2.5 2.7-1.6.3-2.2.9-2.5 2.6-.3-1.7-.9-2.3-2.5-2.6 1.6-.3 2.2-.9 2.5-2.7z"/></symbol>
+              <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 12.5 9 5 9-5M3 16.5l9 5 9-5"/></symbol>
+              <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></symbol>
+              <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 0 5.2 5L12 19.2a2.1 2.1 0 0 1-3-3l7.7-7.7a4 4 0 0 1-5-5.2l2.8 2.8 2.3-.3.3-2.3z"/></symbol>
+              <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></symbol>
+              <symbol id="i-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 4 10 2-5h6"/></symbol>
+              <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 21V4m0 0h11l-2 4 2 4H5"/></symbol>
+              <symbol id="i-a11y" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="7.5" r="1.2" fill="currentColor" stroke="none"/><path d="M7.5 10h9M12 10v3.5l-2.5 4.5M12 13.5l2.5 4.5"/></symbol>
+              <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 7 2 2 3.5-3.5M4 15l2 2 3.5-3.5M13 8h7M13 16h7"/></symbol>
+              <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 20h16M7 16v-4M12 16V7M17 16v-7"/></symbol>
+              <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9.5 9.5h5v5h-5zM9 2.5V6M15 2.5V6M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5"/></symbol>
+              <symbol id="i-prompt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="m7 10 2.5 2L7 14M12 14h5"/></symbol>
+              <symbol id="i-bot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4.5V8M9 13v1M15 13v1"/><circle cx="12" cy="3.5" r="1" fill="currentColor" stroke="none"/></symbol>
+              <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></symbol>
+              <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.5a6.5 6.5 0 0 1 3 5.5"/></symbol>
+              <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V9M10 13h4"/></symbol>
+              <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M10.5 21v-3h3v3"/></symbol>
+              <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M8 20h8M5 7h14M12 4l-1 3M12 4l1 3"/><path d="M5 7l-2.5 6a2.5 2.5 0 0 0 5 0L5 7zM19 7l-2.5 6a2.5 2.5 0 0 0 5 0L19 7z"/></symbol>
+              <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+              <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></symbol>
+              <symbol id="i-landmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 4l9 5.5H3zM5 10v7M9.5 10v7M14.5 10v7M19 10v7M3 20.5h18M4 17.5h16"/></symbol>
+              <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M2.5 10h19M6 15h4"/></symbol>
+              <symbol id="i-school" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5L2 9z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v5"/></symbol>
+              <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></symbol>
+            </defs>
+          </svg>
+          <div role="group" aria-label="Destaques da trajetória">
+            <button type="button" class="kpi" aria-pressed="false" aria-controls="tags-projetos" aria-describedby="tags-projetos"><span class="kpi-value num">30+</span><span class="kpi-label">Projetos</span></button>
+            <ul class="kpi-tags" id="tags-projetos" aria-label="Temas relacionados">
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-sparkle"/></svg><span>Produtos com IA</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-layers"/></svg><span>Design systems</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-phone"/></svg><span>Apps mobile</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-wrench"/></svg><span>Ferramentas internas</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-search"/></svg><span>Pesquisa UX</span></li>
+            </ul>
+            <button type="button" class="kpi" aria-pressed="false" aria-controls="tags-pd" aria-describedby="tags-pd"><span class="kpi-value">PD</span><span class="kpi-label">IA Product Design</span></button>
+            <ul class="kpi-tags" id="tags-pd" aria-label="Temas relacionados">
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-archive"/></svg><span>Sistemas SIGAD</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-building"/></svg><span>Grupo S</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-scale"/></svg><span>Sistemas jurídicos</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-doc"/></svg><span>Sistemas normativos</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-globe"/></svg><span>Portal institucional</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-landmark"/></svg><span>Portal governamental</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-card"/></svg><span>Gateway de pagamentos</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-school"/></svg><span>Gerenciador escolar</span></li>
+            </ul>
+            <button type="button" class="kpi" aria-pressed="false" aria-controls="tags-dev" aria-describedby="tags-dev"><span class="kpi-value">Dev</span><span class="kpi-label">Desenvolvedor mobile</span></button>
+            <ul class="kpi-tags" id="tags-dev" aria-label="Temas relacionados">
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-atom"/></svg><span>React Native</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-js"/></svg><span>JavaScript</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-expo"/></svg><span>Expo</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-db"/></svg><span>PostgreSQL</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-bolt"/></svg><span>Supabase</span></li>
+            </ul>
+            <button type="button" class="kpi" aria-pressed="false" aria-controls="tags-mba" aria-describedby="tags-mba"><span class="kpi-value">MBA</span><span class="kpi-label">IA &amp; Inovação</span></button>
+            <ul class="kpi-tags" id="tags-mba" aria-label="Temas relacionados">
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-cpu"/></svg><span>LLMs</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-prompt"/></svg><span>Prompt design</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-bot"/></svg><span>Agentes</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-book"/></svg><span>RAG</span></li>
+              <li class="kpi-tag"><svg aria-hidden="true"><use href="#i-target"/></svg><span>Estratégia de produto</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJETOS EM DESTAQUE — bento rendered from data/projects.js -->
+    <section class="section" id="projetos" data-od-id="projetos-destaque" data-scene="projetos">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow reveal">Projetos</p>
+          <h2 class="section-title reveal" style="--i:1"><strong>Casos</strong> em que a IA virou produto</h2>
+        </div>
+        <div class="works" id="works"><!-- rendered from PROJECTS in JS --></div>
+      </div>
+    </section>
+
+    <!-- ARTIGOS EM DESTAQUE -->
+    <section class="section" id="artigos" data-od-id="projetos" data-scene="artigos">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow reveal">Artigos em destaque</p>
+          <h2 class="section-title reveal" style="--i:1"><strong>Notas de campo</strong> sobre design de produtos com IA</h2>
+          <a href="artigos.html" class="btn btn-ghost btn-sm reveal" style="--i:2;justify-self:start">Ver todos os artigos <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="filters reveal" role="group" aria-label="Filtrar artigos">
+          <button class="filter" aria-pressed="true" data-filter="todos">Todos</button>
+          <button class="filter" aria-pressed="false" data-filter="IA">IA</button>
+          <button class="filter" aria-pressed="false" data-filter="UX">UX</button>
+          <button class="filter" aria-pressed="false" data-filter="Design system">Design system</button>
+          <button class="filter" aria-pressed="false" data-filter="Pesquisa">Pesquisa</button>
+        </div>
+
+      </div>
+      <div class="carousel reveal" style="--i:1" role="region" aria-roledescription="carrossel" aria-label="Artigos em destaque">
+        <div class="projects-grid" id="projectsGrid" tabindex="0"><!-- rendered from ARTICLES in JS --></div>
+      </div>
+      <div class="container carousel-bar reveal" style="--i:2">
+        <p class="carousel-count num" aria-live="polite"><b id="cIndex">01</b> / <span id="cTotal">06</span></p>
+        <div class="carousel-line" aria-hidden="true"><i id="cProgress"></i></div>
+        <div class="carousel-nav">
+          <button class="carousel-btn" id="cPrev" type="button" aria-label="Artigo anterior">←</button>
+          <button class="carousel-btn" id="cNext" type="button" aria-label="Próximo artigo">→</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section class="section" id="servicos" data-od-id="servicos" data-scene="servicos">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow reveal">Serviços</p>
+          <h2 class="section-title reveal" style="--i:1">Do <strong>problema</strong> ao componente em produção</h2>
+        </div>
+        <div class="services">
+          <article class="service glass reveal" style="--i:0">
+            <span class="idx num">01</span>
+            <h3>Design de produto com IA</h3>
+            <p>Defino onde a IA ajuda de verdade, como ela comunica incerteza e em que momento a decisão volta para a pessoa.</p>
+            <ul><li>Mapeamento de casos de uso</li><li>Fluxos com revisão humana</li><li>Protótipos com modelos reais</li></ul>
+          </article>
+          <article class="service glass reveal" style="--i:1">
+            <span class="idx num">02</span>
+            <h3>Engenharia de UX</h3>
+            <p>Transformo o desenho em interface funcional: streaming de respostas, estados de erro, acessibilidade e performance.</p>
+            <ul><li>React e TypeScript</li><li>Interfaces conversacionais</li><li>Testes de usabilidade no código</li></ul>
+          </article>
+          <article class="service glass reveal" style="--i:2">
+            <span class="idx num">03</span>
+            <h3>Design systems para IA</h3>
+            <p>Tokens e componentes que cobrem os estados que produtos com IA exigem e que times de produto costumam esquecer.</p>
+            <ul><li>Tokens do Figma ao código</li><li>Componentes de confiança e citação</li><li>Documentação viva</li></ul>
+          </article>
+        </div>
+        <div class="skills" aria-label="Ferramentas e competências">
+          <span class="chip glass reveal" style="--i:0">Figma</span>
+          <span class="chip glass reveal" style="--i:1">React</span>
+          <span class="chip glass reveal" style="--i:2">TypeScript</span>
+          <span class="chip glass reveal" style="--i:3">Design tokens</span>
+          <span class="chip glass reveal" style="--i:4">Design de prompts</span>
+          <span class="chip glass reveal" style="--i:5">Avaliação de LLMs</span>
+          <span class="chip glass reveal" style="--i:6">Pesquisa com usuários</span>
+          <span class="chip glass reveal" style="--i:7">Acessibilidade</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAJETÓRIA -->
+    <section class="section" id="trajetoria" data-od-id="trajetoria" data-scene="trajetoria">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow reveal">Trajetória</p>
+          <h2 class="section-title reveal" style="--i:1">Design e código, <strong>na mesma mesa</strong></h2>
+        </div>
+        <div class="timeline" id="timeline">
+          <span class="progress" aria-hidden="true"></span>
+          <article class="tl-item reveal">
+            <span class="tl-when num">2024 — hoje</span>
+            <div><h3>UX IA Engineer</h3><span class="org">Independente · produtos com IA generativa</span>
+              <p>Lidero o desenho e a construção de interfaces para assistentes, copilotos e ferramentas internas de times de produto.</p></div>
+          </article>
+          <article class="tl-item reveal">
+            <span class="tl-when num">2021 — 2024</span>
+            <div><h3>Lead UX Engineer</h3><span class="org">Fintech · plataforma de crédito</span>
+              <p>Criei o design system da empresa e conduzi os primeiros recursos com modelos de linguagem no atendimento.</p></div>
+          </article>
+          <article class="tl-item reveal">
+            <span class="tl-when num">2018 — 2021</span>
+            <div><h3>Product Designer</h3><span class="org">Agência digital · produtos para saúde e varejo</span>
+              <p>Pesquisa, prototipação e front-end para aplicativos web e mobile.</p></div>
+          </article>
+          <article class="tl-item reveal">
+            <span class="tl-when num">2014 — 2018</span>
+            <div><h3>Graduação em Design</h3><span class="org">Com foco em interação e programação criativa</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section class="section" id="contato" data-od-id="contato" data-scene="contato">
+      <div class="container">
+        <div class="contact-card glass reveal">
+          <div class="contact-side">
+            <p class="eyebrow">Contato</p>
+            <h2 class="section-title">Tem um produto com IA <strong>para tirar do papel?</strong></h2>
+            <p class="lead">Conte o contexto em poucas linhas. Respondo em até dois dias úteis.</p>
+            <div class="email-row">
+              <a class="email" href="mailto:contato@paulovieira.design" id="emailAddr">contato@paulovieira.design</a>
+              <button class="btn btn-ghost btn-sm" id="copyEmail" type="button">Copiar</button>
+            </div>
+            <div class="socials">
+              <a class="chip glass" href="#" aria-label="LinkedIn">LinkedIn ↗</a>
+              <a class="chip glass" href="#" aria-label="GitHub">GitHub ↗</a>
+              <a class="chip glass" href="#" aria-label="Dribbble">Dribbble ↗</a>
+            </div>
+          </div>
+
+          <div class="form-wrap" id="formWrap">
+            <form class="form" id="contactForm" novalidate>
+              <div class="field"><label for="f-name">Nome</label><input id="f-name" name="name" autocomplete="name" required><span class="err" aria-live="polite"></span></div>
+              <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" required><span class="err" aria-live="polite"></span></div>
+              <div class="field"><label for="f-type">Tipo de projeto</label>
+                <select id="f-type" name="type">
+                  <option>Produto com IA</option><option>Design system</option><option>Engenharia de UX</option><option>Outro</option>
+                </select></div>
+              <div class="field"><label for="f-msg">Mensagem</label><textarea id="f-msg" name="msg" required minlength="20" placeholder="Qual problema você quer resolver?"></textarea><span class="err" aria-live="polite"></span></div>
+              <div class="form-foot">
+                <small>Seus dados são usados só para responder a esta mensagem.</small>
+                <button class="btn btn-primary" type="submit">Enviar mensagem <span class="arrow" aria-hidden="true">→</span></button>
+              </div>
+            </form>
+            <div class="form-success" role="status">
+              <p class="eyebrow">Mensagem enviada</p>
+              <h3>Obrigado, <span id="sentName"></span>.</h3>
+              <p class="lead">Recebi seu contato e volto com uma resposta em breve.</p>
+              <button class="btn btn-ghost btn-sm" type="button" id="resetForm" style="justify-self:start">Enviar outra mensagem</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-od-id="footer">
+    <div class="container">
+      <span>© <span class="num" id="year">2026</span> Paulo Vieira · UX IA Engineer</span>
+      <a href="#inicio">Voltar ao topo ↑</a>
+    </div>
+  </footer>
+
+  <!-- Overlay: mobile menu -->
+  <div class="drawer" data-od-overlay="menu" data-od-overlay-display="flex" style="display:none">
+    <div class="drawer-panel glass" role="dialog" aria-modal="true" aria-label="Menu">
+      <button class="drawer-close" data-od-overlay-close aria-label="Fechar menu">×</button>
+      <nav>
+        <a href="#inicio" data-od-overlay-close>Home</a>
+        <a href="projetos.html">Projetos</a>
+        <a href="artigos.html">Artigos</a>
+        <a href="#servicos" data-od-overlay-close>Serviços</a>
+        <a href="#trajetoria" data-od-overlay-close>Trajetória</a>
+        <a href="#contato" data-od-overlay-close>Contato</a>
+      </nav>
+      <a href="#contato" class="btn btn-primary" data-od-overlay-close style="justify-content:center">Vamos conversar</a>
+    </div>
+  </div>
+
+  <div class="toast glass" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script src="data/projects.js"></script>
+<script src="data/articles.js"></script>
+<script>
+/* PROJECTS (data/projects.js) fill the featured bento and name each article's related project; ARTICLES (data/articles.js) fill the carousel */
+
+/* =========================================================
+   OVERLAYS (data-od-overlay contract)
+   ========================================================= */
+const openOverlay = (id) => {
+  const el = document.querySelector(`[data-od-overlay="${id}"]`);
+  if (!el) return;
+  el.style.display = el.dataset.odOverlayDisplay || 'block';
+  document.body.style.overflow = 'hidden';
+  const focusable = el.querySelector('button, a, input');
+  focusable && focusable.focus({ preventScroll: true });
+};
+const closeOverlays = () => {
+  document.querySelectorAll('[data-od-overlay]').forEach(el => { el.style.display = 'none'; });
+  document.body.style.overflow = '';
+};
+document.addEventListener('click', (e) => {
+  const opener = e.target.closest('[data-od-open-overlay]');
+  if (opener) { e.preventDefault(); openOverlay(opener.dataset.odOpenOverlay); return; }
+  if (e.target.closest('[data-od-overlay-close]')) { closeOverlays(); return; }
+  if (e.target.matches('[data-od-overlay]')) closeOverlays();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeOverlays(); });
+
+/* =========================================================
+   ARTICLES — featured carousel, filter by tag, open reader
+   ========================================================= */
+const grid = document.getElementById('projectsGrid');
+/* Reader page is assembled from data/articles.js using the id in the URL */
+const articleHref = (a) => `artigo.html?a=${encodeURIComponent(a.id)}`;
+const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/\./g, '').replace(/ de /g, ' ');
+const FEATURED = [...ARTICLES].sort((a, b) => b.date.localeCompare(a.date));
+const projectOf = (a) => a.project && PROJECTS.find(p => p.id === a.project);
+grid.innerHTML = FEATURED.map((a, i) => {
+  const rel = projectOf(a);
+  return `
+  <article class="project glass" aria-roledescription="slide" aria-label="${i + 1} de ${FEATURED.length}: ${a.title}" style="--c1:${a.c1}; --c2:${a.c2}" data-tags="${a.tags.join('|')}" data-index="${i}">
+    <div class="cover">${a.img
+      ? `<img src="${a.img}" alt="Capa do artigo ${a.title}" loading="lazy" width="1600" height="1000">`
+      : `<div class="cover-ui glass"><span class="tag">${a.tag}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
+    <div class="project-body">
+      <div class="project-meta"><time datetime="${a.date}">${fmtDate(a.date)}</time><span><span class="num">${a.readMin}</span> min de leitura</span></div>
+      <h3><a class="project-open" href="${articleHref(a)}">${a.title}</a></h3>
+      <p>${a.summary}</p>
+      <ul class="project-deliver" aria-label="Temas">${a.tags.map(t => `<li>${t}</li>`).join('')}</ul>
+      ${rel ? `<p class="project-stack">Projeto relacionado: ${rel.title}</p>` : ''}
+      <div class="project-foot">
+        <a class="btn btn-ghost" href="${articleHref(a)}">Ler artigo <span class="arrow" aria-hidden="true">→</span></a>
+        <span class="project-more" aria-hidden="true"><span class="num">${a.sections.length}</span> seções</span>
+      </div>
+    </div>
+  </article>`;
+}).join('');
+
+grid.addEventListener('click', (e) => {
+  const card = e.target.closest('.project');
+  if (!card) return;
+  if (drag.moved) { e.preventDefault(); return; }
+  if (!card.classList.contains('is-active')) { e.preventDefault(); goTo(visible().indexOf(card)); return; }
+  card.querySelector('.cover').style.viewTransitionName = 'article-cover';   // morphs into the reader cover
+  if (!e.target.closest('a')) location.href = articleHref(FEATURED[+card.dataset.index]);
+});
+/* coming back from an article: clear the morph name so only one element carries it */
+addEventListener('pageshow', () => grid.querySelectorAll('.cover').forEach(c => { c.style.viewTransitionName = ''; }));
+
+document.querySelectorAll('.filter').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.filter').forEach(b => b.setAttribute('aria-pressed', b === btn));
+  const f = btn.dataset.filter;
+  grid.querySelectorAll('.project').forEach(card => card.classList.toggle('is-hidden', !(f === 'todos' || card.dataset.tags.split('|').includes(f))));
+  grid.scrollLeft = 0;
+  updateCarousel();
+}));
+
+/* =========================================================
+   CAROUSEL — scroll-linked approach, arrows, keys, drag
+   ========================================================= */
+const visible = () => [...grid.querySelectorAll('.project:not(.is-hidden)')];
+let active = 0;
+const updateCarousel = () => {
+  const cards = visible();
+  const mid = grid.scrollLeft + grid.clientWidth / 2;
+  let best = 0, bestD = Infinity;
+  cards.forEach((card, i) => {
+    const c = card.offsetLeft + card.offsetWidth / 2;
+    const o = Math.max(-1.5, Math.min(1.5, (c - mid) / card.offsetWidth));   // signed, in slide widths
+    card.style.setProperty('--o', o.toFixed(3));
+    card.style.setProperty('--p', Math.max(0, 1 - Math.abs(o)).toFixed(3));
+    if (Math.abs(o) < bestD) { bestD = Math.abs(o); best = i; }
+  });
+  active = best;
+  cards.forEach((card, i) => card.classList.toggle('is-active', i === best));
+  const max = grid.scrollWidth - grid.clientWidth;
+  document.getElementById('cProgress').style.setProperty('--progress', cards.length < 2 ? 1 : (max > 0 ? grid.scrollLeft / max : 1).toFixed(3));
+  document.getElementById('cIndex').textContent = String(best + 1).padStart(2, '0');
+  document.getElementById('cTotal').textContent = String(cards.length).padStart(2, '0');
+  document.getElementById('cPrev').disabled = best === 0;
+  document.getElementById('cNext').disabled = best === cards.length - 1;
+};
+const goTo = (i) => {
+  const cards = visible(), card = cards[Math.max(0, Math.min(cards.length - 1, i))];
+  if (!card) return;
+  grid.scrollTo({ left: card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2, behavior: reduce ? 'auto' : 'smooth' });
+};
+let cTick = false;
+grid.addEventListener('scroll', () => { if (!cTick) { cTick = true; requestAnimationFrame(() => { cTick = false; updateCarousel(); }); } }, { passive: true });
+addEventListener('resize', updateCarousel);
+document.getElementById('cPrev').addEventListener('click', () => goTo(active - 1));
+document.getElementById('cNext').addEventListener('click', () => goTo(active + 1));
+grid.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(active - 1); }
+});
+/* mouse drag (touch already scrolls natively).
+   Snap stays off until our own release glide lands exactly on the target slide, so the
+   browser never snaps back to the starting card mid-gesture (that was the "rebound"). */
+const drag = { on: false, moved: false, x: 0, left: 0, start: 0, v: 0, lx: 0, lt: 0 };
+let glideRaf = 0;
+const slideLeft = (card) => card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2;
+const glide = (i) => {
+  const cards = visible(), card = cards[Math.max(0, Math.min(cards.length - 1, i))];
+  const done = () => grid.classList.remove('is-free');
+  if (!card) return done();
+  const from = grid.scrollLeft, to = slideLeft(card), dist = Math.abs(to - from);
+  if (reduce || dist < 1) { grid.scrollLeft = to; return done(); }
+  const dur = Math.max(320, Math.min(700, 260 + dist * .5)), t0 = performance.now();
+  const step = (t) => {
+    const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);   // ease-out: continues the throw, settles softly
+    grid.scrollLeft = from + (to - from) * e;
+    if (k < 1) glideRaf = requestAnimationFrame(step); else { grid.scrollLeft = to; done(); }
+  };
+  glideRaf = requestAnimationFrame(step);
+};
+grid.addEventListener('dragstart', (e) => e.preventDefault());
+grid.addEventListener('pointerdown', (e) => {
+  if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('.project-foot a')) return;
+  cancelAnimationFrame(glideRaf);
+  Object.assign(drag, { on: true, moved: false, x: e.clientX, left: grid.scrollLeft, start: active, v: 0, lx: e.clientX, lt: e.timeStamp });
+});
+addEventListener('pointermove', (e) => {
+  if (!drag.on) return;
+  const dx = e.clientX - drag.x;
+  if (!drag.moved && Math.abs(dx) > 6) { drag.moved = true; grid.classList.add('is-free', 'is-dragging'); }
+  if (!drag.moved) return;
+  grid.scrollLeft = drag.left - dx;
+  const dt = e.timeStamp - drag.lt;
+  if (dt > 0) { drag.v = .8 * ((e.clientX - drag.lx) / dt) + .2 * drag.v; drag.lx = e.clientX; drag.lt = e.timeStamp; }
+});
+addEventListener('pointerup', (e) => {
+  if (!drag.on) return;
+  drag.on = false;
+  if (!drag.moved) { grid.classList.remove('is-free'); return; }
+  grid.classList.remove('is-dragging');
+  const moved = grid.scrollLeft - drag.left, w = visible()[drag.start]?.offsetWidth || grid.clientWidth;
+  const flick = e.timeStamp - drag.lt < 100 && Math.abs(drag.v) > .35;       // fast throw counts even if short
+  const steps = Math.round(moved / w);                                          // dragged past whole slides
+  let target = drag.start + steps;
+  if (steps === 0 && (Math.abs(moved) > w * .12 || flick)) target += Math.sign(moved);  // intent: advance one
+  glide(target);
+  setTimeout(() => { drag.moved = false; }, 0);
+});
+updateCarousel();
+
+/* =========================================================
+   PROJECTS — featured bento; open the case study
+   ========================================================= */
+/* `featured: true` in data/projects.js picks the cases; without it, the first three */
+const worksEl = document.getElementById('works');
+const projectHref = (p) => `projeto.html?p=${encodeURIComponent(p.id)}`;
+const flagged = PROJECTS.filter(p => p.featured);
+const WORKS = (flagged.length ? flagged : PROJECTS).slice(0, 3);
+const worksRest = PROJECTS.length - WORKS.length;
+worksEl.innerHTML = WORKS.map((p, i) => `
+  <a class="work reveal${i === 0 ? ' work--lead' : ''}" href="${projectHref(p)}" style="--i:${i}; --c1:${p.c1}; --c2:${p.c2}" data-od-id="work-${p.id}">
+    <div class="cover" aria-hidden="true">${p.img
+      ? `<img src="${p.img}" alt="" loading="lazy" width="1600" height="1000">`
+      : `<div class="cover-ui glass"><span class="tag">${p.tag}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
+    <span class="work-go glass" aria-hidden="true">→</span>
+    <div class="work-panel glass">
+      <div class="work-meta"><span>${p.catLabel}</span><span class="num">${p.year}</span></div>
+      <h3>${p.title}</h3>
+      <div class="work-more"><div>
+        <p>${p.summary}</p>
+        <ul class="work-tags" aria-label="Temas">${p.tags.map(t => `<li>${t}</li>`).join('')}</ul>
+      </div></div>
+    </div>
+  </a>`).join('') + (worksRest > 0 ? `
+  <div class="works-more glass reveal" style="--i:3" data-od-id="works-more">
+    <p>Mais <b class="num">${worksRest}</b> ${worksRest === 1 ? 'projeto' : 'projetos'} na busca, com filtros por tema.</p>
+    <a href="projetos.html" class="btn btn-ghost btn-sm">Ver todos os projetos <span class="arrow" aria-hidden="true">→</span></a>
+  </div>` : '');
+/* the strip sits outside the grid so the cards can become a swipe rail on small screens */
+const worksMoreEl = worksEl.querySelector('.works-more');
+if (worksMoreEl) worksEl.after(worksMoreEl);
+/* the clicked cover morphs into the case-study cover */
+worksEl.addEventListener('click', (e) => {
+  const card = e.target.closest('.work');
+  if (card) card.querySelector('.cover').style.viewTransitionName = 'project-cover';
+});
+addEventListener('pageshow', () => worksEl.querySelectorAll('.cover').forEach(c => { c.style.viewTransitionName = ''; }));
+
+/* =========================================================
+   MOTION — reveal, scenes, nav state, parallax
+   ========================================================= */
+const reduce = true;
+
+const revealIO = new IntersectionObserver((entries) => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+const navLinks = document.querySelectorAll('[data-nav]');
+const sceneIO = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    const scene = en.target.dataset.scene;
+    document.body.dataset.scene = scene;
+    navLinks.forEach(a => a.classList.toggle('is-active', a.dataset.nav === scene));
+  });
+}, { rootMargin: '-45% 0px -45% 0px' });
+document.querySelectorAll('[data-scene]').forEach(s => s !== document.body && sceneIO.observe(s));
+
+const topnav = document.getElementById('topnav');
+const timeline = document.getElementById('timeline');
+let ticking = false;
+const onScroll = () => {
+  const y = scrollY;
+  topnav.classList.toggle('is-stuck', y > 24);
+  document.documentElement.style.setProperty('--scroll', Math.min(y / innerHeight, 6).toFixed(3));
+  const r = timeline.getBoundingClientRect();
+  const t = Math.min(Math.max((innerHeight * 0.6 - r.top) / r.height, 0), 1);
+  timeline.style.setProperty('--tl', t.toFixed(3));
+  ticking = false;
+};
+addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+onScroll();
+
+const tlIO = new IntersectionObserver((entries) => entries.forEach(en => en.isIntersecting && en.target.classList.add('is-in')), { rootMargin: '-40% 0px -40% 0px' });
+timeline.querySelectorAll('.tl-item').forEach(el => tlIO.observe(el));
+
+/* =========================================================
+   HERO ORBIT — KPI bubbles circle the portrait on a tilted
+   ellipse. Front half renders over the photo, back half behind.
+   Clicking a bubble rotates the orbit until it sits in front and
+   its tags fan out, one by one, along its right edge. Losing focus
+   (outside click, Esc, same bubble) sends them back, in reverse.
+   ========================================================= */
+(() => {
+  const stage = document.getElementById('heroVisual');
+  const kpis = [...stage.querySelectorAll('.kpi')];
+  const groups = kpis.map(k => [...document.getElementById(k.getAttribute('aria-controls')).children]
+    .map(el => ({ el, v: 0, start: 0, w: 0, h: 0 })));
+  const STEP = Math.PI * 2 / kpis.length;
+  const TILT = -10 * Math.PI / 180;
+  const TAG_TILT = -16 * Math.PI / 180;    // satellite ellipse: wide + flat so tags pass outside the bubble text
+  const FRONT = Math.PI / 2;               // bottom of the ellipse = closest to viewer
+  const SPEED = 0.00011;                   // rad per ms (~57s per turn)
+  const TAG_SPEED = 0.00042;               // satellites turn ~4× faster than the main orbit
+  const TAG_DUR = 460, TAG_STAGGER = 70;   // per-tag travel time + delay between siblings
+  let rot = 0.35, tween = null, holdUntil = 0, hovering = false, visible = true, last = performance.now();
+  let spin = 0, active = -1, target = FRONT, d = {};
+  const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  const measure = () => {
+    const w = stage.clientWidth, h = stage.clientHeight, b = kpis[0].offsetWidth;
+    // Wide enough to clear the arms; on small screens the side bubbles (scale ~.82) stay inside the viewport.
+    const r = stage.getBoundingClientRect();
+    const room = Math.min(r.left + w * .5, innerWidth - r.left - w * .5) - b * .41 - 8;
+    d = { cx: w * .5, cy: h * .6, rx: Math.min(w * .5 + b * .35, room), ry: h * .22, b };
+    stage.style.setProperty('--orbit-w', `${(d.rx * 2).toFixed(0)}px`);
+    stage.style.setProperty('--orbit-h', `${(d.ry * 2).toFixed(0)}px`);
+    // Natural tag sizes, then pick where the selected bubble parks so its list fits on the right.
+    stage.style.setProperty('--tag-max', 'none');
+    groups.flat().forEach(t => { t.w = t.el.offsetWidth; t.h = t.el.offsetHeight; });
+    const need = Math.max(...groups.flat().map(t => t.w));
+    const edge = innerWidth - r.left - 12;                       // stage-local right limit
+    const R = b * 1.28 / 2 + 12;                                 // selected bubble radius + gap
+    const c = clamp((edge - need - R - d.cx) / d.rx, -.6, 0);    // 0 = dead centre, <0 = slide left
+    target = Math.acos(c);
+    const fx = d.cx + Math.cos(target) * d.rx * Math.cos(TILT) - Math.sin(target) * d.ry * Math.sin(TILT);
+    const max = Math.max(72, edge - fx - R);
+    stage.style.setProperty('--tag-max', `${max.toFixed(0)}px`);
+    groups.flat().forEach(t => { t.w = Math.min(t.w, max); });
+  };
+  const norm = (a) => Math.atan2(Math.sin(a), Math.cos(a));
+
+  const placeTags = (i, x, y, s, alpha, z, now, dt) => {
+    const tags = groups[i], n = tags.length, open = i === active;
+    const R = d.b * s / 2 + 12;
+    const gap = Math.max(tags[0].h + 4, Math.min(tags[0].h + 8, 1.76 * R / (n - 1)));   // long lists may run past the bubble's height
+    tags.forEach((t, j) => {
+      // Advance this tag's orbit→list progress once its stagger slot has come up.
+      if (now >= t.start) t.v = reduce ? +open : clamp(t.v + (open ? dt : -dt) / TAG_DUR, 0, 1);
+      const e = ease(t.v);
+      // Orbit: tilted ellipse around the bubble; back half dimmer and behind it.
+      const a = spin + j * (Math.PI * 2 / n) + i * .9;
+      const ex = Math.cos(a) * d.b * s * 1.15, ey = Math.sin(a) * d.b * s * .5;
+      const depth = Math.sin(a), k = (depth + 1) / 2;
+      const os = (.68 + .14 * k) * clamp(s, .8, 1.1);   // small, but never below legible size
+      const ox = x + ex * Math.cos(TAG_TILT) - ey * Math.sin(TAG_TILT) - t.w * os / 2;
+      const oy = y + ex * Math.sin(TAG_TILT) + ey * Math.cos(TAG_TILT);
+      // List: stacked on the right, each row pushed out to the bubble's circumference.
+      const ly = (j - (n - 1) / 2) * gap;
+      const inner = Math.max(Math.abs(ly) - t.h / 2, 0);                // row edge nearest the bubble's centre
+      const lx = x + Math.max(Math.sqrt(Math.max(R * R - inner * inner, 0)), R * .35);
+      const px = ox + (lx - ox) * e + Math.sin(Math.PI * e) * 14;   // small outward bow on the way
+      const py = oy + (y + ly - oy) * e;
+      const sc = os + (1 - os) * e;
+      t.el.style.transform = `translate3d(${px.toFixed(1)}px, ${(py - t.h / 2).toFixed(1)}px, 0) scale(${sc.toFixed(3)})`;
+      t.el.style.opacity = ((alpha * (.36 + .32 * k)) * (1 - e) + e).toFixed(2);
+      t.el.style.zIndex = t.v > 0 ? 100 : z === 1 ? +(depth > 0) : z + (depth > 0 ? 1 : -1);
+    });
+  };
+
+  const place = (now = performance.now(), dt = 0) => {
+    kpis.forEach((el, i) => {
+      const a = rot + i * STEP;
+      const ex = Math.cos(a) * d.rx, ey = Math.sin(a) * d.ry;
+      const depth = Math.sin(a);           // -1 back … 1 front
+      const k = (depth + 1) / 2;
+      const s = (.52 + .6 * k) * (i === active ? 1 + .14 * k ** 4 : 1);   // back .52 → front 1.12 (+14% when selected)
+      const x = d.cx + ex * Math.cos(TILT) - ey * Math.sin(TILT);
+      const y = d.cy + ex * Math.sin(TILT) + ey * Math.cos(TILT);
+      const z = depth > -0.1 ? 30 + Math.round(depth * 10) * 3 : 1;
+      const alpha = .5 + .5 * k;
+      el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${s.toFixed(3)})`;
+      el.style.zIndex = z;
+      el.style.opacity = alpha.toFixed(2);
+      placeTags(i, x, y, s, alpha, z, now, dt);
+    });
+  };
+
+  // Stagger: opening runs top → bottom, closing runs the exact reverse.
+  const stagger = (i, open) => {
+    if (i < 0) return;
+    const now = performance.now(), n = groups[i].length;
+    groups[i].forEach((t, j) => { t.start = now + (open ? j : n - 1 - j) * TAG_STAGGER; });
+  };
+  const select = (i) => {
+    if (i === active) i = -1;
+    stagger(active, false);
+    active = i;
+    kpis.forEach((k, j) => k.setAttribute('aria-pressed', String(j === i)));
+    if (i < 0) { holdUntil = performance.now() + 1200; return; }
+    const delta = norm(target - (rot + i * STEP));
+    // All bubbles travel together; longer trips take longer so the rotation reads clearly.
+    const dur = 800 + 900 * Math.abs(delta) / Math.PI;
+    tween = { from: rot, to: rot + delta, t0: performance.now(), dur };
+    // Tags start fanning out as the bubble lands in front.
+    const now = performance.now();
+    groups[i].forEach((t, j) => { t.start = now + dur * .55 + j * TAG_STAGGER; });
+  };
+
+  const tick = (now) => {
+    const dt = Math.min(now - last, 64); last = now;
+    if (tween) {
+      const t = reduce ? 1 : Math.min(1, (now - tween.t0) / tween.dur);
+      rot = tween.from + (tween.to - tween.from) * ease(t);
+      if (t === 1) { tween = null; holdUntil = now + 4500; }
+    } else if (!reduce && !hovering && active < 0 && now > holdUntil) {
+      rot += dt * SPEED;                   // the orbit waits while a bubble is open
+    }
+    if (!reduce) spin += dt * TAG_SPEED;
+    place(now, dt);
+    if (visible) requestAnimationFrame(tick);
+  };
+
+  kpis.forEach((el, i) => {
+    el.addEventListener('click', () => select(i));
+    el.addEventListener('pointerenter', () => { hovering = true; });
+    el.addEventListener('pointerleave', () => { hovering = false; });
+    el.addEventListener('focus', () => { hovering = true; });
+    el.addEventListener('blur', () => { hovering = false; });
+  });
+  // Focus leaves the bubble → tags return to orbit.
+  document.addEventListener('pointerdown', (e) => { if (active >= 0 && !e.target.closest('.kpi')) select(-1); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && active >= 0) select(-1); });
+
+  new IntersectionObserver(([en]) => {
+    const was = visible; visible = en.isIntersecting;
+    if (!visible && active >= 0) { select(-1); groups.flat().forEach(t => { t.v = 0; }); }
+    if (visible && !was) { last = performance.now(); requestAnimationFrame(tick); }
+  }).observe(stage);
+
+  addEventListener('resize', () => { measure(); place(); });
+  document.fonts?.ready.then(() => { measure(); place(); });
+  measure(); place(); requestAnimationFrame(tick);
+})();
+
+/* =========================================================
+   CONTACT — copy e-mail, validation, success state
+   ========================================================= */
+const toast = document.getElementById('toast');
+const showToast = (msg) => { toast.textContent = msg; toast.classList.add('is-on'); clearTimeout(showToast.t); showToast.t = setTimeout(() => toast.classList.remove('is-on'), 2200); };
+document.getElementById('copyEmail').addEventListener('click', async () => {
+  const email = document.getElementById('emailAddr').textContent;
+  try { await navigator.clipboard.writeText(email); showToast('E-mail copiado'); }
+  catch { showToast(email); }
+});
+
+const form = document.getElementById('contactForm');
+const rules = {
+  name: v => v.trim().length >= 2 || 'Informe seu nome.',
+  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Informe um e-mail válido.',
+  msg: v => v.trim().length >= 20 || 'Escreva pelo menos 20 caracteres.'
+};
+const check = (input) => {
+  const rule = rules[input.name]; if (!rule) return true;
+  const res = rule(input.value);
+  const field = input.closest('.field');
+  field.classList.toggle('has-error', res !== true);
+  field.querySelector('.err').textContent = res === true ? '' : res;
+  return res === true;
+};
+form.querySelectorAll('input, textarea').forEach(i => i.addEventListener('blur', () => check(i)));
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const ok = [...form.querySelectorAll('input, textarea')].map(check).every(Boolean);
+  if (!ok) { form.querySelector('.has-error input, .has-error textarea').focus(); return; }
+  document.getElementById('sentName').textContent = form.elements.name.value.trim().split(' ')[0];
+  document.getElementById('formWrap').classList.add('is-sent');
+});
+document.getElementById('resetForm').addEventListener('click', () => {
+  form.reset(); document.getElementById('formWrap').classList.remove('is-sent');
+});
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+<script>setTimeout(()=>{[...document.querySelectorAll(".kpi")].find(e=>e.getAttribute("aria-controls")==="tags-pd").click();},1000)</script><script data-od-flow-runtime>(function(){
+  var doc = document;
+  function close(el){ el.style.display = 'none'; }
+  function openOnes(){
+    var out = [];
+    var els = doc.querySelectorAll('[data-od-overlay]');
+    for (var i = 0; i < els.length; i++){
+      var d = els[i].style.display;
+      if (d !== 'none' && d !== '') out.push(els[i]);
+    }
+    return out;
+  }
+  doc.addEventListener('click', function(ev){
+    var target = ev.target;
+    if (!target || !target.closest) return;
+
+    var closeEl = target.closest('[data-od-overlay-close]');
+    if (closeEl){
+      var ov = closeEl.closest('[data-od-overlay]');
+      if (ov) close(ov);
+      return;
+    }
+    if (target.matches && target.matches('[data-od-overlay]')){
+      close(target);
+      return;
+    }
+    var nav = target.closest('[data-od-navigate]');
+    if (nav){
+      var href = nav.getAttribute('data-od-navigate');
+      if (href){ ev.preventDefault(); window.location.assign(href); }
+      return;
+    }
+    var opener = target.closest('[data-od-open-overlay]');
+    if (opener){
+      var id = opener.getAttribute('data-od-open-overlay');
+      if (!id) return;
+      var overlay = doc.querySelector('[data-od-overlay="' + id.replace(/"/g, '\\"') + '"]');
+      if (overlay){ ev.preventDefault(); overlay.style.display = overlay.dataset.odOverlayDisplay || 'block'; }
+    }
+  });
+  doc.addEventListener('keydown', function(ev){
+    if (ev.key !== 'Escape') return;
+    var open = openOnes();
+    var top = open[open.length - 1];
+    if (top) close(top);
+  });
+})();</script>
+</body>
+</html>

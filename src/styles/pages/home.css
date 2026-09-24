@@ -1,0 +1,549 @@
+/* Page stylesheet — shared layers first, in the original cascade order, then this screen. */
+@import '../tokens/tokens.css';
+@import '../components.css';
+
+/* Screen-specific styles. Shared tokens/components: src/styles/components.css */
+
+/* =========================================================
+   6. HERO
+   ========================================================= */
+.hero { overflow-x: clip; padding-block: clamp(40px, 7vw, 96px) clamp(64px, 8vw, 120px); min-height: min(92vh, 900px); display: flex; align-items: stretch; }
+.hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+.hero-copy { display: grid; gap: 24px; justify-items: start; }
+.hero-title { font-size: clamp(var(--typography-size-display-2), 6vw, 88px); font-weight: var(--typography-weight-regular); line-height: 1.02; letter-spacing: -0.045em; }
+.hero-title strong { display: block; font-weight: var(--typography-weight-bold); }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+
+/* Visual: portrait standing on the section floor, glass disc behind,
+   KPI bubbles orbiting on a tilted ellipse (positioned in JS). */
+.hero-visual {
+  --bubble: clamp(76px, 7.4vw, 108px);
+  position: relative; width: min(100%, 600px); aspect-ratio: 5 / 6;
+  justify-self: center; align-self: end;
+  margin-bottom: calc(clamp(64px, 8vw, 120px) * -1);
+}
+.orbit-disc {
+  position: absolute; left: 50%; top: 58%; width: 96%; aspect-ratio: 1; translate: -50% -50%;
+  border-radius: 50%; z-index: 0;
+  background: radial-gradient(circle at 34% 28%, var(--surface-glass-strong-bg), var(--surface-glass-bg) 58%, transparent 74%);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  animation: disc-breathe 9s ease-in-out infinite;
+}
+@keyframes disc-breathe { 50% { scale: 1.03; } }
+.orbit-path {
+  position: absolute; left: 50%; top: 60%; width: var(--orbit-w, 100%); height: var(--orbit-h, 44%); translate: -50% -50%; rotate: -10deg;
+  border-radius: 50%; border: 1px solid var(--orbit-path-border); opacity: .7; z-index: 0; pointer-events: none;
+}
+.portrait {
+  --portrait-zoom: 1.42;
+  position: absolute; inset: 0; z-index: 2; display: flex; justify-content: center; align-items: flex-start; pointer-events: none;
+  /* Tighter framing (head to waist): the photo is scaled up and the legs are cropped at the section floor. */
+  clip-path: inset(-50% -50% 0 -50%);
+  -webkit-mask-image: linear-gradient(to bottom, var(--fg) 80%, transparent);
+          mask-image: linear-gradient(to bottom, var(--fg) 80%, transparent);
+}
+.portrait img {
+  height: calc(100% * var(--portrait-zoom)); width: auto; max-width: none; flex: none; margin-top: -6%;
+  object-fit: contain; object-position: center top;
+}
+.portrait-fallback { position: absolute; left: 50%; top: 56%; translate: -50% -50%; font-size: clamp(64px, 10vw, 120px); font-weight: 300; letter-spacing: -0.06em; color: var(--eyebrow-text); opacity: .35; line-height: 1; }
+.hero-visual.has-photo .portrait-fallback { display: none; }
+
+.kpi {
+  position: absolute; left: 0; top: 0; z-index: 3;
+  width: var(--bubble); height: var(--bubble);
+  margin: calc(var(--bubble) / -2) 0 0 calc(var(--bubble) / -2);
+  display: grid; place-content: center; gap: 4px; padding: 8px; text-align: center;
+  border-radius: 50%; border: 2px solid var(--kpi-rim-border); cursor: pointer; color: var(--fg);
+  /* Bubble body: clear centre, lilac tint pooling toward the rim. */
+  background: radial-gradient(circle at 50% 42%, var(--kpi-bubble-core-bg) 0 52%, var(--kpi-bubble-tint-bg) 86%, var(--kpi-rim-glow) 100%);
+  backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow:
+    0 24px 48px -20px var(--shadow-glass),
+    inset 0 0 0 1px var(--kpi-rim-glow),
+    inset 0 -14px 28px -12px var(--kpi-inner-glow),
+    inset 0 10px 22px -14px var(--kpi-highlight-fill);
+  transition: border-color .4s var(--ease-out), box-shadow .4s var(--ease-out);
+  will-change: transform, opacity;
+  isolation: isolate;
+}
+/* Iridescent film along the edge, slowly drifting like a soap bubble. */
+.kpi::before {
+  content: ""; position: absolute; inset: -2px; border-radius: 50%; z-index: -1; pointer-events: none;
+  background: conic-gradient(from 0deg, var(--kpi-sheen-violet), transparent 18%, var(--kpi-sheen-blue) 34%, transparent 50%, var(--kpi-sheen-mint) 66%, transparent 82%, var(--kpi-sheen-violet));
+  -webkit-mask-image: radial-gradient(circle, transparent 62%, var(--fg) 72%, transparent 76%);
+          mask-image: radial-gradient(circle, transparent 62%, var(--fg) 72%, transparent 76%);
+  animation: bubble-sheen 14s linear infinite;
+}
+/* Specular highlight: the curved window reflection near the top-left. */
+.kpi::after {
+  content: ""; position: absolute; left: 16%; top: 11%; width: 30%; height: 16%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, var(--kpi-highlight-fill), transparent 70%);
+  rotate: -28deg; opacity: .85;
+}
+@keyframes bubble-sheen { to { rotate: 360deg; } }
+.kpi:hover { border-color: var(--kpi-active-border); }
+.kpi[aria-pressed="true"] {
+  border-color: var(--kpi-active-border);
+  box-shadow:
+    0 28px 56px -20px var(--shadow-glass),
+    inset 0 0 0 1px var(--kpi-rim-glow),
+    inset 0 -14px 28px -12px var(--kpi-inner-glow),
+    inset 0 10px 22px -14px var(--kpi-highlight-fill),
+    0 0 0 8px var(--kpi-active-halo);
+}
+@media (prefers-reduced-motion: reduce) { .kpi::before { animation: none; } }
+.kpi-value { font-size: calc(var(--bubble) * .22); font-weight: var(--typography-weight-bold); letter-spacing: -0.04em; line-height: 1; }
+.kpi-label { font-size: clamp(10px, calc(var(--bubble) * .095), 12px); color: var(--muted); line-height: 1.2; letter-spacing: -0.01em; }
+
+/* Satellite tags: each bubble's related topics. They orbit their bubble on a
+   small tilted ellipse (small + translucent), and fan out into a list hugging
+   the bubble's right edge when it is selected. Positioned per frame in JS;
+   the <ul> stays static so every tag can sit in front of / behind its bubble. */
+.kpi-tags { list-style: none; margin: 0; padding: 0; }
+.kpi-tag {
+  position: absolute; left: 0; top: 0; z-index: 3;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  max-width: var(--tag-max, 220px); height: 28px; padding: 0 12px 0 8px;
+  font-size: 12px; font-weight: var(--typography-weight-medium); letter-spacing: -0.01em; color: var(--kpi-tag-text);
+  border-radius: var(--radius-pill); border: 1px solid var(--kpi-tag-border);
+  background: var(--kpi-tag-bg);
+  backdrop-filter: blur(12px) saturate(140%); -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 8px 20px -12px var(--kpi-tag-shadow);
+  transform-origin: 0 50%; pointer-events: none; will-change: transform, opacity;
+}
+.kpi-tag span { overflow: hidden; text-overflow: ellipsis; }
+.kpi-tag svg { width: 16px; height: 16px; flex: none; color: var(--kpi-tag-icon); }
+@media (min-width: 834px) { .kpi-tag { height: 32px; font-size: 13px; gap: 8px; } }
+
+/* =========================================================
+   7. PROJECTS — gallery grid
+   ========================================================= */
+/* Carousel: full-bleed track, the active slide is centred and its neighbours peek in at the
+   edges (Gestalt continuity). JS writes --p (0 → far, 1 → centred) and --o (signed offset)
+   on every slide as the track scrolls; the "approach" is a scroll-linked scale/fade. */
+.carousel { container-type: inline-size; position: relative; --slide-w: min(86cqi, 1180px); --slide-gap: clamp(16px, 2cqi, 32px); }
+.projects-grid { display: flex; gap: var(--slide-gap); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 24px calc((100cqi - var(--slide-w)) / 2) 40px; scroll-padding-inline: calc((100cqi - var(--slide-w)) / 2); outline: none; }
+.projects-grid::-webkit-scrollbar { display: none; }
+.projects-grid.is-free { scroll-snap-type: none; }   /* snap off while dragging and while the release glide runs */
+.projects-grid.is-dragging { cursor: grabbing; user-select: none; }
+/* Horizontal case card: cover on one side, data on the other. Stacks below 834px. */
+.project { --p: 1; --o: 0; flex: 0 0 var(--slide-w); scroll-snap-align: center; position: relative; border-radius: var(--radius-lg); padding: 12px; display: grid; grid-template-columns: 1fr; gap: 24px; cursor: pointer; text-align: left;
+  transform: scale(calc(.88 + .12 * var(--p))); opacity: calc(.4 + .6 * var(--p)); transform-origin: calc(50% - var(--o) * 50%) 50%;
+  box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--shadow-glass) calc(var(--p) * 100%), transparent); transition: opacity .4s; }
+.project:not(.is-active) .project-body { pointer-events: none; }
+.project.is-hidden { display: none; }
+/* depth: the cover mock drifts against the scroll direction */
+.project .cover-ui { translate: calc(-50% + var(--o) * -40px) -50%; }
+.project .cover::before { translate: calc(var(--o) * 24%) 0; }
+.carousel-bar { display: flex; align-items: center; gap: 24px; margin-top: 8px; }
+.carousel-count { font-size: 14px; color: var(--muted); min-width: 64px; }
+.carousel-count b { color: var(--fg); font-weight: var(--typography-weight-medium); }
+.carousel-line { position: relative; flex: 1; height: 2px; border-radius: 2px; background: var(--border-glass); overflow: hidden; }
+.carousel-line i { position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--progress, 0)); background: var(--fg); border-radius: inherit; }
+.carousel-nav { display: flex; gap: 8px; }
+.carousel-btn { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 18px; color: var(--fg); border: 1px solid var(--button-ghost-border); background: var(--button-ghost-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color .3s, opacity .3s, transform .3s var(--ease-out); }
+.carousel-btn:hover:not(:disabled) { background: var(--surface-glass-strong-bg); transform: scale(1.06); }
+.carousel-btn:disabled { opacity: .35; cursor: default; }
+.project:hover .cover img { transform: scale(1.04); }
+.project:hover .cover::before { transform: translate(18%, 10%) scale(1.1); }
+.project:hover .cover::after  { transform: translate(-14%, -12%) scale(1.15); }
+.project:hover .cover-ui { transform: scale(1.04) translateY(-4px); }
+.project-body { display: grid; align-content: center; gap: 16px; padding: 0 8px 8px; }
+.project-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; font-size: 12px; color: var(--muted); }
+.project h3 { font-size: var(--typography-size-h3); letter-spacing: -0.02em; line-height: 1.25; }
+.project p { color: var(--muted); font-size: 16px; line-height: 1.5; text-wrap: pretty; }
+.project-deliver { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
+.project-deliver li { font-size: 13px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--border-glass); }
+.project .project-stack { font-size: 13px; color: var(--muted); }
+/* Whole card links to the article page via a stretched link; the CTA link sits above it */
+.project-open { color: inherit; cursor: pointer; }
+.project-open::after { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: 1; }
+.project-open:focus-visible { outline: none; }
+.project:has(.project-open:focus-visible) { outline: 2px solid var(--fg); outline-offset: 4px; }
+.project-foot { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 8px; border-top: 1px solid var(--border-glass); }
+.project-more { font-size: 13px; color: var(--muted); transition: color .3s; }
+.project.is-active:hover .project-more { color: var(--fg); }
+@media (min-width: 834px) {
+  .project { grid-template-columns: 1.35fr 1fr; gap: 40px; padding: 16px; }
+  .cover { aspect-ratio: auto; min-height: 400px; }
+  .project-body { padding: 24px 24px 24px 0; }
+}
+@media (min-width: 1440px) { .cover { min-height: 460px; } }
+
+
+/* =========================================================
+   7a. FEATURED PROJECTS — bento: one lead case + two stacked
+   ========================================================= */
+/* The cover fills the whole card; a glass panel floats over the animated colour fields.
+   Hover lifts the card (via `translate`, so it never fights the .reveal transform),
+   drifts the fields and opens the summary. Touch screens always show the summary. */
+.works { display: grid; grid-template-columns: 1fr; gap: var(--grid-layout-gutter, 16px); }
+.work { position: relative; min-height: 380px; border-radius: var(--radius-lg); overflow: hidden; isolation: isolate; display: grid; align-items: end; padding: 12px; color: var(--fg); background: var(--surface);
+  transition: opacity .9s var(--ease-out), transform .9s var(--ease-out), filter .9s var(--ease-out), translate .6s var(--ease-out), box-shadow .6s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms), calc(var(--i, 0) * 90ms), calc(var(--i, 0) * 90ms), 0s, 0s; }
+.work:hover { translate: 0 -4px; box-shadow: 0 40px 80px -40px var(--shadow-glass); }
+.work:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+.works .cover { position: absolute; inset: 0; aspect-ratio: auto; min-height: 0; border-radius: 0; z-index: 0; }
+.works .cover-ui { top: 28%; width: min(64%, 360px); }
+.work--lead { min-height: 440px; }
+.work:hover .cover img { transform: scale(1.04); }
+.work:hover .cover::before { transform: translate(18%, 10%) scale(1.1); }
+.work:hover .cover::after  { transform: translate(-14%, -12%) scale(1.15); }
+.work:hover .cover-ui { transform: scale(1.04) translateY(-6px); }
+.work-go { position: absolute; top: 16px; right: 16px; z-index: 1; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; transition: transform .5s var(--ease-out), background-color .3s; }
+.work:hover .work-go, .work:focus-visible .work-go { transform: rotate(-45deg); background: var(--surface-glass-strong-bg); }
+.work-panel { position: relative; z-index: 1; border-radius: calc(var(--radius-lg) - 8px); padding: 20px 24px; display: grid; gap: 8px; }
+.work-meta { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--muted); }
+.work h3 { font-size: var(--typography-size-h4); letter-spacing: -0.02em; line-height: 1.25; }
+.work-more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s var(--ease-out); }
+.work-more > div { overflow: hidden; display: grid; gap: 12px; }
+.work--lead .work-more, .work:hover .work-more, .work:focus-visible .work-more { grid-template-rows: 1fr; }
+@media (hover: none) { .work-more { grid-template-rows: 1fr; } }
+.work-more p { padding-top: 4px; color: var(--muted); font-size: 15px; line-height: 1.5; text-wrap: pretty; }
+.work-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0 0 4px; margin: 0; }
+.work-tags li { font-size: 12px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--border-glass); }
+.works-more { grid-column: 1 / -1; border-radius: var(--radius-lg); padding: 16px 16px 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.works-more p { font-size: 15px; color: var(--muted); }
+.works-more b { color: var(--fg); font-weight: var(--typography-weight-medium); }
+@media (min-width: 834px) {
+  .works { grid-template-columns: 7fr 5fr; grid-template-rows: repeat(2, minmax(320px, auto)); }
+  .works .cover-ui { top: 36%; width: min(60%, 360px); }
+  .work--lead { grid-row: span 2; min-height: 660px; padding: 16px; }
+  .work--lead h3 { font-size: var(--typography-size-h3); }
+  .work--lead .work-panel { padding: 24px 28px; max-width: 560px; }
+}
+@media (prefers-reduced-motion: reduce) { .work, .work-go, .work-more { transition: none; } }
+
+
+/* =========================================================
+   8. SERVICES
+   ========================================================= */
+.services { display: grid; grid-template-columns: 1fr; gap: var(--grid-layout-gutter, 16px); }
+.service { border-radius: var(--radius-lg); padding: clamp(24px, 3vw, 40px); display: grid; gap: 16px; align-content: start; transition: transform .5s var(--ease-out), background-color .4s; }
+.service:hover { transform: translateY(-4px); background: var(--surface-glass-strong-bg); }
+.service .idx { font-size: 12px; color: var(--muted); letter-spacing: .12em; }
+.service h3 { font-size: var(--typography-size-h3); letter-spacing: -0.02em; }
+.service p { color: var(--muted); font-size: 15px; }
+.service ul { list-style: none; margin: 8px 0 0; padding: 16px 0 0; border-top: 1px solid var(--border); display: grid; gap: 8px; font-size: 14px; }
+.skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; }
+.skills .chip { transition: transform .3s var(--ease-out), background-color .3s; }
+.skills .chip:hover { transform: translateY(-2px); background: var(--surface-glass-strong-bg); }
+
+/* =========================================================
+   9. TIMELINE
+   ========================================================= */
+.timeline { position: relative; display: grid; gap: 0; }
+.timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
+.timeline .progress { position: absolute; left: 7px; top: 8px; width: 1px; height: calc((100% - 16px) * var(--tl, 0)); background: var(--fg); transition: height .2s linear; }
+.tl-item { position: relative; display: grid; grid-template-columns: 1fr; gap: 8px; padding: 0 0 48px 40px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before { content: ""; position: absolute; left: 0; top: 6px; width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); transition: background-color .4s, border-color .4s; }
+.tl-item.is-in::before { background: var(--aurora-lilac-fill); border-color: var(--eyebrow-text); }
+.tl-when { font-size: 13px; color: var(--muted); }
+.tl-item h3 { font-size: var(--typography-size-h4); letter-spacing: -0.02em; }
+.tl-item .org { color: var(--muted); font-size: 15px; }
+.tl-item p { color: var(--muted); max-width: 60ch; font-size: 15px; margin-top: 4px; }
+
+/* =========================================================
+   10. CONTACT
+   ========================================================= */
+.contact-card { border-radius: calc(var(--radius-lg) + 8px); padding: clamp(24px, 5vw, 64px); display: grid; grid-template-columns: 1fr; gap: 48px; }
+.contact-card .section-title { font-size: clamp(36px, 5vw, 64px); }
+.contact-side { display: grid; gap: 24px; align-content: start; }
+.email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.email { font-size: clamp(16px, 1.6vw, 20px); font-weight: var(--typography-weight-medium); border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+.socials { display: flex; flex-wrap: wrap; gap: 8px; }
+.form { display: grid; gap: 16px; }
+.field { display: grid; gap: 8px; }
+.field label { font-size: 13px; color: var(--muted); }
+.field input, .field select, .field textarea {
+  width: 100%; min-height: 48px; padding: 12px 16px; border-radius: var(--radius-md);
+  border: 1px solid var(--field-border); background: var(--field-bg); outline: none;
+  transition: border-color .25s, box-shadow .25s;
+}
+.field textarea { min-height: 128px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--eyebrow-text); box-shadow: 0 0 0 4px var(--aurora-lilac-fill); }
+.field.has-error input, .field.has-error textarea { border-color: var(--status-danger-text); }
+.field .err { font-size: 12px; color: var(--status-danger-text); min-height: 0; }
+.form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.form-foot small { color: var(--muted); font-size: 12px; }
+.form-success { display: none; gap: 12px; align-content: center; min-height: 320px; text-align: left; }
+.form-success h3 { font-size: var(--typography-size-h3); }
+.form-wrap.is-sent .form { display: none; }
+.form-wrap.is-sent .form-success { display: grid; animation: pop-in .5s var(--ease-out); }
+
+
+/* =========================================================
+   11. RESPONSIVE — DS breakpoints (412 / 834 / 1440)
+   ========================================================= */
+@media (max-width: 833px) {
+  .hero-visual { width: min(100%, 460px); }
+}
+@media (max-width: 411px) {
+  .hero-cta .btn { flex: 1 1 100%; justify-content: center; }
+}
+@media (min-width: 834px) {
+  .services { grid-template-columns: repeat(3, 1fr); }
+  .tl-item { grid-template-columns: 200px 1fr; gap: 32px; }
+  .contact-card { grid-template-columns: 1fr 1.1fr; gap: 64px; }
+}
+@media (min-width: 1024px) {
+  .hero-grid { grid-template-columns: 1.05fr 1fr; gap: 48px; }
+  .hero-visual { justify-self: end; }
+}
+
+/* =========================================================
+   12. FIT TO VIEWPORT — every home section fits one screen
+   ========================================================= */
+/* Each section is at least one screen tall (under the sticky menu) and its content is sized
+   against the viewport height, so nothing spills past the fold. Where a column of cards cannot
+   fit on a phone, the cards become a horizontal swipe rail that peeks the next card. */
+/* --vh is one hundredth of the screen height. It is 1svh in a browser; inside a preview frame
+   stretched to the page height (taller than the monitor) the head script pins it to the monitor
+   height instead, so the sections stop growing with the frame. In that frame the host measures the
+   page with every min-height off, so .is-canvas drops the one-screen minimum to keep the measured
+   and the real height equal (otherwise the frame scrolls inside the canvas). */
+/* The host also runs that measurement in the scrollable-window preview, on every DOM change
+   (each scroll tick writes --tl). While min-heights are off the document is shorter, and the
+   browser clamps the scroll position to it, so scrolling stalled one section before the end.
+   Where calc-size() exists (the preview is Chromium) the one-screen minimum is carried by
+   `height`, which the measurement leaves alone; min-height stays as the fallback elsewhere. */
+:root { --vh: 1vh; --nav-h: 72px; --fit-h: calc(100 * var(--vh) - var(--nav-h)); --fit-pad: clamp(24px, calc(5 * var(--vh)), 64px); }
+@supports (height: 100svh) { :root { --vh: 1svh; } }
+.is-canvas main > section, .is-canvas main > section.section { min-height: 0; height: auto; }
+main > section, main > section.section { min-height: var(--fit-h); scroll-margin-top: var(--nav-h); display: flex; flex-direction: column; justify-content: center; padding-block: var(--fit-pad); }
+@supports (height: calc-size(auto, size)) {
+  main > section, main > section.section { height: calc-size(auto, max(size, var(--fit-h))); }
+}
+main .section-head { gap: 12px; max-width: 880px; margin-bottom: clamp(16px, calc(3.5 * var(--vh)), 48px); }
+main .section-title { font-size: clamp(var(--typography-size-h2), min(4.4vw, calc(6 * var(--vh))), 56px); line-height: 1.1; }
+
+/* Hero: the portrait is sized by the free height and stands on the section floor */
+main > .hero { min-height: var(--fit-h); justify-content: flex-end; padding-block: clamp(16px, calc(4 * var(--vh)), 48px) 0; }
+.hero-title { font-size: clamp(40px, min(6vw, calc(8 * var(--vh))), 88px); }
+.hero-copy { gap: clamp(12px, calc(2.4 * var(--vh)), 24px); }
+.hero-cta { margin-top: clamp(0px, calc(1 * var(--vh)), 16px); }
+.hero-visual { margin-bottom: 0; width: min(100%, 600px, calc((var(--fit-h) - clamp(16px, calc(4 * var(--vh)), 48px)) * 5 / 6)); }
+
+/* Projects: the bento fills the free height */
+.works-more { margin-top: var(--grid-layout-gutter, 16px); padding-block: 12px; }
+@media (min-width: 834px) {
+  #projetos { height: var(--fit-h); }
+  #projetos > .container { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  #projetos .works { flex: 1; min-height: 0; grid-template-rows: 1fr 1fr; }
+  .work, .work--lead { min-height: 0; }
+  .work:not(.work--lead) .work-more p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+}
+@media (min-width: 834px) and (max-height: 900px) {
+  .work:not(.work--lead) .work-tags, #artigos .project p.project-stack { display: none; }
+  #artigos .project p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+}
+@media (min-width: 834px) and (max-height: 760px) { .form .field textarea { min-height: 64px; } }
+@media (min-width: 834px) and (max-width: 1023px) {
+  .hero-visual { width: min(100%, 460px, calc((var(--fit-h) - 440px) * 5 / 6)); }
+}
+
+/* Articles: title and "see all" share a row; the cover height follows the viewport */
+#artigos .section-head { grid-template-columns: 1fr auto; align-items: end; max-width: none; }
+#artigos .section-head .eyebrow { grid-column: 1 / -1; }
+#artigos .section-title { font-size: clamp(var(--typography-size-h2), min(4vw, calc(5 * var(--vh))), 52px); }
+#artigos .section-head .btn { justify-self: end !important; }
+#artigos .filters { margin-bottom: 0; }
+#artigos .projects-grid { padding-block: 8px clamp(12px, calc(2 * var(--vh)), 24px); }
+#artigos .carousel-bar { margin-top: 0; }
+@media (min-width: 834px) {
+  #artigos .cover { min-height: clamp(220px, calc(var(--fit-h) - 460px), 460px); }
+  #artigos .project { padding: 12px; }
+  #artigos .project-body { gap: clamp(8px, calc(1.6 * var(--vh)), 16px); padding-block: 12px; }
+}
+
+/* Services */
+.service { padding: clamp(20px, calc(3.4 * var(--vh)), 40px); gap: clamp(8px, calc(1.6 * var(--vh)), 16px); }
+.service ul { padding-top: clamp(8px, calc(1.6 * var(--vh)), 16px); }
+.skills { margin-top: clamp(16px, calc(3 * var(--vh)), 40px); }
+
+/* Timeline: heading beside the list on wide screens */
+.tl-item { padding-bottom: clamp(16px, calc(3.4 * var(--vh)), 40px); }
+@media (min-width: 1024px) {
+  #trajetoria > .container { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: 64px; align-items: center; }
+  #trajetoria .section-head { margin-bottom: 0; }
+  #trajetoria .tl-item { grid-template-columns: 160px 1fr; gap: 24px; }
+}
+
+/* Contact */
+.contact-card { padding: clamp(20px, min(5vw, calc(6 * var(--vh))), 64px); gap: clamp(20px, calc(4 * var(--vh)), 64px); }
+.contact-card .section-title { font-size: clamp(26px, min(5vw, calc(5.8 * var(--vh))), 60px); }
+.contact-side { gap: clamp(12px, calc(2.4 * var(--vh)), 24px); }
+.form { gap: clamp(8px, calc(1.6 * var(--vh)), 16px); }
+.field { gap: 4px; }
+.field textarea { min-height: clamp(72px, calc(12 * var(--vh)), 128px); }
+.form-success { min-height: 0; }
+
+/* Phones and small tablets */
+@media (max-width: 833px) {
+  main .section-title { font-size: clamp(26px, 7.6vw, 36px); }
+  .hero-grid { gap: 16px; }
+  .hero-title { font-size: clamp(36px, min(11vw, calc(6.4 * var(--vh))), 52px); }
+  .hero .lead { font-size: 15px; }
+  .hero-visual { width: min(100%, 460px, calc((var(--fit-h) - 424px) * 5 / 6)); }
+  /* swipe rails: cards peek the next one (continuity) */
+  #projetos .works, .services { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-inline: calc(var(--page-pad) * -1); padding-inline: var(--page-pad); scroll-padding-inline: var(--page-pad); padding-bottom: 8px; }
+  #projetos .works::-webkit-scrollbar, .services::-webkit-scrollbar, .skills::-webkit-scrollbar { display: none; }
+  .work, .service { scroll-snap-align: start; }
+  .work, .work--lead { min-height: clamp(280px, calc(var(--fit-h) - 340px), 460px); }
+  .skills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--page-pad) * -1); padding-inline: var(--page-pad); }
+  .skills .chip { flex: none; }
+  /* the rail clips vertically: a chip offset by .reveal's translateY never crosses the observer threshold */
+  .skills .chip.reveal { transform: none; }
+  #artigos .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(var(--page-pad) * -1); padding-inline: var(--page-pad); }
+  #artigos .filters .filter { flex: none; }
+  #artigos .cover { aspect-ratio: auto; height: clamp(110px, calc(var(--fit-h) - 600px), 220px); }
+  #artigos .project { gap: 12px; }
+  #artigos .project-body { gap: 8px; }
+  #artigos .project p { font-size: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  #artigos .project p.project-stack { display: none; }
+  .tl-item { gap: 2px; }
+  .tl-item p { font-size: 14px; }
+  main > section.section { padding-block: 20px; }
+  #artigos .section-head { grid-template-columns: 1fr auto; align-items: center; }
+  #artigos .section-head .eyebrow { grid-column: 1; grid-row: 1; }
+  #artigos .section-head .btn { grid-column: 2; grid-row: 1; justify-self: end !important; }
+  #artigos .section-head .section-title { grid-column: 1 / -1; }
+  #artigos .project-deliver { display: none; }
+  #artigos .project p { -webkit-line-clamp: 2; }
+  #artigos .project-foot .btn { min-height: 40px; padding-block: 8px; }
+  .carousel-btn { width: 40px; height: 40px; }
+  .tl-item { padding-left: 32px; }
+  .tl-item .tl-when { position: absolute; right: 0; top: 4px; }
+  .tl-item h3 { padding-right: 104px; }
+}
+/* short phones (≈ 740px tall and below) */
+@media (max-width: 833px) and (max-height: 800px) {
+  #artigos .project-body > p:not(.project-stack) { display: none; }
+  #artigos .section-title { font-size: 24px; }
+  .tl-item { padding-bottom: 12px; }
+  .tl-item p { font-size: 13px; line-height: 1.4; }
+  #trajetoria .section-head, #artigos .section-head { margin-bottom: 12px; }
+}
+
+/* =========================================================
+   13. PHONES — contact form, full-width actions, camera gap, rails
+   ========================================================= */
+@media (max-width: 833px) {
+  /* camera / notch clearance lives in components.css; sections subtract it here */
+  :root { --nav-h: calc(72px + var(--nav-safe)); }
+
+  /* contact: one field per row, content grows the section instead of being squeezed */
+  #contato { height: auto; }
+  .contact-card { gap: 32px; padding: 24px 20px; }
+  .contact-side { gap: 16px; }
+  .form { grid-template-columns: 1fr; gap: 16px; }
+  .field { gap: 8px; }
+  .field textarea { min-height: 128px; }
+  .email-row { display: grid; gap: 12px; }
+  .email { font-size: 16px; overflow-wrap: anywhere; justify-self: start; }
+  .form-foot { display: grid; gap: 16px; }
+  .form-foot small { font-size: 12px; line-height: 1.5; }
+
+  /* pills: the three socials share one row in equal columns */
+  .socials { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .socials .chip { justify-content: center; padding: 0 8px; white-space: nowrap; font-size: 13px; }
+
+  /* primary actions span the full width */
+  .hero-cta { display: grid; grid-template-columns: 1fr; width: 100%; }
+  .hero-cta .btn, .email-row .btn, .form-foot .btn, #resetForm, .works-more .btn { width: 100%; justify-content: center; justify-self: stretch !important; }
+  .email-row .btn, #resetForm, .works-more .btn { height: 48px; }
+  .works-more { display: grid; padding: 16px; }
+
+  /* swipe rails move sideways only */
+  #projetos .works, .services, .skills, #artigos .filters, .projects-grid { overflow-y: hidden; overscroll-behavior-y: auto; }
+}
+@media (hover: none) {
+  .work:hover { translate: none; box-shadow: none; }
+  .service:hover, .skills .chip:hover { transform: none; }
+}
+
+/* =========================================================
+   14. SPINE — vertical continuity between sections (decorative)
+   ========================================================= */
+/* Absolutely positioned inside <main>: it never changes a section's size, so the menu's
+   section tracking is untouched. JS sets its top/height, the dots and the fill (--spine). */
+.spine { position: absolute; left: var(--spine-x, 8px); top: 0; width: 1px; height: 0; z-index: 0; pointer-events: none; background: var(--border-glass); }
+.spine > i { position: absolute; inset: 0 0 auto; height: calc(100% * var(--spine, 0)); background: var(--eyebrow-text); }
+.spine-dot { position: absolute; left: 50%; width: 9px; height: 9px; margin: -4px 0 0 -4px; translate: -0.5px 0; border-radius: 50%; background: var(--bg); border: 1px solid var(--border-glass); transition: background-color .4s, border-color .4s, box-shadow .4s; }
+.spine-dot.is-past { border-color: var(--eyebrow-text); }
+.spine-dot.is-active { background: var(--eyebrow-text); border-color: var(--eyebrow-text); box-shadow: 0 0 0 4px var(--aurora-lilac-fill); }
+@media (prefers-reduced-motion: reduce) { .spine-dot { transition: none; } }
+
+/* =========================================================
+   15. FILL — content spreads over the one-screen section
+   ========================================================= */
+/* Sections keep the hero's height (--fit-h). Instead of a small block centred in it, the main
+   block of each section grows (flex: 1) and pushes its secondary content to the section floor,
+   so the empty band above and below the content disappears. Mobile contact still grows freely. */
+#servicos > .container, #trajetoria > .container, #contato > .container { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+/* Services: cards fill the free height; number on top, list on the card floor */
+#servicos .services { flex: 1; min-height: 0; }
+#servicos .service { display: flex; flex-direction: column; }
+#servicos .service ul { margin-top: auto; }
+#servicos .service .idx { font-size: clamp(14px, calc(2.4 * var(--vh)), 20px); }
+@media (min-width: 834px) { #servicos .service h3 { margin-top: auto; } }
+@media (min-width: 1180px) {
+  #servicos .service { padding: clamp(24px, calc(4 * var(--vh)), 48px); }
+  #servicos .service h3 { font-size: clamp(var(--typography-size-h4), calc(3.6 * var(--vh)), 36px); margin-top: auto; }
+  #servicos .service p { font-size: clamp(15px, calc(2 * var(--vh)), 18px); }
+  #servicos .service ul { font-size: clamp(14px, calc(1.8 * var(--vh)), 16px); gap: clamp(8px, calc(1.4 * var(--vh)), 12px); }
+}
+
+/* Timeline: first entry at the top, last at the floor, even steps between */
+#trajetoria .timeline { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 0; }
+#trajetoria .tl-item { padding-bottom: 0; }
+#trajetoria .tl-item + .tl-item { margin-top: clamp(12px, calc(2 * var(--vh)), 24px); }
+@media (min-width: 834px) {
+  #trajetoria .tl-item h3 { font-size: clamp(var(--typography-size-h4), calc(3.4 * var(--vh)), 32px); }
+  #trajetoria .tl-item .org, #trajetoria .tl-item p { font-size: clamp(15px, calc(2 * var(--vh)), 18px); }
+  #trajetoria .tl-when { font-size: clamp(13px, calc(1.7 * var(--vh)), 16px); }
+}
+@media (min-width: 1024px) {
+  #trajetoria > .container { display: grid; align-items: stretch; }
+  #trajetoria .section-head { align-self: center; }
+}
+
+/* Contact (tablet and up): the card fills the section, the message box takes the spare height */
+@media (min-width: 834px) {
+  #contato .contact-card { flex: 1; min-height: 0; }
+  #contato .contact-side { display: flex; flex-direction: column; }
+  #contato .email-row { margin-top: auto; }
+  #contato .form-wrap { display: flex; flex-direction: column; }
+  #contato .form { flex: 1; grid-template-rows: auto auto auto 1fr auto; }
+  #contato .field:has(textarea) { display: flex; flex-direction: column; }
+  #contato .field textarea { flex: 1; }
+}
+
+/* Articles (tablet and up): the carousel takes the free height, the cover grows with the slide */
+@media (min-width: 834px) {
+  #artigos .carousel { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  #artigos .projects-grid { flex: 1; min-height: 0; }
+  #artigos .cover { min-height: 220px; }
+}
+
+/* Continuity: each section's eyebrow is tied to the spine by a short branch, so the titles read
+   as stops on one line. The branch of the section marked in the menu lights up with its dot. */
+main [data-scene] .eyebrow { position: relative; }
+main [data-scene] .eyebrow::after { content: ""; position: absolute; top: 50%; right: calc(100% + 8px); width: max(0px, calc(var(--branch, 0px) - 12px)); height: 1px; background: var(--border-glass); transition: background-color .4s; pointer-events: none; }
+body[data-scene="hero"] [data-scene="hero"] .eyebrow::after,
+body[data-scene="projetos"] [data-scene="projetos"] .eyebrow::after,
+body[data-scene="artigos"] [data-scene="artigos"] .eyebrow::after,
+body[data-scene="servicos"] [data-scene="servicos"] .eyebrow::after,
+body[data-scene="trajetoria"] [data-scene="trajetoria"] .eyebrow::after,
+body[data-scene="contato"] [data-scene="contato"] .eyebrow::after { background: var(--eyebrow-text); }
+
+/* Stretched preview frame (.is-canvas): the few content minimums become fixed heights, so the
+   host's measurement (min-heights off) matches the real layout */
+@media (min-width: 834px) { .is-canvas #artigos .cover { min-height: 0; height: clamp(220px, calc(var(--fit-h) - 460px), 460px); } }
+@media (max-width: 833px) { .is-canvas .work, .is-canvas .work--lead { min-height: 0; height: clamp(280px, calc(var(--fit-h) - 340px), 460px); } }
+.is-canvas .field textarea { min-height: 0; height: clamp(72px, calc(12 * var(--vh)), 128px); }
