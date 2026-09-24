@@ -8,8 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Page content is loaded from Supabase: <main> stays hidden until it is rendered (is-ready, set by the page module);
+     the timer shows it anyway if the module ever fails -->
+<style>html:not(.is-ready) main{visibility:hidden}</style>
+<script>setTimeout(() => document.documentElement.classList.add('is-ready'), 4000)</script>
 <link rel="stylesheet" href="/src/styles/pages/projetos.css">
-<!-- Projects wiki — data: src/data/projects.js. State lives in the URL: projetos.html?q=prompt&tags=IA,Mobile&page=2
+<!-- Projects wiki — data: Supabase via src/lib/content.js (fallback src/data/projects.js). State lives in the URL: projetos.html?q=prompt&tags=IA,Mobile&page=2
      List styles: src/styles/wiki.css · behaviour: src/lib/wiki.js -->
 <script type="module" src="/src/pages/projetos.js" blocking="render"></script>
 </head>

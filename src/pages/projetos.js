@@ -1,6 +1,9 @@
-import { PROJECTS } from '../data/projects.js';
+import { loadContent } from '../lib/content.js';
 import { initWiki } from '../lib/wiki.js';
 import '../lib/overlays.js';
+
+const { projects: PROJECTS } = await loadContent(['projects']);
+document.documentElement.classList.add('is-ready');
 
 /* =========================================================
    WIKI — projects. Engine: src/lib/wiki.js

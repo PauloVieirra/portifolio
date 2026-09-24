@@ -1,5 +1,8 @@
-import { PROJECTS } from '../data/projects.js';
+import { loadContent } from '../lib/content.js';
 import '../lib/overlays.js';
+
+const { projects: PROJECTS } = await loadContent(['projects']);
+document.documentElement.classList.add('is-ready');
 
 /* =========================================================
    ARTICLE — pick the project from the URL and render it
@@ -22,7 +25,7 @@ const figure = (p, f) => `
       : `<div class="cover-ui glass"><span class="ln m"></span><span class="ln s"></span><span class="ln m"></span></div>`}</div>
     <figcaption>${f.caption}</figcaption>
   </figure>`;
-/* CTA to the published project. Until `url` is filled in src/data/projects.js it renders disabled. */
+/* CTA to the published project. Until `url` is filled in the admin it renders disabled. */
 const projectLink = (p, cls, label = 'Ver projeto publicado') => p.url
   ? `<a class="${cls}" href="${p.url}" target="_blank" rel="noopener" aria-label="${label}: ${p.title} (abre em nova aba)">${label} <span class="arrow">↗</span></a>`
   : `<a class="${cls}" aria-disabled="true" role="link">Link do projeto em breve</a>`;

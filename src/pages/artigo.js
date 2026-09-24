@@ -1,6 +1,8 @@
-import { ARTICLES } from '../data/articles.js';
-import { PROJECTS } from '../data/projects.js';
+import { loadContent } from '../lib/content.js';
 import '../lib/overlays.js';
+
+const { articles: ARTICLES, projects: PROJECTS } = await loadContent(['articles', 'projects']);
+document.documentElement.classList.add('is-ready');
 
 /* =========================================================
    ARTICLE — pick the article from the URL and render it

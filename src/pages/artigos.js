@@ -1,6 +1,9 @@
-import { ARTICLES } from '../data/articles.js';
+import { loadContent } from '../lib/content.js';
 import { initWiki } from '../lib/wiki.js';
 import '../lib/overlays.js';
+
+const { articles: ARTICLES } = await loadContent(['articles']);
+document.documentElement.classList.add('is-ready');
 
 /* =========================================================
    WIKI — articles. Engine: src/lib/wiki.js

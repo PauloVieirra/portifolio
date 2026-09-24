@@ -1,8 +1,14 @@
-import { PROJECTS } from '../data/projects.js';
-import { ARTICLES } from '../data/articles.js';
+import { loadContent } from '../lib/content.js';
+import { renderHome } from '../lib/home-render.js';
 import { closeOverlays } from '../lib/overlays.js';
 
-/* PROJECTS (src/data/projects.js) fill the featured bento and name each article's related project; ARTICLES (src/data/articles.js) fill the carousel */
+/* Content comes from Supabase (src/lib/content.js; falls back to src/data + the static HTML). The admin-managed
+   home blocks are rendered first, so the carousel, orbit, timeline and reveal code below see the final DOM.
+   PROJECTS fill the featured bento and name each article's related project; ARTICLES fill the carousel. */
+const { projects: PROJECTS, articles: ARTICLES, timeline: TIMELINE, site: SITE } =
+  await loadContent(['projects', 'articles', 'timeline', 'site']);
+renderHome(SITE, TIMELINE);
+document.documentElement.classList.add('is-ready');
 
 /* =========================================================
    IN-PAGE LINKS — scroll only this page
@@ -29,7 +35,7 @@ addEventListener('click', (e) => {
    ARTICLES — featured carousel, filter by tag, open reader
    ========================================================= */
 const grid = document.getElementById('projectsGrid');
-/* Reader page is assembled from src/data/articles.js using the id in the URL */
+/* Reader page is assembled from the article id in the URL */
 const articleHref = (a) => `artigo.html?a=${encodeURIComponent(a.id)}`;
 const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/\./g, '').replace(/ de /g, ' ');
 const FEATURED = [...ARTICLES].sort((a, b) => b.date.localeCompare(a.date));
@@ -166,7 +172,7 @@ updateCarousel();
 /* =========================================================
    PROJECTS — featured bento; open the case study
    ========================================================= */
-/* `featured: true` in src/data/projects.js picks the cases; without it, the first three */
+/* "Destaque na home" (featured) in the admin picks the cases; without it, the first three */
 const worksEl = document.getElementById('works');
 const projectHref = (p) => `projeto.html?p=${encodeURIComponent(p.id)}`;
 const flagged = PROJECTS.filter(p => p.featured);

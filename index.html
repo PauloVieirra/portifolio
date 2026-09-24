@@ -21,6 +21,10 @@
   addEventListener('resize', fit);
 })();
 </script>
+<!-- Page content is loaded from Supabase: <main> stays hidden until it is rendered (is-ready, set by the page module);
+     the timer shows it anyway if the module ever fails -->
+<style>html:not(.is-ready) main{visibility:hidden}</style>
+<script>setTimeout(() => document.documentElement.classList.add('is-ready'), 4000)</script>
 <link rel="stylesheet" href="/src/styles/pages/home.css">
 <script type="module" src="/src/pages/home.js" blocking="render"></script>
 </head>
@@ -164,7 +168,7 @@
       </div>
     </section>
 
-    <!-- PROJETOS EM DESTAQUE — bento rendered from src/data/projects.js -->
+    <!-- PROJETOS EM DESTAQUE — bento rendered from the projects in Supabase (src/lib/content.js) -->
     <section class="section" id="projetos" data-scene="projetos">
       <div class="container">
         <div class="section-head">
