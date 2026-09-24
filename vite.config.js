@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 // Multi-page site: every HTML file at the root is its own entry (and its own URL).
-const pages = ['index', 'projetos', 'projeto', 'artigos', 'artigo', 'design-system'];
+const pages = ['index', 'projetos', 'projeto', 'artigos', 'artigo', 'design-system', 'admin'];
 
 /* The page scripts used to be classic scripts at the end of <body>, so the content they render
    (bento, carousel, case study, article) was in the DOM before the first paint — which the
