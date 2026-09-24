@@ -54,7 +54,7 @@ Configuração única no painel do Supabase:
 3. **Authentication → Sign In / Providers**: desligue *Allow new users to sign up*.
 4. **SQL Editor**: `insert into public.admins (user_id) select id from auth.users where email = 'SEU_EMAIL';`
 
-Depois acesse `/admin.html`. O site público lê o conteúdo publicado a cada carregamento; se o Supabase não responder em 2,5 s,
+Depois entre em `/login` (o painel fica em `/admin.html`; sem sessão, ele manda para `/login`). O site público lê o conteúdo publicado a cada carregamento; se o Supabase não responder em 2,5 s,
 usa a cópia de `src/data/` e o HTML estático da home.
 
 ## Conteúdo

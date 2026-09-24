@@ -1,6 +1,5 @@
 import { supabase } from '../../lib/supabase.js';
 import { h } from './ui.js';
-import { renderLogin } from './login.js';
 import { renderProjects } from './projects.js';
 import { renderArticles } from './articles.js';
 import { renderTimeline } from './timeline.js';
@@ -19,14 +18,14 @@ export const SECTIONS = {
 };
 
 const app = document.getElementById('admin');
-let shown = null;
+let shown = false;
 
-/* Supabase advises not to await its own calls inside this callback: defer the work. */
+/* No session (or signed out) → /login. Supabase advises not to await its own calls inside this callback: defer the work. */
 supabase.auth.onAuthStateChange((_event, session) => {
-  const next = session ? 'app' : 'login';
-  if (next === shown) return;
-  shown = next;
-  setTimeout(() => (session ? showApp(session) : renderLogin(app)), 0);
+  if (!session) { location.replace('login.html'); return; }
+  if (shown) return;
+  shown = true;
+  setTimeout(() => showApp(session), 0);
 });
 
 async function showApp(session) {

@@ -78,6 +78,20 @@ await step('sem login, nenhuma escrita passa pela RLS', async () => {
   assert.ok(up.error, 'upload anônimo deveria falhar');
 });
 
+await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
+  const page = await browser.newPage();
+  await page.goto(`${BASE}/login`);
+  await page.getByRole('button', { name: 'Entrar' }).waitFor();
+  await page.getByLabel('E-mail').fill('ninguem@example.com');
+  await page.getByLabel('Senha').fill('senha-errada-123');
+  await page.getByRole('button', { name: 'Entrar' }).click();
+  await page.getByText('E-mail ou senha incorretos.').waitFor();
+  assert.equal(await page.locator('meta[name=robots]').getAttribute('content'), 'noindex, nofollow');
+  await page.goto(`${BASE}/admin.html`);
+  await page.waitForURL(/\/login(\.html)?$/);
+  await page.close();
+});
+
 await step('rascunhos não aparecem para visitantes', async () => {
   assert.equal((await rows('projects', ['published', false])).length, 0);
   assert.equal((await rows('articles', ['published', false])).length, 0);
