@@ -90,6 +90,21 @@ await step('tag repetida nas bolhas é bloqueada', async () => {
   assert.deepEqual(after, before);
 });
 
+await step('trajetória, serviços e contato carregam e validam sem gravar', async () => {
+  const { data: tl } = await anon.from('timeline').select('title').order('position');
+  await page.goto(`${BASE}/admin.html#trajetoria`);
+  await page.getByText(tl[0].title, { exact: true }).waitFor();
+  await page.goto(`${BASE}/admin.html#servicos`);
+  await page.getByRole('button', { name: 'Salvar serviços' }).waitFor();
+  const before = (await anon.from('site_content').select('value').eq('key', 'contact').single()).data.value;
+  await page.goto(`${BASE}/admin.html#contato`);
+  await page.getByLabel('GitHub').fill('github.com/sem-https');
+  await page.getByRole('button', { name: 'Salvar contato' }).click();
+  await page.getByText(/GitHub: use um link completo/).waitFor();
+  const after = (await anon.from('site_content').select('value').eq('key', 'contact').single()).data.value;
+  assert.deepEqual(after, before);
+});
+
 await step('limpeza: exclui artigo, projeto e imagem de teste', async () => {
   await page.goto(`${BASE}/admin.html#artigos`);
   await page.locator('.adm-row', { hasText: 'Artigo E2E' }).getByRole('button', { name: 'Excluir' }).click();
