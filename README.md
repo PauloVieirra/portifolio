@@ -45,6 +45,18 @@ design-export/        handoff original: DESIGN-HANDOFF.md, manifesto, evidência
 publishable ficam em `.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`). A chave publishable vai para o
 navegador por design; o que cada visitante pode ler/gravar é definido pelas políticas RLS das tabelas.
 
+## Área de gestão (`admin.html`)
+
+Configuração única no painel do Supabase:
+
+1. **SQL Editor** → cole e execute `supabase/schema.sql`; depois `supabase/seed.sql` (conteúdo inicial, gerado por `npm run seed`).
+2. **Authentication → Users → Add user**: seu e-mail e uma senha forte, marcando *Auto Confirm User*.
+3. **Authentication → Sign In / Providers**: desligue *Allow new users to sign up*.
+4. **SQL Editor**: `insert into public.admins (user_id) select id from auth.users where email = 'SEU_EMAIL';`
+
+Depois acesse `/admin.html`. O site público lê o conteúdo publicado a cada carregamento; se o Supabase não responder em 2,5 s,
+usa a cópia de `src/data/` e o HTML estático da home.
+
 ## Conteúdo
 
 Projetos e artigos são editados só em `src/data/`. Os campos estão documentados no topo de cada arquivo.
