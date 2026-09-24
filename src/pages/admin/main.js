@@ -1,10 +1,11 @@
 import { supabase } from '../../lib/supabase.js';
 import { h } from './ui.js';
 import { renderLogin } from './login.js';
+import { renderProjects } from './projects.js';
 
 /* hash → [menu label, screen renderer]. Screens receive the view element and render into it. */
 export const SECTIONS = {
-  projetos: ['Projetos', async (root) => root.replaceChildren(h('p', { class: 'adm-empty' }, 'Projetos'))],
+  projetos: ['Projetos', renderProjects],
 };
 
 const app = document.getElementById('admin');
