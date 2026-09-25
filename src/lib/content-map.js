@@ -47,3 +47,14 @@ export const toArticleRow = (a, position) => ({
   title: a.title, summary: a.summary, intro: a.intro ?? '', sections: a.sections ?? [],
   featured: !!a.featured, gallery: a.gallery ?? [],
 });
+
+/* home carousel filters: the most used tags (ties alphabetical), without tags every article has
+   (a filter that shows everything is the same as "Todos") */
+export const filterTags = (articles, max = 5) => {
+  const count = new Map();
+  articles.forEach(a => new Set(a.tags || []).forEach(t => count.set(t, (count.get(t) || 0) + 1)));
+  return [...count]
+    .filter(([, n]) => articles.length < 2 || n < articles.length)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'pt'))
+    .slice(0, max).map(([t]) => t);
+};

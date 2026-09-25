@@ -1,6 +1,6 @@
 import { loadContent } from '../lib/content.js';
-import { renderHome } from '../lib/home-render.js';
-import { featuredFirst } from '../lib/content-map.js';
+import { renderHome, esc } from '../lib/home-render.js';
+import { featuredFirst, filterTags } from '../lib/content-map.js';
 import { closeOverlays } from '../lib/overlays.js';
 
 /* Content comes from Supabase (src/lib/content.js; falls back to src/data + the static HTML). The admin-managed
@@ -78,6 +78,10 @@ if (!ARTICLES.length) {
   });
   /* coming back from an article: clear the morph name so only one element carries it */
   addEventListener('pageshow', () => grid.querySelectorAll('.cover').forEach(c => { c.style.viewTransitionName = ''; }));
+
+  /* filters come from the published articles' tags (src/lib/content-map.js · filterTags) */
+  document.querySelector('#artigos .filters').innerHTML = ['todos', ...filterTags(ARTICLES)].map((t, i) =>
+    `<button class="filter" aria-pressed="${i === 0}" data-filter="${esc(t)}">${i === 0 ? 'Todos' : esc(t)}</button>`).join('');
 
   document.querySelectorAll('.filter').forEach(btn => btn.addEventListener('click', () => {
     document.querySelectorAll('.filter').forEach(b => b.setAttribute('aria-pressed', b === btn));

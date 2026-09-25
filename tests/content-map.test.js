@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { PROJECTS } from '../src/data/projects.js';
 import { ARTICLES } from '../src/data/articles.js';
-import { fromProjectRow, toProjectRow, fromArticleRow, toArticleRow, AURORA, featuredFirst } from '../src/lib/content-map.js';
+import { fromProjectRow, toProjectRow, fromArticleRow, toArticleRow, AURORA, featuredFirst, filterTags } from '../src/lib/content-map.js';
 
 describe('project rows', () => {
   it('round-trips every bundled project', () => PROJECTS.forEach((p, i) =>
@@ -46,4 +46,13 @@ describe('galleries, section images and featured articles', () => {
     const list = [{ id: 'a' }, { id: 'b', featured: true }, { id: 'c' }, { id: 'd', featured: true }];
     expect(featuredFirst(list).map(x => x.id)).toEqual(['b', 'd', 'a', 'c']);
   });
+});
+
+describe('filterTags', () => {
+  const arts = [{ tags: ['UX', 'IA'] }, { tags: ['UX', 'IA', 'Acessibilidade'] }, { tags: ['UX', 'Comunicação'] }, { tags: ['UX', 'Acessibilidade'] }];
+  it('ranks by use, then alphabetically, skipping tags every article has', () =>
+    expect(filterTags(arts)).toEqual(['Acessibilidade', 'IA', 'Comunicação']));
+  it('limits the count', () => expect(filterTags(arts, 2)).toEqual(['Acessibilidade', 'IA']));
+  it('keeps a shared tag when there is a single article', () => expect(filterTags([{ tags: ['UX', 'IA'] }])).toEqual(['IA', 'UX']));
+  it('handles no articles', () => expect(filterTags([])).toEqual([]));
 });

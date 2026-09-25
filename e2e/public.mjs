@@ -159,6 +159,21 @@ await step('home: artigo em destaque abre o carrossel', async () => {
   await page.close();
 });
 
+await step('home: filtros saem das tags dos artigos e filtram o carrossel', async () => {
+  const art = (id, tags) => ({ id, date: '2026-01-01', published: true, title: id.toUpperCase(), summary: 's', tags, read_min: 1, sections: [] });
+  const page = await browser.newPage(); const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(/\/rest\/v1\/articles/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([
+    art('a', ['UX', 'Acessibilidade']), art('b', ['UX', 'IA', 'Acessibilidade']), art('c', ['UX', 'P&D <x>'])]) }));
+  await page.goto(`${BASE}/index.html`);
+  await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  assert.deepEqual(await page.locator('#artigos .filter').allTextContents(), ['Todos', 'Acessibilidade', 'IA', 'P&D <x>']);
+  await page.locator('#artigos .filter', { hasText: 'Acessibilidade' }).click();
+  assert.equal(await page.locator('#projectsGrid .project:not(.is-hidden)').count(), 2);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
   const page = await browser.newPage();
   await page.goto(`${BASE}/login`);
