@@ -79,7 +79,8 @@ await step('sem login, nenhuma escrita passa pela RLS', async () => {
 });
 
 await step('estudo de caso: entregas continuam como pílulas e o markdown não aparece cru', async () => {
-  const { page, errors } = await open('projeto.html?p=lumen');
+  const [first] = await rows('projects', ['published', true]);
+  const { page, errors } = await open(`projeto.html?p=${first.id}`);
   assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.deliver-list')).display), 'flex');
   assert.doesNotMatch(await page.locator('.prose').innerText(), /\*\*|^#{1,6}\s/m);
   assert.deepEqual(errors, []);
