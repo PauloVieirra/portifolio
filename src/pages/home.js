@@ -1,4 +1,5 @@
 import { loadContent } from '../lib/content.js';
+import { showConstructionNotice } from '../lib/notice.js';
 import { renderHome, esc } from '../lib/home-render.js';
 import { featuredFirst, filterTags } from '../lib/content-map.js';
 import { closeOverlays } from '../lib/overlays.js';
@@ -10,6 +11,7 @@ const { projects: PROJECTS, articles: ARTICLES, timeline: TIMELINE, site: SITE }
   await loadContent(['projects', 'articles', 'timeline', 'site']);
 renderHome(SITE, TIMELINE);
 document.documentElement.classList.add('is-ready');
+showConstructionNotice();
 
 /* =========================================================
    IN-PAGE LINKS — scroll only this page

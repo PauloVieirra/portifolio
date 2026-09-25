@@ -303,3 +303,13 @@ main, .topnav, .site-footer { position: relative; z-index: 1; }
 .drawer-panel nav a:hover, .drawer-panel nav a.is-active { color: var(--fg); }
 .drawer-panel nav a.is-active { font-weight: var(--typography-weight-medium); }
 .drawer-panel nav a.is-active::before { transform: scale(1); margin-left: 0; }
+
+/* "Em construção" notice (src/lib/notice.js) — first visit only, never covers the whole page */
+.site-notice { position: fixed; z-index: 60; right: 24px; bottom: 24px; width: min(360px, calc(100vw - 32px));
+  padding: 20px; border-radius: var(--radius-lg); display: grid; gap: 10px; justify-items: start;
+  opacity: 0; translate: 0 16px; transition: opacity .3s var(--ease-out), translate .3s var(--ease-out); }
+.site-notice.is-in { opacity: 1; translate: 0 0; }
+.site-notice .eyebrow { margin: 0; }
+.site-notice p:not(.eyebrow) { margin: 0; font-size: 14px; line-height: 1.5; color: var(--fg); }
+@media (max-width: 599px) { .site-notice { right: 16px; bottom: 16px; } }
+@media (prefers-reduced-motion: reduce) { .site-notice { transition: none; translate: none; } }

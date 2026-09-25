@@ -1,4 +1,5 @@
 import { loadContent } from '../lib/content.js';
+import { showConstructionNotice } from '../lib/notice.js';
 import { md, mdInline, isLead, groupItems } from '../lib/markdown.js';
 import { sectionImages, figuresHTML } from '../lib/figures.js';
 import { initLightbox } from '../lib/lightbox.js';
@@ -6,6 +7,7 @@ import '../lib/overlays.js';
 
 const { projects: PROJECTS } = await loadContent(['projects']);
 document.documentElement.classList.add('is-ready');
+showConstructionNotice();
 
 /* =========================================================
    ARTICLE — pick the project from the URL and render it

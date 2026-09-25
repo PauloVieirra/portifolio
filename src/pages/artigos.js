@@ -1,9 +1,11 @@
 import { loadContent } from '../lib/content.js';
+import { showConstructionNotice } from '../lib/notice.js';
 import { initWiki } from '../lib/wiki.js';
 import '../lib/overlays.js';
 
 const { articles: ARTICLES } = await loadContent(['articles']);
 document.documentElement.classList.add('is-ready');
+showConstructionNotice();
 
 /* =========================================================
    WIKI — articles. Engine: src/lib/wiki.js

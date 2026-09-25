@@ -174,6 +174,26 @@ await step('home: filtros saem das tags dos artigos e filtram o carrossel', asyn
   await page.close();
 });
 
+await step('aviso de portfólio em construção: aparece na primeira visita e some depois de fechar', async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await ctx.newPage(); const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.goto(`${BASE}/index.html`);
+  const notice = page.getByRole('region', { name: 'Aviso' });
+  await notice.waitFor({ timeout: 8000 });
+  assert.match(await notice.textContent(), /em construção/i);
+  await notice.getByRole('button', { name: 'Entendi' }).click();
+  await notice.waitFor({ state: 'detached' });
+  await page.goto(`${BASE}/projetos.html`);
+  await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  await page.waitForTimeout(1500);
+  assert.equal(await page.getByRole('region', { name: 'Aviso' }).count(), 0);
+  const admin = await ctx.newPage(); await admin.goto(`${BASE}/login`); await admin.waitForTimeout(1500);
+  assert.equal(await admin.getByRole('region', { name: 'Aviso' }).count(), 0);
+  assert.deepEqual(errors, []);
+  await ctx.close();
+});
+
 await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
   const page = await browser.newPage();
   await page.goto(`${BASE}/login`);
