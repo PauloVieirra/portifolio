@@ -79,8 +79,18 @@ await step('sem login, nenhuma escrita passa pela RLS', async () => {
 });
 
 await step('estudo de caso: entregas continuam como pílulas e o markdown não aparece cru', async () => {
-  const [first] = await rows('projects', ['published', true]);
-  const { page, errors } = await open(`projeto.html?p=${first.id}`);
+  // fixed fixture: checks the renderer, not whatever content is in the database today
+  const fixture = [{ id: 'e2e-md', position: 0, published: true, featured: false, title: 'E2E', summary: 'Resumo.', cat_label: 'Produto', year: '2026',
+    tags: ['UX'], role: 'Papel **em negrito**.', challenge: 'Desafio com *itálico*.', stack: 'Figma', deliver: ['Gestão, incluindo:', '- Criação', 'Outra'],
+    article: { intro: 'Intro curta.', sections: [{ id: 's', title: 'Seção', body: ['### Subtítulo', 'Texto **forte** e lista:\n- um\n- dois'] }] } }];
+  const page0 = await browser.newPage();
+  await page0.route(/\/rest\/v1\/projects/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) }));
+  const errors = []; page0.on('pageerror', e => errors.push(e.message));
+  await page0.goto(`${BASE}/projeto.html?p=e2e-md`);
+  await page0.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  const page = page0;
+  assert.equal(await page.locator('.prose h3').first().textContent(), 'Subtítulo');
+  assert.equal(await page.locator('.deliver-list li').count(), 2);
   assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.deliver-list')).display), 'flex');
   assert.doesNotMatch(await page.locator('.prose').innerText(), /\*\*|^#{1,6}\s/m);
   assert.deepEqual(errors, []);
