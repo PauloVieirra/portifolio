@@ -52,16 +52,16 @@ if (!ARTICLES.length) {
   grid.innerHTML = FEATURED.map((a, i) => {
     const rel = projectOf(a);
     return `
-    <article class="project glass" aria-roledescription="slide" aria-label="${i + 1} de ${FEATURED.length}: ${a.title}" style="--c1:${a.c1}; --c2:${a.c2}" data-tags="${a.tags.join('|')}" data-index="${i}">
+    <article class="project glass" aria-roledescription="slide" aria-label="${i + 1} de ${FEATURED.length}: ${esc(a.title)}" style="--c1:${a.c1}; --c2:${a.c2}" data-tags="${esc(a.tags.join('|'))}" data-index="${i}">
       <div class="cover">${a.img
-        ? `<img src="${a.img}" alt="Capa do artigo ${a.title}" loading="lazy" width="1600" height="1000">`
-        : `<div class="cover-ui glass"><span class="tag">${a.tag}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
+        ? `<img src="${esc(a.img)}" alt="Capa do artigo ${esc(a.title)}" loading="lazy" width="1600" height="1000">`
+        : `<div class="cover-ui glass"><span class="tag">${esc(a.tag)}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
       <div class="project-body">
-        <div class="project-meta"><time datetime="${a.date}">${fmtDate(a.date)}</time><span><span class="num">${a.readMin}</span> min de leitura</span></div>
-        <h3><a class="project-open" href="${articleHref(a)}">${a.title}</a></h3>
-        <p>${a.summary}</p>
-        <ul class="project-deliver" aria-label="Temas">${a.tags.map(t => `<li>${t}</li>`).join('')}</ul>
-        ${rel ? `<p class="project-stack">Projeto relacionado: ${rel.title}</p>` : ''}
+        <div class="project-meta"><time datetime="${esc(a.date)}">${fmtDate(a.date)}</time><span><span class="num">${esc(a.readMin)}</span> min de leitura</span></div>
+        <h3><a class="project-open" href="${articleHref(a)}">${esc(a.title)}</a></h3>
+        <p>${esc(a.summary)}</p>
+        <ul class="project-deliver" aria-label="Temas">${a.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+        ${rel ? `<p class="project-stack">Projeto relacionado: ${esc(rel.title)}</p>` : ''}
         <div class="project-foot">
           <a class="btn btn-ghost" href="${articleHref(a)}">Ler artigo <span class="arrow" aria-hidden="true">→</span></a>
           <span class="project-more" aria-hidden="true"><span class="num">${a.sections.length}</span> seções</span>
@@ -195,15 +195,15 @@ const worksRest = PROJECTS.length - WORKS.length;
 worksEl.innerHTML = WORKS.map((p, i) => `
   <a class="work reveal${i === 0 ? ' work--lead' : ''}" href="${projectHref(p)}" style="--i:${i}; --c1:${p.c1}; --c2:${p.c2}">
     <div class="cover" aria-hidden="true">${p.img
-      ? `<img src="${p.img}" alt="" loading="lazy" width="1600" height="1000">`
-      : `<div class="cover-ui glass"><span class="tag">${p.tag}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
+      ? `<img src="${esc(p.img)}" alt="" loading="lazy" width="1600" height="1000">`
+      : `<div class="cover-ui glass"><span class="tag">${esc(p.tag)}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
     <span class="work-go glass" aria-hidden="true">→</span>
     <div class="work-panel glass">
-      <div class="work-meta"><span>${p.catLabel}</span><span class="num">${p.year}</span></div>
-      <h3>${p.title}</h3>
+      <div class="work-meta"><span>${esc(p.catLabel)}</span><span class="num">${esc(p.year)}</span></div>
+      <h3>${esc(p.title)}</h3>
       <div class="work-more"><div>
-        <p>${p.summary}</p>
-        <ul class="work-tags" aria-label="Temas">${p.tags.map(t => `<li>${t}</li>`).join('')}</ul>
+        <p>${esc(p.summary)}</p>
+        <ul class="work-tags" aria-label="Temas">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
       </div></div>
     </div>
   </a>`).join('') + (worksRest > 0 ? `

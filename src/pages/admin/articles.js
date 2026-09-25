@@ -1,6 +1,6 @@
 import { h, field, input, textarea, select, checkbox, toast, guard, busy, csv, pageHead } from './ui.js';
 import { listRows, insertRow, updateRow } from './db.js';
-import { slugify, validateSlug, nextPosition, normalizeImages } from '../../lib/admin-rules.js';
+import { slugify, validateSlug, nextPosition, normalizeImages, validateImageUrl } from '../../lib/admin-rules.js';
 import { AURORA, AURORA_OPTIONS } from '../../lib/content-map.js';
 import { imageField, imagesEditor } from './media.js';
 import { sectionsEditor } from './sections.js';
@@ -48,6 +48,8 @@ function editArticle(root, row, all, projects) {
     const slugOk = validateSlug(id, all.map(r => r.id), row?.id ?? null);
     if (slugOk !== true) { toast(slugOk, 'error'); f.id.focus(); return; }
     if (!f.title.value.trim() || !f.summary.value.trim() || !f.date.value) { toast('Título, resumo e data são obrigatórios.', 'error'); return; }
+    const coverOk = validateImageUrl(img.value());
+    if (coverOk !== true) { toast(`Capa: ${coverOk}`, 'error'); return; }
     const data = {
       id, title: f.title.value.trim(), summary: f.summary.value.trim(), date: f.date.value,
       read_min: f.read_min.value ? Math.max(1, parseInt(f.read_min.value, 10)) : null, tags: csv(f.tags.value), tag: f.tag.value.trim() || null,

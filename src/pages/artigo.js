@@ -2,6 +2,7 @@ import { loadContent } from '../lib/content.js';
 import { showConstructionNotice } from '../lib/notice.js';
 import { md, mdInline, isLead } from '../lib/markdown.js';
 import { sectionImages, figuresHTML } from '../lib/figures.js';
+import { esc } from '../lib/home-render.js';
 import { initLightbox } from '../lib/lightbox.js';
 import '../lib/overlays.js';
 
@@ -26,8 +27,8 @@ const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR',
 
 const cover = (a, cls = '', label = a.tag) => `
   <div class="cover ${cls}" style="--c1:${a.c1}; --c2:${a.c2}">${a.img
-    ? `<img src="${a.img}" alt="Capa: ${a.title}" width="1600" height="1000">`
-    : `<div class="cover-ui glass"><span class="tag">${label}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>`;
+    ? `<img src="${esc(a.img)}" alt="Capa: ${esc(a.title)}" width="1600" height="1000">`
+    : `<div class="cover-ui glass"><span class="tag">${esc(label)}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>`;
 
 const renderNotFound = () => {
   document.title = 'Artigo não encontrado — Paulo Vieira';
@@ -52,13 +53,13 @@ const renderArticle = (a) => {
     <article>
       <header class="container art-head" data-scene="hero">
         <a class="back-link reveal" href="artigos.html">← Todos os artigos</a>
-        <p class="eyebrow reveal" style="--i:1"><time datetime="${a.date}">${fmtDate(a.date)}</time> · <span class="num">${a.readMin}</span> min de leitura</p>
-        <h1 class="art-title reveal" style="--i:2">${a.title}</h1>
+        <p class="eyebrow reveal" style="--i:1"><time datetime="${esc(a.date)}">${fmtDate(a.date)}</time> · <span class="num">${esc(a.readMin)}</span> min de leitura</p>
+        <h1 class="art-title reveal" style="--i:2">${esc(a.title)}</h1>
         <p class="art-intro reveal" style="--i:3">${mdInline(longIntro || !a.intro ? a.summary : a.intro)}</p>
         <div class="byline reveal" style="--i:4">
           <p class="author"><span class="brand-mark" aria-hidden="true">PV</span><span><b>Paulo Vieira</b><span>UX IA Engineer</span></span></p>
-          <ul class="art-tags" aria-label="Temas">${(a.tags || []).map(t =>
-            `<li><a href="artigos.html?tags=${encodeURIComponent(t)}">${t}</a></li>`).join('')}</ul>
+          ${(a.tags || []).length ? `<ul class="art-tags" aria-label="Temas">${a.tags.map(t =>
+            `<li><a href="artigos.html?tags=${encodeURIComponent(t)}">${esc(t)}</a></li>`).join('')}</ul>` : ''}
         </div>
       </header>
 
@@ -68,15 +69,15 @@ const renderArticle = (a) => {
         <nav class="toc" aria-label="Neste artigo">
           <p class="eyebrow">Neste artigo</p>
           ${longIntro ? '<a href="#introducao" data-toc="introducao">Introdução</a>' : ''}
-          ${sections.map(s => `<a href="#${s.id}" data-toc="${s.id}">${s.title}</a>`).join('')}
+          ${sections.map(s => `<a href="#${esc(s.id)}" data-toc="${esc(s.id)}">${esc(s.title)}</a>`).join('')}
           ${a.gallery?.length ? '<a href="#galeria" data-toc="galeria">Galeria</a>' : ''}
           ${project ? `<a class="btn btn-ghost btn-sm" href="projeto.html?p=${encodeURIComponent(project.id)}">Ver o projeto <span class="arrow">→</span></a>` : ''}
         </nav>
         <div class="prose">
           ${longIntro ? `<section class="prose-sec" id="introducao">${md(a.intro, { cls: 'reveal' })}</section>` : ''}
           ${sections.map(s => `
-            <section class="prose-sec" id="${s.id}">
-              <h2 class="reveal">${s.title}</h2>
+            <section class="prose-sec" id="${esc(s.id)}">
+              <h2 class="reveal">${esc(s.title)}</h2>
               ${md(s.body.join('\n\n'), { cls: 'reveal' })}
               ${s.quote ? `<blockquote class="pull reveal">${mdInline(s.quote)}</blockquote>` : ''}
               ${figuresHTML(sectionImages(s), a)}
@@ -88,26 +89,26 @@ const renderArticle = (a) => {
       <footer class="container art-end" data-scene="contato">
         <div class="end-cta glass reveal">
           <p class="eyebrow">Continue lendo</p>
-          <h2><strong>Mais</strong> artigos sobre ${(a.tags || ['design'])[0]}</h2>
+          <h2><strong>Mais</strong> artigos sobre ${esc((a.tags || [])[0] || 'design')}</h2>
           <a class="btn btn-primary" href="artigos.html?tags=${encodeURIComponent((a.tags || [])[0] || '')}">Ver artigos <span class="arrow">→</span></a>
         </div>
         <div class="end-grid">
           ${project ? `
-          <a class="next-card related glass reveal" href="projeto.html?p=${encodeURIComponent(project.id)}" aria-label="Projeto relacionado: ${project.title}">
+          <a class="next-card related glass reveal" href="projeto.html?p=${encodeURIComponent(project.id)}" aria-label="Projeto relacionado: ${esc(project.title)}">
             ${cover(project, '', project.tag)}
             <div class="next-info">
               <p class="eyebrow">Projeto relacionado</p>
-              <h3>${project.title}</h3>
+              <h3>${esc(project.title)}</h3>
               <p class="go">Ler estudo de caso →</p>
             </div>
           </a>` : ''}
           ${next && next !== a ? `
-          <a class="next-card glass reveal" href="artigo.html?a=${encodeURIComponent(next.id)}" aria-label="Próximo artigo: ${next.title}">
+          <a class="next-card glass reveal" href="artigo.html?a=${encodeURIComponent(next.id)}" aria-label="Próximo artigo: ${esc(next.title)}">
             ${cover(next)}
             <div class="next-info">
               <p class="eyebrow">Próximo artigo</p>
-              <h3>${next.title}</h3>
-              <p class="go"><span class="num">${next.readMin}</span> min de leitura →</p>
+              <h3>${esc(next.title)}</h3>
+              <p class="go"><span class="num">${esc(next.readMin)}</span> min de leitura →</p>
             </div>
           </a>` : ''}
         </div>

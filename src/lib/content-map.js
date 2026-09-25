@@ -3,6 +3,8 @@ export const AURORA = ['violet', 'blue', 'mint', 'peach', 'rose', 'lilac'].map(n
 export const AURORA_OPTIONS = AURORA.map(v => [v, v.match(/aurora-(\w+)-fill/)[1]]);
 
 const str = (v) => v ?? '';
+/* cover colours go into inline styles: only the aurora tokens are accepted */
+const color = (v, i) => AURORA.includes(v) ? v : AURORA[i];
 const sections = (list) => (list || []).map(s => {
   const out = { id: s.id, title: str(s.title), body: Array.isArray(s.body) ? s.body : [] };
   if (s.quote) out.quote = s.quote;
@@ -17,7 +19,7 @@ export const featuredFirst = (list) => [...list].sort((a, b) => (b.featured ? 1 
 
 export const fromProjectRow = (r) => ({
   id: r.id, tags: r.tags || [], url: str(r.url), img: str(r.img), cat: str(r.cat), catLabel: str(r.cat_label),
-  year: str(r.year), tag: str(r.tag), c1: r.c1 || AURORA[0], c2: r.c2 || AURORA[1],
+  year: str(r.year), tag: str(r.tag), c1: color(r.c1, 0), c2: color(r.c2, 1),
   title: str(r.title), summary: str(r.summary), challenge: str(r.challenge), role: str(r.role),
   deliver: r.deliver || [], stack: str(r.stack),
   article: { intro: str(r.article?.intro), sections: sections(r.article?.sections) },
@@ -27,7 +29,7 @@ export const fromProjectRow = (r) => ({
 
 export const fromArticleRow = (r) => ({
   id: r.id, date: r.date, readMin: r.read_min ?? 1, tags: r.tags || [], img: str(r.img), project: str(r.project),
-  c1: r.c1 || AURORA[0], c2: r.c2 || AURORA[1], tag: str(r.tag),
+  c1: color(r.c1, 0), c2: color(r.c2, 1), tag: str(r.tag),
   title: str(r.title), summary: str(r.summary), intro: str(r.intro), sections: sections(r.sections),
   featured: !!r.featured, gallery: images(r.gallery),
 });

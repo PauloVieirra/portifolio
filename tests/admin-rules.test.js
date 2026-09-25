@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   slugify, validateSlug, findDuplicateTags, validateBubbles, validateContact,
-  validateImage, paragraphs, joinParagraphs, normalizeSections, nextPosition, normalizeImages,
+  validateImage, paragraphs, joinParagraphs, normalizeSections, nextPosition, normalizeImages, validateUrl, validateImageUrl,
 } from '../src/lib/admin-rules.js';
 
 const bubble = (value, ...tags) => ({ value, label: 'Rótulo', tags: tags.map(label => ({ label, icon: 'i-atom' })) });
@@ -94,4 +94,13 @@ describe('nextPosition', () => {
 describe('normalizeImages', () => {
   it('trims and drops images without src', () => expect(normalizeImages([{ src: ' g.png ', caption: ' G ' }, { src: ' ', caption: 'x' }])).toEqual([{ src: 'g.png', caption: 'G' }]));
   it('accepts nothing', () => expect(normalizeImages(undefined)).toEqual([]));
+});
+
+describe('validateUrl / validateImageUrl', () => {
+  it('accepts empty and full http(s) links', () => { expect(validateUrl('')).toBe(true); expect(validateUrl('https://a.com/x')).toBe(true); });
+  it('rejects links without protocol and javascript:', () => { expect(validateUrl('meuprojeto.com.br')).toMatch(/https:\/\//); expect(validateUrl('javascript:alert(1)')).toMatch(/https:\/\//); });
+  it('accepts image urls and local assets, rejects others', () => {
+    expect(validateImageUrl('https://a.com/i.png')).toBe(true); expect(validateImageUrl('assets/images/x.png')).toBe(true); expect(validateImageUrl('')).toBe(true);
+    expect(validateImageUrl('x" onerror="alert(1)')).toMatch(/imagem/);
+  });
 });

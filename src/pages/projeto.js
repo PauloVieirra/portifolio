@@ -2,6 +2,7 @@ import { loadContent } from '../lib/content.js';
 import { showConstructionNotice } from '../lib/notice.js';
 import { md, mdInline, isLead, groupItems } from '../lib/markdown.js';
 import { sectionImages, figuresHTML } from '../lib/figures.js';
+import { esc } from '../lib/home-render.js';
 import { initLightbox } from '../lib/lightbox.js';
 import '../lib/overlays.js';
 
@@ -21,11 +22,11 @@ const index = PROJECTS.findIndex(p => p.id === wanted);
 
 const cover = (p, cls = '') => `
   <div class="cover ${cls}" style="--c1:${p.c1}; --c2:${p.c2}">${p.img
-    ? `<img src="${p.img}" alt="Tela do projeto ${p.title}" width="1600" height="1000">`
-    : `<div class="cover-ui glass"><span class="tag">${p.tag}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>`;
+    ? `<img src="${esc(p.img)}" alt="Tela do projeto ${esc(p.title)}" width="1600" height="1000">`
+    : `<div class="cover-ui glass"><span class="tag">${esc(p.tag)}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>`;
 /* CTA to the published project. Until `url` is filled in the admin it renders disabled. */
 const projectLink = (p, cls, label = 'Ver projeto publicado') => p.url
-  ? `<a class="${cls}" href="${p.url}" target="_blank" rel="noopener" aria-label="${label}: ${p.title} (abre em nova aba)">${label} <span class="arrow">↗</span></a>`
+  ? `<a class="${cls}" href="${esc(p.url)}" target="_blank" rel="noopener" aria-label="${label}: ${esc(p.title)} (abre em nova aba)">${label} <span class="arrow">↗</span></a>`
   : `<a class="${cls}" aria-disabled="true" role="link">Link do projeto em breve</a>`;
 
 const renderNotFound = () => {
@@ -43,6 +44,15 @@ const renderArticle = (p) => {
   const a = p.article || { intro: p.summary, sections: [] };
   /* a short intro is the opening line; a long one opens the study and the summary takes the top */
   const longIntro = a.intro && !isLead(a.intro);
+  /* optional fields render nothing when empty (the admin only requires title and summary) */
+  const eyebrow = [p.catLabel && esc(p.catLabel), p.year && `<span class="num">${esc(p.year)}</span>`].filter(Boolean).join(' · ');
+  const facts = [
+    p.role && `<div class="wide${p.role.length > 160 ? ' full' : ''}"><dt>Meu papel</dt><dd>${md(p.role)}</dd></div>`,
+    p.catLabel && `<div><dt>Categoria</dt><dd>${esc(p.catLabel)}</dd></div>`,
+    p.year && `<div><dt>Ano</dt><dd class="num">${esc(p.year)}</dd></div>`,
+    p.stack && `<div><dt>Stack</dt><dd>${esc(p.stack)}</dd></div>`,
+  ].filter(Boolean).join('');
+  const deliver = groupItems(p.deliver).filter(d => d.text);
   document.title = `${p.title} — Paulo Vieira · UX IA Engineer`;
   document.querySelector('meta[name="description"]').content = p.summary;
 
@@ -50,19 +60,14 @@ const renderArticle = (p) => {
     <article>
       <header class="container art-head" data-scene="hero">
         <a class="back-link reveal" href="projetos.html">← Todos os projetos</a>
-        <p class="eyebrow reveal" style="--i:1">${p.catLabel} · <span class="num">${p.year}</span></p>
-        <h1 class="art-title reveal" style="--i:2">${p.title}</h1>
+        ${eyebrow ? `<p class="eyebrow reveal" style="--i:1">${eyebrow}</p>` : ''}
+        <h1 class="art-title reveal" style="--i:2">${esc(p.title)}</h1>
         <p class="art-intro reveal" style="--i:3">${mdInline(longIntro || !a.intro ? p.summary : a.intro)}</p>
         <div class="art-actions reveal" style="--i:4">
           ${projectLink(p, 'btn btn-primary')}
-          ${a.sections.length ? `<a class="btn btn-ghost" href="#${a.sections[0].id}">Ler o estudo <span class="arrow">↓</span></a>` : ''}
+          ${a.sections.length ? `<a class="btn btn-ghost" href="#${esc(a.sections[0].id)}">Ler o estudo <span class="arrow">↓</span></a>` : ''}
         </div>
-        <dl class="art-facts glass reveal" style="--i:5">
-          <div class="wide${p.role.length > 160 ? ' full' : ''}"><dt>Meu papel</dt><dd>${md(p.role)}</dd></div>
-          <div><dt>Categoria</dt><dd>${p.catLabel}</dd></div>
-          <div><dt>Ano</dt><dd class="num">${p.year}</dd></div>
-          <div><dt>Stack</dt><dd>${p.stack}</dd></div>
-        </dl>
+        ${facts ? `<dl class="art-facts glass reveal" style="--i:5">${facts}</dl>` : ''}
       </header>
 
       <div class="container">${cover(p, 'art-cover')}</div>
@@ -71,28 +76,28 @@ const renderArticle = (p) => {
         <nav class="toc" aria-label="Neste estudo">
           <p class="eyebrow">Neste estudo</p>
           ${longIntro ? '<a href="#introducao" data-toc="introducao">Introdução</a>' : ''}
-          ${a.sections.map(s => `<a href="#${s.id}" data-toc="${s.id}">${s.title}</a>`).join('')}
+          ${a.sections.map(s => `<a href="#${esc(s.id)}" data-toc="${esc(s.id)}">${esc(s.title)}</a>`).join('')}
           ${p.gallery?.length ? '<a href="#galeria" data-toc="galeria">Galeria</a>' : ''}
-          <a href="#entregas" data-toc="entregas">Entregas</a>
+          ${deliver.length ? '<a href="#entregas" data-toc="entregas">Entregas</a>' : ''}
           ${projectLink(p, 'btn btn-ghost btn-sm', 'Ver projeto')}
         </nav>
         <div class="prose">
           ${longIntro ? `<section class="prose-sec" id="introducao">${md(a.intro, { cls: 'reveal' })}</section>` : ''}
-          <blockquote class="challenge glass reveal">
+          ${p.challenge ? `<blockquote class="challenge glass reveal">
             <p class="eyebrow">O desafio</p>
             ${md(p.challenge)}
-          </blockquote>
+          </blockquote>` : ''}
           ${a.sections.map(s => `
-            <section class="prose-sec" id="${s.id}">
-              <h2 class="reveal">${s.title}</h2>
+            <section class="prose-sec" id="${esc(s.id)}">
+              <h2 class="reveal">${esc(s.title)}</h2>
               ${md(s.body.join('\n\n'), { cls: 'reveal' })}
               ${figuresHTML(sectionImages(s), p)}
             </section>`).join('')}
           ${p.gallery?.length ? `<section class="prose-sec" id="galeria"><h2 class="reveal">Galeria</h2>${figuresHTML(p.gallery, p)}</section>` : ''}
-          <section class="prose-sec" id="entregas">
+          ${deliver.length ? `<section class="prose-sec" id="entregas">
             <h2 class="reveal">Entregas</h2>
-            <ul class="deliver-list reveal">${groupItems(p.deliver).map(d => `<li>${mdInline(d.text)}${d.children.length ? ` ${d.children.map(mdInline).join(', ')}` : ''}</li>`).join('')}</ul>
-          </section>
+            <ul class="deliver-list reveal">${deliver.map(d => `<li>${mdInline(d.text)}${d.children.length ? ` ${d.children.map(mdInline).join(', ')}` : ''}</li>`).join('')}</ul>
+          </section>` : ''}
         </div>
       </div>
 
@@ -103,11 +108,11 @@ const renderArticle = (p) => {
           ${projectLink(p, 'btn btn-primary')}
         </div>
         ${next && next !== p ? `
-        <a class="next-card glass reveal" href="projeto.html?p=${encodeURIComponent(next.id)}" aria-label="Próximo projeto: ${next.title}">
+        <a class="next-card glass reveal" href="projeto.html?p=${encodeURIComponent(next.id)}" aria-label="Próximo projeto: ${esc(next.title)}">
           ${cover(next)}
           <div class="next-info">
             <p class="eyebrow">Próximo projeto</p>
-            <h3>${next.title}</h3>
+            <h3>${esc(next.title)}</h3>
             <p class="go">Ler estudo de caso →</p>
           </div>
         </a>` : ''}

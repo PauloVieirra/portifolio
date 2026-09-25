@@ -194,6 +194,43 @@ await step('aviso de portfólio em construção: aparece na primeira visita e so
   await ctx.close();
 });
 
+await step('texto do admin aparece literal (sem HTML injetado) em projeto, artigo e home', async () => {
+  const evil = 'P&D <b>beta</b> "x"';
+  const img = 'https://example.com/a.png" onerror="window.__xss=1';
+  const proj = { id: 'e2e-esc', position: 0, published: true, featured: true, title: evil, summary: evil, cat_label: evil, year: '2026', tag: evil, img,
+    c1: 'red;x', tags: [evil], role: 'Papel.', challenge: 'D.', stack: evil, deliver: ['Uma'], article: { intro: 'I.', sections: [{ id: 's', title: evil, body: ['T.'] }] } };
+  const art = { id: 'e2e-esc-a', date: '2026-01-01', published: true, featured: true, title: evil, summary: evil, tags: [evil], tag: evil, img, read_min: 1, project: 'e2e-esc', sections: [{ id: 's', title: evil, body: ['T.'] }] };
+  const page = await browser.newPage(); const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(/\/rest\/v1\/projects/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([proj]) }));
+  await page.route(/\/rest\/v1\/articles/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([art]) }));
+  await page.route(/example\.com/, r => r.fulfill({ status: 404, body: '' }));
+  for (const [path, sel] of [['projeto.html?p=e2e-esc', 'h1.art-title'], ['artigo.html?a=e2e-esc-a', 'h1.art-title'], ['index.html', '#works .work h3']]) {
+    await page.goto(`${BASE}/${path}`);
+    await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+    await page.waitForTimeout(400);
+    assert.equal(await page.locator(sel).first().textContent(), evil, path);
+    assert.equal(await page.locator('main b:not(.author b):not(.works-more b):not(#cIndex)').count(), 0, `${path}: <b> injetado`);
+    assert.equal(await page.evaluate(() => window.__xss), undefined, `${path}: onerror executou`);
+  }
+  assert.equal(await page.locator('#projectsGrid .project').first().getAttribute('data-tags'), evil);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+await step('projeto só com título e resumo não mostra blocos vazios', async () => {
+  const proj = { id: 'e2e-min', position: 0, published: true, title: 'Mínimo', summary: 'Resumo.', tags: [], deliver: [], article: {} };
+  const page = await browser.newPage();
+  await page.route(/\/rest\/v1\/projects/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([proj]) }));
+  await page.goto(`${BASE}/projeto.html?p=e2e-min`);
+  await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  assert.equal(await page.locator('.art-head .eyebrow').count(), 0, 'eyebrow vazio');
+  assert.equal(await page.locator('.challenge').count(), 0, 'desafio vazio');
+  assert.equal(await page.locator('#entregas, .toc a[href="#entregas"]').count(), 0, 'entregas vazias');
+  assert.equal(await page.locator('.art-facts').count(), 0, 'ficha vazia');
+  await page.close();
+});
+
 await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
   const page = await browser.newPage();
   await page.goto(`${BASE}/login`);

@@ -56,3 +56,11 @@ describe('filterTags', () => {
   it('keeps a shared tag when there is a single article', () => expect(filterTags([{ tags: ['UX', 'IA'] }])).toEqual(['IA', 'UX']));
   it('handles no articles', () => expect(filterTags([])).toEqual([]));
 });
+
+describe('cover colours', () => {
+  it('only accepts aurora tokens, falling back otherwise', () => {
+    const p = fromProjectRow({ id: 'x', title: 'T', summary: 'S', c1: 'red;background:url(x)', c2: AURORA[3] });
+    expect(p.c1).toBe(AURORA[0]); expect(p.c2).toBe(AURORA[3]);
+    expect(fromArticleRow({ id: 'a', title: 'T', summary: 'S', date: '2026-01-01', c2: '"><b>' }).c2).toBe(AURORA[1]);
+  });
+});

@@ -1,6 +1,6 @@
 import { h, field, input, textarea, select, checkbox, toast, guard, busy, csv, lines, pageHead } from './ui.js';
 import { listRows, insertRow, updateRow, countWhere } from './db.js';
-import { slugify, validateSlug, nextPosition, normalizeImages } from '../../lib/admin-rules.js';
+import { slugify, validateSlug, nextPosition, normalizeImages, validateUrl, validateImageUrl } from '../../lib/admin-rules.js';
 import { AURORA, AURORA_OPTIONS } from '../../lib/content-map.js';
 import { imageField, imagesEditor } from './media.js';
 import { sectionsEditor } from './sections.js';
@@ -47,6 +47,10 @@ function editProject(root, row, all) {
     const slugOk = validateSlug(id, all.map(r => r.id), row?.id ?? null);
     if (slugOk !== true) { toast(slugOk, 'error'); f.id.focus(); return; }
     if (!f.title.value.trim() || !f.summary.value.trim()) { toast('Título e resumo são obrigatórios.', 'error'); return; }
+    const linkOk = validateUrl(f.url.value);
+    if (linkOk !== true) { toast(`Link do projeto: ${linkOk}`, 'error'); f.url.focus(); return; }
+    const coverOk = validateImageUrl(img.value());
+    if (coverOk !== true) { toast(`Capa: ${coverOk}`, 'error'); return; }
     const catLabel = f.cat_label.value.trim();
     const data = {
       id, title: f.title.value.trim(), summary: f.summary.value.trim(), cat_label: catLabel || null, cat: slugify(catLabel) || null,

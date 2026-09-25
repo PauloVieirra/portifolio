@@ -53,6 +53,14 @@ export const validateContact = (c) => {
   return errs;
 };
 
+/* optional links: empty or a full http(s) address (no javascript:, no relative "site.com") */
+export const validateUrl = (v) => !String(v ?? '').trim() || URL_RE.test(String(v).trim()) || 'Use um link completo, começando com https://';
+/* single image fields: empty, a full http(s) address or a local asset path, never quotes or spaces */
+export const validateImageUrl = (v) => {
+  const s = String(v ?? '').trim();
+  return !s || /^(https?:\/\/|assets\/)[^\s"'<>]+$/.test(s) || 'Endereço de imagem inválido: envie um arquivo ou cole um link https://';
+};
+
 export const IMAGE_TYPES = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/avif': 'avif' };
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 export const validateImage = ({ type, size }) => {
