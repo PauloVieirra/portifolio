@@ -7,6 +7,7 @@ export const IMAGES = {
   flow: '12.jpg',       // Fluxo de usuário
   docs: '13.jpg',       // Documentação
   prototype: '14.jpg',  // protótipo do portfólio no iPhone 17
+  tests: '15.jpg',      // Testes: execução ao vivo de um agente-persona
 };
 
 export const PROJECT = (src) => ({
@@ -29,6 +30,7 @@ export const PROJECT = (src) => ({
     'Fluxo de usuário gerado a partir do escopo, com filtro por persona',
     'Documento de Visão e Documento de Requisitos, versionados, com exportação em PDF',
     'Protótipo React + Vite editável clicando, por breakpoint',
+    'Testes com agentes-persona que navegam o protótipo e geram relatório de desempenho (em desenvolvimento)',
     '151 design systems inclusos e importação do GitHub ou do Figma',
     'Exportação para o Figma em camadas editáveis',
     'Versionamento com GitHub e GitLab, inclusive self-managed, e revisão de PR',
@@ -62,6 +64,12 @@ export const PROJECT = (src) => ({
         'As edições respeitam o breakpoint selecionado, então ajustar o mobile não quebra o desktop. O modo apresentação abre o resultado como um site navegável. Em projetos grandes, o canvas mostra todas as telas e modais conectados de uma vez.',
         'Este portfólio é um exemplo: ele foi prototipado no Vision Design e depois levado para um projeto de código preservando o design.' ],
         figure: { src: src.prototype, caption: 'O protótipo deste portfólio no Vision Design, visualizado em um iPhone 17.' } },
+      { id: 'testes-com-agentes-persona', title: 'Testes com agentes-persona (em desenvolvimento)', body: [
+        'A etapa de testes é a funcionalidade que estou desenvolvendo agora. Ela parte de uma versão reduzida do **MiroFish**, que usa simulação de enxames de agentes para prever ações e tendências — e converte esse comportamento em **testadores**.',
+        'Funciona assim:\n- cada agente assume a personalidade de uma das **personas identificadas na Lean Inception**;\n- ele recebe os **fluxos de usuário** e a **documentação de regras e funcionalidades** do projeto;\n- e usa o protótipo como uma pessoa usaria: faz login, navega e executa tarefas, cada agente-persona no seu próprio fluxo.',
+        'A execução pode ser acompanhada ao vivo. A tela mostra o passo atual com os elementos clicáveis numerados, e um **diário** registra o que o agente está vendo, o que ele pretende fazer e por quê — inclusive quando ele cai em uma tela que não estava prevista no fluxo. Dá para parar, reiniciar ou tirar um cenário do conjunto de testes, e fechar a janela não interrompe a execução.',
+        'No fim, cada rodada gera um **relatório de desempenho** por persona, que uso para encontrar atritos e melhorar o sistema antes de ele chegar a pessoas reais.' ],
+        figure: { src: src.tests, caption: 'Execução ao vivo: o agente-persona tenta trocar a senha e explica cada decisão no diário.' } },
       { id: 'versionamento', title: 'Versionamento e colaboração', body: [
         'Cada projeto pode ser versionado com **GitHub ou GitLab** — inclusive GitLab self-managed —, com as chaves SSH gerenciadas pelo próprio app.',
         'A colaboração segue o fluxo que times de desenvolvimento já conhecem: quem colabora envia uma proposta, e a pessoa responsável **revisa e aprova o merge do pull request sem sair da ferramenta**.',

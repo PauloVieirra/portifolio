@@ -159,7 +159,8 @@ export const ARTICLES_10 = [
         'Construir a própria ferramenta obriga a explicitar o próprio processo. Muitas decisões que eu tomava no automático — quando um fluxo está pronto, o que precisa estar num documento de requisitos, o que bloqueia uma tela — viraram regras claras.',
         'E usar a ferramenta em projetos reais é o melhor teste: este portfólio, por exemplo, foi prototipado no Vision Design antes de virar código.' ] },
       { id: 'para-onde-vai', title: 'Para onde vai', body: [
-        'O Vision Design está na versão 0.8.37 e continua evoluindo a cada projeto. A próxima fronteira é a colaboração: bibliotecas de projetos para compartilhar e copiar, e mais integrações por meio de skills, plugins e MCP.',
+        'O Vision Design está na versão 0.8.37 e continua evoluindo a cada projeto. A próxima fronteira são os **testes com agentes-persona**: partindo de uma versão reduzida do MiroFish, que simula enxames de agentes para prever comportamentos, estou criando testadores que assumem a personalidade das personas da Lean Inception, seguem os fluxos e as regras documentadas, usam o protótipo de verdade e devolvem um relatório de desempenho.',
+        'É o passo que fecha o ciclo: a mesma ferramenta que ajuda a descobrir e desenhar o produto passa a ajudar a testá-lo — antes de ele chegar a pessoas reais.',
         'O motivo, no entanto, continua o mesmo do primeiro dia: **passar menos tempo contornando ferramentas e mais tempo resolvendo problemas de verdade**. A apresentação completa da ferramenta está no projeto relacionado.' ] },
     ],
   },
