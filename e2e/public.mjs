@@ -110,6 +110,18 @@ await step('home sem artigos publicados esconde a seção de artigos, sem erros'
   await page.close();
 });
 
+await step('home: projeto em destaque abre o bento e os outros completam até 3', async () => {
+  const mk = (id, position, featured = false) => ({ id, position, published: true, featured, title: id.toUpperCase(), summary: 's', cat_label: 'Produto', year: '2026', tags: ['UX'], article: { intro: '', sections: [] } });
+  const page = await browser.newPage(); const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(/\/rest\/v1\/projects/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([mk('a', 0), mk('b', 1), mk('c', 2), mk('d', 3, true)]) }));
+  await page.goto(`${BASE}/index.html`);
+  await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  assert.deepEqual(await page.locator('#works .work h3').allTextContents(), ['D', 'A', 'B']);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
   const page = await browser.newPage();
   await page.goto(`${BASE}/login`);

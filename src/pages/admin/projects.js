@@ -33,7 +33,7 @@ function editProject(root, row, all) {
     c1: select(p.c1, AURORA_OPTIONS), c2: select(p.c2, AURORA_OPTIONS),
     challenge: textarea(p.challenge, { rows: 2 }), role: textarea(p.role, { rows: 2 }), stack: input(p.stack),
     deliver: textarea((p.deliver || []).join('\n'), { rows: 3 }), intro: textarea(p.article?.intro, { rows: 4 }),
-    featured: checkbox('Destaque na home (até 3 aparecem)', p.featured), published: checkbox('Publicado', p.published),
+    featured: checkbox('Destaque na home (abre a seção de projetos; os outros completam até 3)', p.featured), published: checkbox('Publicado', p.published),
   };
   const img = imageField({ label: 'Capa', value: p.img || '', folder: 'projects' });
   const sections = sectionsEditor(p.article?.sections || [], { folder: 'projects', quote: false });

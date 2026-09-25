@@ -178,11 +178,11 @@ if (!ARTICLES.length) {
 /* =========================================================
    PROJECTS — featured bento; open the case study
    ========================================================= */
-/* "Destaque na home" (featured) in the admin picks the cases; without it, the first three */
+/* "Destaque na home" (featured) projects open the bento; the others fill it up to three, in the admin's order */
 const worksEl = document.getElementById('works');
 const projectHref = (p) => `projeto.html?p=${encodeURIComponent(p.id)}`;
 const flagged = PROJECTS.filter(p => p.featured);
-const WORKS = (flagged.length ? flagged : PROJECTS).slice(0, 3);
+const WORKS = [...flagged, ...PROJECTS.filter(p => !p.featured)].slice(0, 3);
 const worksRest = PROJECTS.length - WORKS.length;
 worksEl.innerHTML = WORKS.map((p, i) => `
   <a class="work reveal${i === 0 ? ' work--lead' : ''}" href="${projectHref(p)}" style="--i:${i}; --c1:${p.c1}; --c2:${p.c2}">
