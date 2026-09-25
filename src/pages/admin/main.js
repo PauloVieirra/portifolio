@@ -51,9 +51,12 @@ async function showApp(session) {
   const route = async () => {
     const k = SECTIONS[location.hash.slice(1)] ? location.hash.slice(1) : Object.keys(SECTIONS)[0];
     nav.querySelectorAll('a').forEach(a => a.dataset.k === k ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
-    view.replaceChildren(h('p', { class: 'adm-empty' }, 'Carregando…'));
-    try { await SECTIONS[k][1](view); } catch (e) { view.replaceChildren(h('p', { class: 'adm-empty' }, `Erro ao carregar: ${e.message}`)); }
-    view.focus({ preventScroll: true });
+    /* each navigation renders into its own slot: a slower, older load that finishes later writes into a
+       detached slot instead of wiping the screen (or a form) opened in the meantime */
+    const slot = h('div', {}, h('p', { class: 'adm-empty' }, 'Carregando…'));
+    view.replaceChildren(slot);
+    try { await SECTIONS[k][1](slot); } catch (e) { slot.replaceChildren(h('p', { class: 'adm-empty' }, `Erro ao carregar: ${e.message}`)); }
+    if (slot.isConnected) view.focus({ preventScroll: true });
   };
   window.onhashchange = route;
   route();

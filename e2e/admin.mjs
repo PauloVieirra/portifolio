@@ -51,6 +51,27 @@ await step('cria projeto rascunho com imagem', async () => {
   assert.equal(data.length, 0, 'rascunho não pode aparecer para visitantes');
 });
 
+await step('seção com várias imagens e galeria: salvar e ver no site', async () => {
+  await page.locator('.adm-row', { hasText: 'Projeto E2E' }).getByRole('button', { name: 'Editar' }).click();
+  await page.getByRole('button', { name: '+ Adicionar seção' }).click();
+  await page.getByLabel('Título da seção').last().fill('Telas');
+  await page.getByLabel('Texto').last().fill('Duas telas lado a lado.');
+  await page.getByLabel('Imagens da seção (opcional): enviar arquivos').last().setInputFiles([
+    { name: 'a.png', mimeType: 'image/png', buffer: PNG }, { name: 'b.png', mimeType: 'image/png', buffer: PNG }]);
+  await page.waitForFunction(() => document.querySelectorAll('.adm-sections .adm-image-item').length >= 2, null, { timeout: 20000 });
+  await page.getByLabel('Galeria (opcional): enviar arquivos').setInputFiles({ name: 'g.png', mimeType: 'image/png', buffer: PNG });
+  await page.waitForFunction(() => [...document.querySelectorAll('.adm-image')].some(el => el.textContent.includes('Galeria (opcional)') && el.querySelector('.adm-image-item')), null, { timeout: 20000 });
+  await page.getByLabel('Galeria (opcional): legenda da imagem 1').fill('Legenda da galeria');
+  uploaded = [uploaded, ...await page.locator('.adm-image-item img').evaluateAll(els => els.map(e => e.src))].filter(Boolean).join('\n');
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await page.locator('#adminToast', { hasText: 'Projeto salvo.' }).waitFor();
+  await page.getByRole('button', { name: 'Novo projeto' }).waitFor();
+  const { data } = await admin.from('projects').select('article,gallery').eq('id', 'projeto-e2e').single();
+  const sec = data.article.sections.find(x => x.title === 'Telas');
+  assert.equal(sec.images.length, 2);
+  assert.deepEqual(data.gallery.map(g => g.caption), ['Legenda da galeria']);
+});
+
 await step('publicar mostra o projeto no site', async () => {
   const row = page.locator('.adm-row', { hasText: 'Projeto E2E' });
   await row.getByRole('button', { name: 'Publicar' }).click();
@@ -59,6 +80,8 @@ await step('publicar mostra o projeto no site', async () => {
   await pub.goto(`${BASE}/projeto.html?p=projeto-e2e`);
   await pub.waitForFunction(() => document.documentElement.classList.contains('is-ready'));
   assert.doesNotMatch(await pub.title(), /não encontrado/);
+  assert.equal(await pub.locator('.figure-grid--2 figure').count(), 2);
+  assert.equal(await pub.locator('#galeria figure').count(), 1);
   await pub.close();
 });
 
@@ -112,9 +135,9 @@ await step('limpeza: exclui artigo, projeto e imagem de teste', async () => {
   await page.goto(`${BASE}/admin.html#projetos`);
   await page.locator('.adm-row', { hasText: 'Projeto E2E' }).getByRole('button', { name: 'Excluir' }).click();
   await page.locator('.adm-row', { hasText: 'Projeto E2E' }).waitFor({ state: 'detached' });
-  if (uploaded) {
-    const path = uploaded.split('/object/public/media/')[1];
-    const { error } = await admin.storage.from('media').remove([path]);
+  const paths = [...new Set(uploaded.split('\n').filter(u => u.includes('/object/public/media/')).map(u => u.split('/object/public/media/')[1]))];
+  if (paths.length) {
+    const { error } = await admin.storage.from('media').remove(paths);
     assert.ifError(error);
   }
 });
