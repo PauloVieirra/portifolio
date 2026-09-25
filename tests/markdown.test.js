@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { md, mdInline, isLead, groupItems } from '../src/lib/markdown.js';
+import { md, mdInline, isLead, groupItems, embedSrc } from '../src/lib/markdown.js';
 
 describe('md blocks', () => {
   it('splits paragraphs on blank lines and joins soft wraps', () => expect(md('a\nb\n\nc')).toBe('<p>a b</p><p>c</p>'));
@@ -35,4 +35,28 @@ describe('groupItems', () => {
   it('nests "- " lines under the previous item', () => expect(groupItems(['Gestão, incluindo:', '- Criação', '- Edição', 'Outra', ]))
     .toEqual([{ text: 'Gestão, incluindo:', children: ['Criação', 'Edição'] }, { text: 'Outra', children: [] }]));
   it('keeps a leading "- " line as its own item', () => expect(groupItems(['- solto'])).toEqual([{ text: 'solto', children: [] }]));
+});
+
+describe('embeds', () => {
+  const LI = 'https://www.linkedin.com/embed/feed/update/urn:li:activity:7432372253549531136?compact=true';
+  it('builds LinkedIn embed urls from post links', () => {
+    expect(embedSrc('https://www.linkedin.com/feed/update/urn:li:activity:7432372253549531136')).toBe(LI);
+    expect(embedSrc('https://www.linkedin.com/posts/paulo-vieira_ia-ugcPost-7432372110112550913-XdaP/?utm_source=x'))
+      .toBe('https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7432372110112550913?compact=true');
+  });
+  it('builds YouTube embed urls', () => {
+    expect(embedSrc('https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=10')).toBe('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ');
+    expect(embedSrc('https://youtu.be/dQw4w9WgXcQ')).toBe('https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ');
+  });
+  it('ignores other urls and text', () => {
+    expect(embedSrc('https://evil.example/embed/feed/update/urn:li:activity:1')).toBeNull();
+    expect(embedSrc('veja https://youtu.be/dQw4w9WgXcQ')).toBeNull();
+  });
+  it('turns a paragraph that is only a video link into an embedded player', () => {
+    const html = md('Antes\n\nhttps://www.linkedin.com/feed/update/urn:li:activity:7432372253549531136', { cls: 'reveal' });
+    expect(html).toContain(`<div class="embed embed--linkedin reveal"><iframe src="${LI.replace('&', '&amp;')}"`);
+    expect(html).toContain('allowfullscreen');
+    expect(html).toContain('<a href="https://www.linkedin.com/feed/update/urn:li:activity:7432372253549531136" target="_blank" rel="noopener">Ver no LinkedIn</a>');
+    expect(html.startsWith('<p class="reveal">Antes</p>')).toBe(true);
+  });
 });

@@ -13,6 +13,7 @@ export const ARTICLE = {
   sections: [
     { id: 'a-proposta', title: 'A proposta', body: [
       'Criei um conversor de **imagens e vídeos para arquivos editáveis no Figma**. A ideia é transformar uma referência visual em um design estruturado, organizado e pronto para trabalhar — em vez de um print que precisa ser redesenhado do zero.',
+      'https://www.linkedin.com/feed/update/urn:li:activity:7432372253549531136',
       'O ponto de partida é um LLM usado como **modelo de visão**: ele lê a referência e descreve a interface. Mas um modelo sozinho "gera layout"; ele não garante que o arquivo final seja algo que um designer consiga usar. Foi aí que entrou a maior parte do trabalho.' ] },
     { id: 'rag', title: 'RAG: consultar antes de gerar', body: [
       'Usei **RAG (Retrieval-Augmented Generation)** para que o modelo consulte conhecimento estruturado antes de responder. Em vez de depender só do que aprendeu no treinamento, ele recupera referências relevantes para cada caso e gera a saída apoiado nelas.',

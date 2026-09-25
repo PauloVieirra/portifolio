@@ -31,6 +31,24 @@ const flattened = (line) => {
   return parts.length > 1 ? parts.map((p, i) => ({ indent: 0, marker: m[1], text: i ? p : p.replace(/^[-*•]\s+/, '') })) : null;
 };
 
+/* A paragraph that is only a LinkedIn post or YouTube link becomes an embedded player. The iframe src is
+   rebuilt from the id alone, so pasted text can never point the frame anywhere else. */
+export const embedSrc = (text) => {
+  const url = String(text ?? '').trim();
+  if (/\s/.test(url)) return null;
+  let m = url.match(/^https:\/\/(?:www\.)?linkedin\.com\/(?:embed\/)?feed\/update\/urn:li:(activity|ugcPost|share):(\d+)/);
+  if (!m) { const p = url.match(/^https:\/\/(?:www\.)?linkedin\.com\/posts\/[^?#]*?(activity|ugcPost|share)-(\d+)/); if (p) m = p; }
+  if (m) return `https://www.linkedin.com/embed/feed/update/urn:li:${m[1]}:${m[2]}?compact=true`;
+  m = url.match(/^https:\/\/(?:www\.|m\.)?(?:youtube\.com\/watch\?(?:[^#]*&)?v=|youtu\.be\/)([\w-]{11})/);
+  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}` : null;
+};
+const embedHTML = (url, src, cls) => {
+  const li = src.includes('linkedin.com');
+  const extra = cls ? ` ${cls}` : '';
+  return `<div class="embed embed--${li ? 'linkedin' : 'youtube'}${extra}"><iframe src="${esc(src)}" title="${li ? 'Post do LinkedIn' : 'Vídeo do YouTube'}" loading="lazy" allowfullscreen></iframe></div>`
+    + (li ? `<p class="embed-link${extra}"><a href="${esc(url)}" target="_blank" rel="noopener">Ver no LinkedIn</a></p>` : '');
+};
+
 export function md(text, { cls } = {}) {
   const attr = cls ? ` class="${cls}"` : '';
   const html = [];
@@ -39,7 +57,8 @@ export function md(text, { cls } = {}) {
     let para = [], items = [];
     const flushPara = () => {
       if (!para.length) return;
-      html.push(`<p${attr}>${mdInline(para.join('\n'))}</p>`);
+      const src = para.length === 1 && embedSrc(para[0]);
+      html.push(src ? embedHTML(para[0].trim(), src, cls) : `<p${attr}>${mdInline(para.join('\n'))}</p>`);
       para = [];
     };
     const flushList = () => { if (items.length) html.push(list(items).replace(/^<(ul|ol)>/, `<$1${attr}>`)); items = []; };
