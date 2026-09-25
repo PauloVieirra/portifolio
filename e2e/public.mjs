@@ -86,6 +86,19 @@ await step('estudo de caso: entregas continuam como pílulas e o markdown não a
   await page.close();
 });
 
+await step('home sem artigos publicados esconde a seção de artigos, sem erros', async () => {
+  const page = await browser.newPage(); const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(/\/rest\/v1\/articles/, r => r.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
+  await page.goto(`${BASE}/index.html`);
+  await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  assert.equal(await page.locator('#artigos').count(), 0);
+  assert.equal(await page.locator('a[href="#artigos"]').count(), 0);
+  assert.equal(await page.locator('#works .work').count() > 0, true);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
   const page = await browser.newPage();
   await page.goto(`${BASE}/login`);
