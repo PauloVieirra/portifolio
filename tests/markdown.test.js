@@ -16,6 +16,9 @@ describe('md blocks', () => {
 describe('mdInline', () => {
   it('formats bold, italic and http links, escaping HTML', () => expect(mdInline('**P&D** *x* <b> [site](https://a.co)'))
     .toBe('<strong>P&amp;D</strong> <em>x</em> &lt;b&gt; <a href="https://a.co" target="_blank" rel="noopener">site</a>'));
+  it('links to internal pages in the same tab', () => expect(mdInline('[leia](artigo.html?a=vision-design-ferramenta-propria)'))
+    .toBe('<a href="artigo.html?a=vision-design-ferramenta-propria">leia</a>'));
+  it('does not treat other relative paths as internal links', () => expect(mdInline('[x](admin.html)')).toBe('[x](admin.html)'));
   it('never links non-http urls', () => expect(mdInline('[x](javascript:alert(1))')).toBe('[x](javascript:alert(1))'));
   it('keeps spaced asterisks literal', () => expect(mdInline('2 * 3 * 4')).toBe('2 * 3 * 4'));
 });

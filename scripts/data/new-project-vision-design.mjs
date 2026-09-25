@@ -41,8 +41,8 @@ export const PROJECT = (src) => ({
     intro: 'O Vision Design nasceu de um incômodo: eu passava mais tempo contornando ferramentas do que desenhando. Hoje ele leva um projeto do briefing ao protótipo funcional em um só lugar, na minha máquina, com o agente de IA que eu já uso.',
     sections: [
       { id: 'origem', title: 'Origem', body: [
-        'Meu trabalho acontece na fronteira entre UX e desenvolvimento. Em projetos com regras complexas e prazos curtos, cada passagem entre ferramentas — do briefing para a inception, da inception para os fluxos, dos fluxos para os documentos, dos documentos para o protótipo — custava tempo e perdia contexto.',
-        'Em vez de adaptar meu processo às limitações das ferramentas disponíveis, decidi construir uma ferramenta que se adaptasse ao meu processo. O objetivo era claro: **do briefing ao protótipo funcional, sem trocar de ferramenta e sem perder a revisão humana no caminho**.' ],
+        'O Vision Design nasceu da minha rotina na fronteira entre UX e desenvolvimento, onde cada passagem entre ferramentas — do briefing para a inception, dos fluxos para os documentos, dos documentos para o protótipo — custava tempo e perdia contexto. O objetivo é claro: **do briefing ao protótipo funcional, sem trocar de ferramenta e sem perder a revisão humana no caminho**.',
+        'Conto a experiência e os motivos por trás dele no artigo [Por que estou criando o Vision Design](artigo.html?a=vision-design-ferramenta-propria).' ],
         figure: { src: src.login, caption: 'O Vision Design é um aplicativo desktop para macOS, Windows e Linux.' } },
       { id: 'levantamento', title: 'Levantamento: a Lean Inception que lê documentos', body: [
         'O projeto começa com os materiais que já existem. Atas de reunião, briefings e requisitos em .md ou .txt são arrastados para o canvas, e o agente de IA extrai e distribui o conteúdo nas colunas da inception: visão, objetivos, problema, personas, jornadas, funcionalidades, regras de negócio e critérios de aceite.',

@@ -4,6 +4,8 @@ import { slugify } from '../../src/lib/admin-rules.js';
 
 const img = (id) => `https://images.unsplash.com/${id}?w=1600&q=80&auto=format&fit=crop`;
 const DATE = '2026-09-25';
+/* cover of the Vision Design article: the app's login screen, uploaded with the Vision Design project */
+const VISION_COVER = 'https://juqhppwhqivxnbxsbjut.supabase.co/storage/v1/object/public/media/projects/vision-design-login-43f0adf1.jpg';
 
 export const ARTICLES_10 = [
   {
@@ -133,26 +135,32 @@ export const ARTICLES_10 = [
 
   {
     id: 'vision-design-ferramenta-propria',
-    title: 'Vision Design: por que criei minha própria ferramenta de fluxo de UX',
-    tags: ['IA', 'UX', 'Design system', 'Ferramentas'], tag: 'Fluxo · próprio',
-    c1: 'var(--aurora-violet-fill)', c2: 'var(--aurora-peach-fill)', project: 'copiloto',
-    img: img('photo-1586717791821-3f44a563fa4c'),
-    summary: 'Em vez de adaptar meu processo às limitações das ferramentas disponíveis, construí uma ferramenta que se adapta ao meu fluxo de UX e desenvolvimento — do rascunho ao handoff.',
-    intro: 'Chegou um ponto em que eu passava mais tempo contornando as ferramentas do que desenhando. Foi aí que decidi construir a minha: o Vision Design, pensado para o fluxo que eu realmente uso entre UX e código.',
+    title: 'Por que estou criando o Vision Design',
+    tags: ['IA', 'UX', 'Ferramentas', 'UX Engineering'], tag: 'Fluxo · próprio',
+    c1: 'var(--aurora-peach-fill)', c2: 'var(--aurora-violet-fill)', project: 'vision-design',
+    img: VISION_COVER,
+    summary: 'A experiência que me levou a construir minha própria ferramenta de UX — dos atalhos de IA que geravam mais retrabalho do que ganho a um fluxo que vai do briefing ao protótipo com revisão humana em cada etapa.',
+    intro: 'Eu não comecei querendo criar uma ferramenta. Comecei querendo parar de perder tempo e contexto entre elas. O Vision Design é a resposta que fui construindo, projeto após projeto, para esse incômodo.',
     sections: [
       { id: 'o-incomodo', title: 'O incômodo', body: [
-        'Meu trabalho acontece na fronteira entre design e desenvolvimento. As ferramentas tradicionais tratam essas etapas como mundos separados: desenha-se em um lugar, documenta-se em outro, implementa-se em um terceiro — e a cada passagem algo se perde.',
-        'Em projetos com regras complexas e prazos curtos, esse vaivém custava caro. Eu queria um fluxo em que a decisão de design já nascesse pronta para virar código.' ] },
+        'Meu trabalho acontece na fronteira entre UX e desenvolvimento. Em um mesmo projeto eu faço levantamento, conduzo inception, desenho fluxos, escrevo documentação, prototipo e, muitas vezes, levo o protótipo para o código.',
+        'Cada uma dessas etapas vivia em uma ferramenta diferente. E cada passagem de uma para a outra cobrava um preço: **copiar, reescrever, reexplicar — e perder um pouco de contexto no caminho**.' ] },
+      { id: 'o-que-os-projetos-me-mostraram', title: 'O que os projetos me mostraram', body: [
+        'Alguns projetos deixaram isso muito claro:\n- em um portal jurídico, testei soluções de IA para transformar o design do Figma em interface funcional. O resultado trazia **inconsistências visuais, componentes diferentes para situações semelhantes e variações do mesmo padrão** — e o ajuste custava mais do que a automação economizava;\n- em um sistema de bolsas de estudo, o handoff exigiu várias rodadas de conversa para alinhar regras que pareciam claras no protótipo, mas se perdiam entre documentos e telas;\n- ao construir um conversor de imagens para Figma, aprendi que a IA só fica consistente quando trabalha com **regras obrigatórias, conhecimento estruturado e base teórica de design**.',
+        'A conclusão foi a mesma nas três experiências: o problema não era a falta de IA. Era a falta de um fluxo em que as decisões **nascessem conectadas** — e fossem revisadas por alguém antes de seguir adiante.' ],
+        quote: 'O problema não era a falta de IA. Era a falta de um fluxo em que as decisões nascessem conectadas.' },
       { id: 'adaptar-a-ferramenta', title: 'Adaptar a ferramenta, não o processo', body: [
-        'A decisão foi inverter a lógica: **em vez de adaptar meu processo às limitações das ferramentas, criar uma ferramenta que se adaptasse ao meu processo**.',
-        'O Vision Design organiza o trabalho em torno do que importa para quem vai construir: telas como arquivos reais, tokens de design extraídos e reutilizáveis, comportamento responsivo definido desde o início e uma documentação de handoff que pessoas e ferramentas de código com IA conseguem ler.' ],
-        quote: 'Em vez de adaptar meu processo às limitações das ferramentas, criei uma ferramenta que se adapta ao meu processo.' },
-      { id: 'como-uso', title: 'Como uso no dia a dia', body: [
-        'Um projeto que sai do Vision Design leva junto:\n- as telas em HTML, cada uma como sua própria rota;\n- os tokens de cor, tipografia, espaçamento e efeitos;\n- um manifesto legível por máquina, que mapeia telas, componentes e interações;\n- um contrato de responsividade, com os tamanhos de tela que precisam ser validados;\n- um guia de handoff com a ordem de implementação.',
-        'Este portfólio é um exemplo: ele começou como um export do Vision Design e foi convertido em um projeto de código preservando o design pixel a pixel.' ] },
-      { id: 'o-que-aprendi', title: 'O que aprendi construindo', body: [
-        'Criar a própria ferramenta obriga a explicitar o próprio processo — e isso, por si só, já melhora o trabalho. Muitas decisões que eu tomava "no automático" viraram regras claras.',
-        'A ferramenta continua evoluindo junto com os projetos. E a principal lição vale para qualquer time: **quando a ferramenta começa a ditar o processo, vale a pena parar e perguntar se ela ainda está a serviço do trabalho**.' ] },
+        'Foi aí que decidi inverter a lógica: **em vez de adaptar meu processo às limitações das ferramentas disponíveis, criar uma ferramenta que se adaptasse ao meu processo**.',
+        'Comecei pelos princípios, antes das funcionalidades:\n- **do briefing ao protótipo em um só lugar**: Lean Inception, fluxo de usuário, documentação e telas conectados;\n- **a IA propõe, a pessoa aprova**: nada avança sem revisão, e um item pendente bloqueia a etapa seguinte;\n- **código de verdade, não maquete**: o protótipo nasce como um projeto React + Vite que se edita clicando;\n- **sem prender ninguém**: o Vision Design usa o agente de IA que a pessoa já tem, e os arquivos ficam na máquina dela.' ] },
+      { id: 'decisoes-dificeis', title: 'Decisões difíceis', body: [
+        'Algumas escolhas foram menos óbvias do que parecem. Não embutir uma IA própria, por exemplo, significou abrir mão de um modelo de assinatura — mas deu liberdade a quem já trabalha com Claude Code, Codex, Gemini CLI ou Cursor.',
+        'Ser **local-first** também foi uma decisão consciente: projetos, documentos e histórico ficam em disco, e a nuvem serve para publicar e colaborar, não para guardar o trabalho. E, para colaborar, escolhi o fluxo que times de desenvolvimento já conhecem: **versionamento com GitHub ou GitLab e revisão de pull request** dentro da própria ferramenta.' ] },
+      { id: 'o-que-aprendi-ate-aqui', title: 'O que aprendi até aqui', body: [
+        'Construir a própria ferramenta obriga a explicitar o próprio processo. Muitas decisões que eu tomava no automático — quando um fluxo está pronto, o que precisa estar num documento de requisitos, o que bloqueia uma tela — viraram regras claras.',
+        'E usar a ferramenta em projetos reais é o melhor teste: este portfólio, por exemplo, foi prototipado no Vision Design antes de virar código.' ] },
+      { id: 'para-onde-vai', title: 'Para onde vai', body: [
+        'O Vision Design está na versão 0.8.37 e continua evoluindo a cada projeto. A próxima fronteira é a colaboração: bibliotecas de projetos para compartilhar e copiar, e mais integrações por meio de skills, plugins e MCP.',
+        'O motivo, no entanto, continua o mesmo do primeiro dia: **passar menos tempo contornando ferramentas e mais tempo resolvendo problemas de verdade**. A apresentação completa da ferramenta está no projeto relacionado.' ] },
     ],
   },
 

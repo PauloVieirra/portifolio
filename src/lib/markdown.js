@@ -1,10 +1,11 @@
 /* Small, safe markdown for text written in the admin: paragraphs, ### subheadings, lists (- * • 1.),
-   **bold**, *italic* and http(s) links. Everything is HTML-escaped first, so text can never inject markup. */
+   **bold**, *italic*, http(s) links and links to the site's own pages (artigo.html?a=…, projeto.html?p=…). Everything is HTML-escaped first, so text can never inject markup. */
 const ENT = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ENT[c]);
 
 export const mdInline = (text) => esc(String(text ?? '').replace(/\s*\n\s*/g, ' ').trim())
   .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+  .replace(/\[([^\]]+)\]\(((?:artigos?|projetos?)\.html(?:\?[\w=&;%-]*)?)\)/g, '<a href="$2">$1</a>')
   .replace(/\*\*(\S(?:.*?\S)?)\*\*/g, '<strong>$1</strong>')
   .replace(/(^|[^*\w])\*(\S(?:.*?\S)?)\*(?!\*)/g, '$1<em>$2</em>');
 
