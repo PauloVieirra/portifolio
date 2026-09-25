@@ -122,6 +122,43 @@ await step('home: projeto em destaque abre o bento e os outros completam até 3'
   await page.close();
 });
 
+await step('imagens: grade por seção, galeria e clique para ampliar', async () => {
+  const img = (n) => ({ src: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10'%3E%3Crect width='16' height='10' fill='%23${n}'/%3E%3C/svg%3E`, caption: `Imagem ${n}` });
+  const fixture = [{ id: 'e2e-img', position: 0, published: true, featured: false, title: 'E2E', summary: 'Resumo.', cat_label: 'Produto', year: '2026',
+    tags: ['UX'], role: 'Papel.', challenge: 'Desafio.', stack: 'Figma', deliver: ['Uma'], gallery: [img('111'), img('222'), img('333')],
+    article: { intro: 'Intro.', sections: [{ id: 's', title: 'Seção', body: ['Texto.'], images: [img('444'), img('555')] }] } }];
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } }); const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(/\/rest\/v1\/projects/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(fixture) }));
+  await page.goto(`${BASE}/projeto.html?p=e2e-img`);
+  await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  assert.equal(await page.locator('#s .figure-grid--2 figure').count(), 2);
+  assert.equal(await page.locator('#galeria .figure-grid--3 figure').count(), 3);
+  assert.equal(await page.locator('.toc a[href="#galeria"]').count(), 1);
+  await page.locator('#s .figure img').first().click();
+  const box = page.locator('dialog.lightbox[open]');
+  await box.waitFor();
+  assert.match(await box.locator('figcaption').textContent(), /Imagem 444/);
+  await page.keyboard.press('ArrowRight');
+  assert.match(await box.locator('figcaption').textContent(), /Imagem 555/);
+  await page.keyboard.press('Escape');
+  await box.waitFor({ state: 'detached' });
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+await step('home: artigo em destaque abre o carrossel', async () => {
+  const art = (id, date, featured = false) => ({ id, date, featured, published: true, title: id.toUpperCase(), summary: 's', tags: ['UX'], read_min: 1, sections: [] });
+  const page = await browser.newPage(); const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.route(/\/rest\/v1\/articles/, r => r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([art('novo', '2026-09-20'), art('antigo', '2025-01-01', true), art('medio', '2026-01-01')]) }));
+  await page.goto(`${BASE}/index.html`);
+  await page.waitForFunction(() => document.documentElement.classList.contains('is-ready'), null, { timeout: 8000 });
+  assert.deepEqual(await page.locator('#projectsGrid .project h3').allTextContents(), ['ANTIGO', 'NOVO', 'MEDIO']);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
   const page = await browser.newPage();
   await page.goto(`${BASE}/login`);

@@ -24,6 +24,7 @@ create table if not exists public.projects (
   challenge text, role text, stack text,
   deliver text[] not null default '{}',
   article jsonb not null default '{}'::jsonb,
+  gallery jsonb not null default '[]'::jsonb,
   updated_at timestamptz not null default now()
 );
 
@@ -40,6 +41,8 @@ create table if not exists public.articles (
   summary text not null,
   intro text,
   sections jsonb not null default '[]'::jsonb,
+  featured boolean not null default false,
+  gallery jsonb not null default '[]'::jsonb,
   updated_at timestamptz not null default now()
 );
 
@@ -99,6 +102,11 @@ drop policy if exists site_content_read on public.site_content;
 create policy site_content_read on public.site_content for select using (true);
 drop policy if exists site_content_write on public.site_content;
 create policy site_content_write on public.site_content for all to authenticated using (public.is_admin()) with check (public.is_admin());
+
+-- Columns added after the first release (no-op on a fresh install)
+alter table public.articles add column if not exists featured boolean not null default false;
+alter table public.articles add column if not exists gallery jsonb not null default '[]'::jsonb;
+alter table public.projects add column if not exists gallery jsonb not null default '[]'::jsonb;
 
 -- Storage: public bucket for images; only admins write
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

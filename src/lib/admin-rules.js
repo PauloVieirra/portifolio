@@ -77,10 +77,15 @@ export const normalizeSections = (sections, { quote }) => {
       const out = { id: n === 1 ? base : `${base}-${n}`, title: s.title, body: s.body };
       const q = String(s.quote ?? '').trim();
       if (quote && q) out.quote = q;
-      const src = String(s.figure?.src ?? '').trim(), caption = String(s.figure?.caption ?? '').trim();
-      if (src || caption) out.figure = { src, caption };
+      const images = normalizeImages(s.images ?? (s.figure ? [s.figure] : []));
+      if (images.length) out.images = images;
       return out;
     });
 };
+
+/* image lists (section images, galleries): trimmed, images without src dropped */
+export const normalizeImages = (list) => (list || [])
+  .map(i => ({ src: String(i?.src ?? '').trim(), caption: String(i?.caption ?? '').trim() }))
+  .filter(i => i.src);
 
 export const nextPosition = (rows) => rows.length ? Math.max(...rows.map(r => r.position ?? 0)) + 1 : 0;

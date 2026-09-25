@@ -1,5 +1,6 @@
 import { loadContent } from '../lib/content.js';
 import { renderHome } from '../lib/home-render.js';
+import { featuredFirst } from '../lib/content-map.js';
 import { closeOverlays } from '../lib/overlays.js';
 
 /* Content comes from Supabase (src/lib/content.js; falls back to src/data + the static HTML). The admin-managed
@@ -43,7 +44,8 @@ if (!ARTICLES.length) {
   /* Reader page is assembled from the article id in the URL */
   const articleHref = (a) => `artigo.html?a=${encodeURIComponent(a.id)}`;
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/\./g, '').replace(/ de /g, ' ');
-  const FEATURED = [...ARTICLES].sort((a, b) => b.date.localeCompare(a.date));
+  /* "Destaque na home" articles open the carousel; the rest follow, newest first */
+  const FEATURED = featuredFirst([...ARTICLES].sort((a, b) => b.date.localeCompare(a.date)));
   const projectOf = (a) => a.project && PROJECTS.find(p => p.id === a.project);
   grid.innerHTML = FEATURED.map((a, i) => {
     const rel = projectOf(a);

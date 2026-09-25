@@ -1,5 +1,7 @@
 import { loadContent } from '../lib/content.js';
 import { md, mdInline, isLead } from '../lib/markdown.js';
+import { sectionImages, figuresHTML } from '../lib/figures.js';
+import { initLightbox } from '../lib/lightbox.js';
 import '../lib/overlays.js';
 
 const { articles: ARTICLES, projects: PROJECTS } = await loadContent(['articles', 'projects']);
@@ -24,13 +26,6 @@ const cover = (a, cls = '', label = a.tag) => `
   <div class="cover ${cls}" style="--c1:${a.c1}; --c2:${a.c2}">${a.img
     ? `<img src="${a.img}" alt="Capa: ${a.title}" width="1600" height="1000">`
     : `<div class="cover-ui glass"><span class="tag">${label}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>`;
-const figure = (a, f) => `
-  <figure class="figure reveal">
-    <div class="cover" style="--c1:${a.c1}; --c2:${a.c2}">${f.src
-      ? `<img src="${f.src}" alt="${f.caption}" loading="lazy" width="1600" height="1000">`
-      : `<div class="cover-ui glass"><span class="ln m"></span><span class="ln s"></span><span class="ln m"></span></div>`}</div>
-    <figcaption>${f.caption}</figcaption>
-  </figure>`;
 
 const renderNotFound = () => {
   document.title = 'Artigo não encontrado — Paulo Vieira';
@@ -72,6 +67,7 @@ const renderArticle = (a) => {
           <p class="eyebrow">Neste artigo</p>
           ${longIntro ? '<a href="#introducao" data-toc="introducao">Introdução</a>' : ''}
           ${sections.map(s => `<a href="#${s.id}" data-toc="${s.id}">${s.title}</a>`).join('')}
+          ${a.gallery?.length ? '<a href="#galeria" data-toc="galeria">Galeria</a>' : ''}
           ${project ? `<a class="btn btn-ghost btn-sm" href="projeto.html?p=${encodeURIComponent(project.id)}">Ver o projeto <span class="arrow">→</span></a>` : ''}
         </nav>
         <div class="prose">
@@ -81,8 +77,9 @@ const renderArticle = (a) => {
               <h2 class="reveal">${s.title}</h2>
               ${md(s.body.join('\n\n'), { cls: 'reveal' })}
               ${s.quote ? `<blockquote class="pull reveal">${mdInline(s.quote)}</blockquote>` : ''}
-              ${s.figure ? figure(a, s.figure) : ''}
+              ${figuresHTML(sectionImages(s), a)}
             </section>`).join('')}
+          ${a.gallery?.length ? `<section class="prose-sec" id="galeria"><h2 class="reveal">Galeria</h2>${figuresHTML(a.gallery, a)}</section>` : ''}
         </div>
       </div>
 
@@ -117,6 +114,7 @@ const renderArticle = (a) => {
 };
 
 index < 0 ? renderNotFound() : renderArticle(ORDERED[index]);
+initLightbox();
 
 /* =========================================================
    MOTION — reveal, aurora scenes, reading progress, cover approach, toc

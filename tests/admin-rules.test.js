@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   slugify, validateSlug, findDuplicateTags, validateBubbles, validateContact,
-  validateImage, paragraphs, joinParagraphs, normalizeSections, nextPosition,
+  validateImage, paragraphs, joinParagraphs, normalizeSections, nextPosition, normalizeImages,
 } from '../src/lib/admin-rules.js';
 
 const bubble = (value, ...tags) => ({ value, label: 'Rótulo', tags: tags.map(label => ({ label, icon: 'i-atom' })) });
@@ -73,8 +73,13 @@ describe('normalizeSections', () => {
     ], { quote: true });
     expect(out).toEqual([
       { id: 'contexto', title: 'Contexto', body: ['a'] },
-      { id: 'contexto-2', title: 'Contexto', body: ['b'], quote: 'q', figure: { src: 'x.png', caption: '' } },
+      { id: 'contexto-2', title: 'Contexto', body: ['b'], quote: 'q', images: [{ src: 'x.png', caption: '' }] },
     ]);
+  });
+  it('keeps several images per section, dropping empty ones', () => {
+    const [s0] = normalizeSections([{ title: 'T', body: ['a'], images: [{ src: ' a.png ', caption: ' A ' }, { src: '', caption: '' }, { src: 'b.png' }] }], { quote: false });
+    expect(s0.images).toEqual([{ src: 'a.png', caption: 'A' }, { src: 'b.png', caption: '' }]);
+    expect(s0.figure).toBeUndefined();
   });
   it('drops quote when not allowed', () => expect(normalizeSections([{ title: 'T', body: ['a'], quote: 'q' }], { quote: false })[0].quote).toBeUndefined());
 });
@@ -84,4 +89,9 @@ describe('nextPosition', () => {
     expect(nextPosition([])).toBe(0);
     expect(nextPosition([{ position: 2 }, { position: 7 }])).toBe(8);
   });
+});
+
+describe('normalizeImages', () => {
+  it('trims and drops images without src', () => expect(normalizeImages([{ src: ' g.png ', caption: ' G ' }, { src: ' ', caption: 'x' }])).toEqual([{ src: 'g.png', caption: 'G' }]));
+  it('accepts nothing', () => expect(normalizeImages(undefined)).toEqual([]));
 });

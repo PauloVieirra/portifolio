@@ -1,5 +1,7 @@
 import { loadContent } from '../lib/content.js';
 import { md, mdInline, isLead, groupItems } from '../lib/markdown.js';
+import { sectionImages, figuresHTML } from '../lib/figures.js';
+import { initLightbox } from '../lib/lightbox.js';
 import '../lib/overlays.js';
 
 const { projects: PROJECTS } = await loadContent(['projects']);
@@ -19,13 +21,6 @@ const cover = (p, cls = '') => `
   <div class="cover ${cls}" style="--c1:${p.c1}; --c2:${p.c2}">${p.img
     ? `<img src="${p.img}" alt="Tela do projeto ${p.title}" width="1600" height="1000">`
     : `<div class="cover-ui glass"><span class="tag">${p.tag}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>`;
-const figure = (p, f) => `
-  <figure class="figure reveal">
-    <div class="cover" style="--c1:${p.c1}; --c2:${p.c2}">${f.src
-      ? `<img src="${f.src}" alt="${f.caption}" loading="lazy" width="1600" height="1000">`
-      : `<div class="cover-ui glass"><span class="ln m"></span><span class="ln s"></span><span class="ln m"></span></div>`}</div>
-    <figcaption>${f.caption}</figcaption>
-  </figure>`;
 /* CTA to the published project. Until `url` is filled in the admin it renders disabled. */
 const projectLink = (p, cls, label = 'Ver projeto publicado') => p.url
   ? `<a class="${cls}" href="${p.url}" target="_blank" rel="noopener" aria-label="${label}: ${p.title} (abre em nova aba)">${label} <span class="arrow">↗</span></a>`
@@ -75,6 +70,7 @@ const renderArticle = (p) => {
           <p class="eyebrow">Neste estudo</p>
           ${longIntro ? '<a href="#introducao" data-toc="introducao">Introdução</a>' : ''}
           ${a.sections.map(s => `<a href="#${s.id}" data-toc="${s.id}">${s.title}</a>`).join('')}
+          ${p.gallery?.length ? '<a href="#galeria" data-toc="galeria">Galeria</a>' : ''}
           <a href="#entregas" data-toc="entregas">Entregas</a>
           ${projectLink(p, 'btn btn-ghost btn-sm', 'Ver projeto')}
         </nav>
@@ -88,8 +84,9 @@ const renderArticle = (p) => {
             <section class="prose-sec" id="${s.id}">
               <h2 class="reveal">${s.title}</h2>
               ${md(s.body.join('\n\n'), { cls: 'reveal' })}
-              ${s.figure ? figure(p, s.figure) : ''}
+              ${figuresHTML(sectionImages(s), p)}
             </section>`).join('')}
+          ${p.gallery?.length ? `<section class="prose-sec" id="galeria"><h2 class="reveal">Galeria</h2>${figuresHTML(p.gallery, p)}</section>` : ''}
           <section class="prose-sec" id="entregas">
             <h2 class="reveal">Entregas</h2>
             <ul class="deliver-list reveal">${groupItems(p.deliver).map(d => `<li>${mdInline(d.text)}${d.children.length ? ` ${d.children.map(mdInline).join(', ')}` : ''}</li>`).join('')}</ul>
@@ -117,6 +114,7 @@ const renderArticle = (p) => {
 };
 
 index < 0 ? renderNotFound() : renderArticle(PROJECTS[index]);
+initLightbox();
 
 /* =========================================================
    MOTION — reveal, aurora scenes, reading progress, cover approach, toc

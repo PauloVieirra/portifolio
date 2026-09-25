@@ -103,3 +103,28 @@
 .embed--linkedin { aspect-ratio: 720 / 560; }
 .embed--youtube { aspect-ratio: 16 / 9; }
 .prose-sec .embed-link { font-size: 14px; margin-top: -8px; }
+
+/* Several images in one place: two side by side, three or more in a grid */
+.figure-grid { display: grid; gap: 16px; }
+.figure-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.figure-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.figure-grid .figure { margin: 0; }
+.figure-grid figcaption { font-size: 13px; }
+@media (max-width: 599px) { .figure-grid--2, .figure-grid--3 { grid-template-columns: 1fr; } }
+@media (min-width: 600px) and (max-width: 833px) { .figure-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.figure img, .art-cover img { cursor: zoom-in; }
+
+/* Lightbox (click to enlarge) */
+.lightbox { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: clamp(16px, 4vw, 48px); border: 0;
+  background: rgba(10, 10, 16, .92); color: #fff; }
+.lightbox[open] { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; }
+.lightbox::backdrop { background: transparent; }
+.lightbox figure { margin: 0; display: grid; gap: 12px; justify-items: center; min-height: 0; max-height: 100%; }
+.lightbox img { max-width: 100%; max-height: calc(100dvh - 160px); object-fit: contain; border-radius: 12px; }
+.lightbox figcaption { font-size: 14px; color: rgba(255, 255, 255, .8); text-align: center; max-width: 72ch; }
+.lb-close, .lb-nav { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .25); background: rgba(255, 255, 255, .08); color: #fff; font-size: 22px; cursor: pointer; }
+.lb-close:hover, .lb-nav:hover { background: rgba(255, 255, 255, .18); }
+.lb-close:focus-visible, .lb-nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.lb-close { position: absolute; top: 16px; right: 16px; }
+.lb-count { position: absolute; bottom: 16px; left: 50%; translate: -50% 0; margin: 0; font-size: 13px; color: rgba(255, 255, 255, .7); }
+@media (max-width: 599px) { .lightbox[open] { grid-template-columns: 1fr; } .lb-nav { position: absolute; bottom: 12px; } .lb-prev { left: 16px; } .lb-next { right: 16px; } }
