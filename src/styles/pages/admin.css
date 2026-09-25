@@ -53,6 +53,12 @@ body { background: var(--bg); color: var(--fg); min-height: 100vh; }
 .adm-tags { list-style: none; padding: 0; display: grid; gap: 6px; }
 .adm-tags li { display: grid; grid-template-columns: 1fr 180px auto auto; gap: 6px; align-items: center; }
 .adm-thumb { max-width: 240px; max-height: 150px; border-radius: var(--radius-md); object-fit: cover; }
+.adm-images { list-style: none; padding: 0; display: grid; gap: 8px; }
+.adm-images:empty { display: none; }
+.adm-image-item { display: grid; grid-template-columns: 120px 1fr auto; gap: 12px; align-items: center; }
+.adm-image-item .adm-thumb { width: 120px; height: 76px; }
+.adm-url input { flex: 1; min-width: 200px; }
+@media (max-width: 599px) { .adm-image-item { grid-template-columns: 1fr; } }
 .adm-savebar { position: sticky; bottom: 16px; display: flex; gap: 8px; padding: 12px; border-radius: var(--radius-pill); justify-content: flex-end; }
 
 .adm-toast { position: fixed; right: 24px; bottom: 24px; padding: 12px 20px; border-radius: var(--radius-pill); opacity: 0; transform: translateY(8px);

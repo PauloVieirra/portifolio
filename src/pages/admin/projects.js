@@ -1,8 +1,8 @@
 import { h, field, input, textarea, select, checkbox, toast, guard, busy, csv, lines, pageHead } from './ui.js';
 import { listRows, insertRow, updateRow, countWhere } from './db.js';
-import { slugify, validateSlug, nextPosition } from '../../lib/admin-rules.js';
+import { slugify, validateSlug, nextPosition, normalizeImages } from '../../lib/admin-rules.js';
 import { AURORA, AURORA_OPTIONS } from '../../lib/content-map.js';
-import { imageField } from './media.js';
+import { imageField, imagesEditor } from './media.js';
 import { sectionsEditor } from './sections.js';
 import { renderList } from './list.js';
 
@@ -37,6 +37,7 @@ function editProject(root, row, all) {
   };
   const img = imageField({ label: 'Capa', value: p.img || '', folder: 'projects' });
   const sections = sectionsEditor(p.article?.sections || [], { folder: 'projects', quote: false });
+  const gallery = imagesEditor({ label: 'Galeria (opcional)', value: p.gallery || [], folder: 'projects', hint: 'Aparece no fim do estudo de caso, em grade. Clique numa imagem do site para ampliar.' });
   const save = h('button', { class: 'btn btn-primary', type: 'submit' }, 'Salvar');
   const back = () => renderProjects(root);
 
@@ -53,6 +54,7 @@ function editProject(root, row, all) {
       img: img.value() || null, c1: f.c1.value, c2: f.c2.value, challenge: f.challenge.value.trim() || null, role: f.role.value.trim() || null,
       stack: f.stack.value.trim() || null, deliver: lines(f.deliver.value), featured: f.featured.input.checked, published: f.published.input.checked,
       article: { intro: f.intro.value.trim(), sections: sections.value() },
+      gallery: normalizeImages(gallery.value()),
     };
     const ok = await busy(save, () => guard(() => isNew
       ? insertRow('projects', { ...data, position: nextPosition(all) })
@@ -73,6 +75,7 @@ function editProject(root, row, all) {
     field('Entregas', f.deliver, 'Uma por linha. Comece a linha com - para ser subitem da linha de cima.'),
     field('Introdução do estudo de caso', f.intro, 'Até ~300 caracteres num parágrafo: aparece no topo. Mais longa: abre o estudo e o Resumo vai para o topo. Aceita markdown: ### subtítulo, **negrito**, *itálico*, listas com - e [link](https://…).'),
     h('h2', {}, 'Seções'), sections.el,
+    h('h2', {}, 'Galeria'), gallery.el,
     h('div', { class: 'adm-actions' }, f.featured, f.published),
     h('div', { class: 'adm-savebar glass' }, h('button', { class: 'btn btn-ghost', type: 'button', onclick: back }, 'Cancelar'), save)));
   f.title.focus();

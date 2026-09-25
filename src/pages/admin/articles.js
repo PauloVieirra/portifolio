@@ -1,8 +1,8 @@
 import { h, field, input, textarea, select, checkbox, toast, guard, busy, csv, pageHead } from './ui.js';
 import { listRows, insertRow, updateRow } from './db.js';
-import { slugify, validateSlug, nextPosition } from '../../lib/admin-rules.js';
+import { slugify, validateSlug, nextPosition, normalizeImages } from '../../lib/admin-rules.js';
 import { AURORA, AURORA_OPTIONS } from '../../lib/content-map.js';
-import { imageField } from './media.js';
+import { imageField, imagesEditor } from './media.js';
 import { sectionsEditor } from './sections.js';
 import { renderList } from './list.js';
 
@@ -12,7 +12,7 @@ export async function renderArticles(root) {
   const [rows, projects] = await Promise.all([listRows('articles', 'date', false), listRows('projects')]);
   renderList(root, {
     title: 'Artigos', newLabel: 'Novo artigo', items: rows, table: 'articles', movable: false,
-    meta: (r) => [fmt(r.date), r.read_min ? `${r.read_min} min` : '', (r.tags || []).join(', ')].filter(Boolean).join(' · '),
+    meta: (r) => [r.featured ? '★ destaque na home' : '', fmt(r.date), r.read_min ? `${r.read_min} min` : '', (r.tags || []).join(', ')].filter(Boolean).join(' · '),
     viewHref: (r) => `artigo.html?a=${encodeURIComponent(r.id)}`,
     onNew: () => editArticle(root, null, rows, projects),
     onEdit: (r) => editArticle(root, r, rows, projects),
@@ -23,7 +23,7 @@ export async function renderArticles(root) {
 function editArticle(root, row, all, projects) {
   const isNew = !row;
   const a = row ? structuredClone(row) : { id: '', title: '', summary: '', date: new Date().toISOString().slice(0, 10), read_min: 5, tags: [], img: '',
-    c1: AURORA[0], c2: AURORA[1], tag: '', project: '', intro: '', sections: [], published: false };
+    c1: AURORA[0], c2: AURORA[1], tag: '', project: '', intro: '', sections: [], gallery: [], featured: false, published: false };
   let slugTouched = !isNew;
   const f = {
     title: input(a.title, { required: true, oninput: (e) => { if (!slugTouched) f.id.value = slugify(e.target.value); } }),
@@ -34,9 +34,11 @@ function editArticle(root, row, all, projects) {
     project: select(a.project || '', [['', '— nenhum —'], ...projects.map(p => [p.id, p.title])]),
     c1: select(a.c1, AURORA_OPTIONS), c2: select(a.c2, AURORA_OPTIONS),
     intro: textarea(a.intro, { rows: 4 }), published: checkbox('Publicado', a.published),
+    featured: checkbox('Destaque na home (abre o carrossel de artigos)', a.featured),
   };
   const img = imageField({ label: 'Capa', value: a.img || '', folder: 'articles' });
   const sections = sectionsEditor(a.sections || [], { folder: 'articles', quote: true });
+  const gallery = imagesEditor({ label: 'Galeria (opcional)', value: a.gallery || [], folder: 'articles', hint: 'Aparece no fim do artigo, em grade. Clique numa imagem do site para ampliar.' });
   const save = h('button', { class: 'btn btn-primary', type: 'submit' }, 'Salvar');
   const back = () => renderArticles(root);
 
@@ -51,6 +53,7 @@ function editArticle(root, row, all, projects) {
       read_min: f.read_min.value ? Math.max(1, parseInt(f.read_min.value, 10)) : null, tags: csv(f.tags.value), tag: f.tag.value.trim() || null,
       project: f.project.value || null, img: img.value() || null, c1: f.c1.value, c2: f.c2.value,
       intro: f.intro.value.trim(), sections: sections.value(), published: f.published.input.checked,
+      featured: f.featured.input.checked, gallery: normalizeImages(gallery.value()),
     };
     const ok = await busy(save, () => guard(() => isNew
       ? insertRow('articles', { ...data, position: nextPosition(all) })
@@ -68,7 +71,8 @@ function editArticle(root, row, all, projects) {
     h('div', { class: 'adm-grid2' }, field('Rótulo da capa', f.tag, 'Usado quando não há imagem.'), field('Cor 1 da capa', f.c1), field('Cor 2 da capa', f.c2)),
     field('Introdução', f.intro, 'Até ~300 caracteres num parágrafo: aparece no topo. Mais longa: abre o texto e o Resumo vai para o topo. Aceita markdown: ### subtítulo, **negrito**, *itálico*, listas com - e [link](https://…).'),
     h('h2', {}, 'Seções'), sections.el,
-    h('div', { class: 'adm-actions' }, f.published),
+    h('h2', {}, 'Galeria'), gallery.el,
+    h('div', { class: 'adm-actions' }, f.featured, f.published),
     h('div', { class: 'adm-savebar glass' }, h('button', { class: 'btn btn-ghost', type: 'button', onclick: back }, 'Cancelar'), save)));
   f.title.focus();
 }
