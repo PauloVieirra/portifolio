@@ -86,3 +86,13 @@
 @media (max-width: 411px) {
   .art-actions .btn { flex: 1 1 100%; justify-content: center; }
 }
+
+/* Admin-written text (markdown): subheadings, lists and long "Meu papel" */
+.prose-sec h3 { font-size: clamp(20px, 2vw, 24px); letter-spacing: -0.01em; margin-top: 8px; }
+.prose-sec ul:not(.deliver-list), .prose-sec ol { margin: 0; padding-left: 1.25em; display: grid; gap: 10px; font-size: 18px; line-height: 1.7; }
+.prose-sec li ul, .prose-sec li ol { margin-top: 8px; }
+.prose-sec a, .challenge a, .art-facts a { text-decoration: underline; text-underline-offset: 3px; }
+.challenge ul, .challenge ol { margin: 0; padding-left: 1.25em; display: grid; gap: 8px; }
+.art-facts .wide.full { grid-column: 1 / -1; }
+.art-facts .full dd { max-width: 80ch; }
+.art-facts dd > * + * { margin-top: 8px; }

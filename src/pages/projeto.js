@@ -1,4 +1,5 @@
 import { loadContent } from '../lib/content.js';
+import { md, mdInline, isLead, groupItems } from '../lib/markdown.js';
 import '../lib/overlays.js';
 
 const { projects: PROJECTS } = await loadContent(['projects']);
@@ -43,6 +44,8 @@ const renderNotFound = () => {
 const renderArticle = (p) => {
   const next = PROJECTS[(index + 1) % PROJECTS.length];
   const a = p.article || { intro: p.summary, sections: [] };
+  /* a short intro is the opening line; a long one opens the study and the summary takes the top */
+  const longIntro = a.intro && !isLead(a.intro);
   document.title = `${p.title} — Paulo Vieira · UX IA Engineer`;
   document.querySelector('meta[name="description"]').content = p.summary;
 
@@ -52,13 +55,13 @@ const renderArticle = (p) => {
         <a class="back-link reveal" href="projetos.html">← Todos os projetos</a>
         <p class="eyebrow reveal" style="--i:1">${p.catLabel} · <span class="num">${p.year}</span></p>
         <h1 class="art-title reveal" style="--i:2">${p.title}</h1>
-        <p class="art-intro reveal" style="--i:3">${a.intro}</p>
+        <p class="art-intro reveal" style="--i:3">${mdInline(longIntro || !a.intro ? p.summary : a.intro)}</p>
         <div class="art-actions reveal" style="--i:4">
           ${projectLink(p, 'btn btn-primary')}
           ${a.sections.length ? `<a class="btn btn-ghost" href="#${a.sections[0].id}">Ler o estudo <span class="arrow">↓</span></a>` : ''}
         </div>
         <dl class="art-facts glass reveal" style="--i:5">
-          <div class="wide"><dt>Meu papel</dt><dd>${p.role}</dd></div>
+          <div class="wide${p.role.length > 160 ? ' full' : ''}"><dt>Meu papel</dt><dd>${md(p.role)}</dd></div>
           <div><dt>Categoria</dt><dd>${p.catLabel}</dd></div>
           <div><dt>Ano</dt><dd class="num">${p.year}</dd></div>
           <div><dt>Stack</dt><dd>${p.stack}</dd></div>
@@ -70,24 +73,26 @@ const renderArticle = (p) => {
       <div class="container art-body" data-scene="projetos">
         <nav class="toc" aria-label="Neste estudo">
           <p class="eyebrow">Neste estudo</p>
+          ${longIntro ? '<a href="#introducao" data-toc="introducao">Introdução</a>' : ''}
           ${a.sections.map(s => `<a href="#${s.id}" data-toc="${s.id}">${s.title}</a>`).join('')}
           <a href="#entregas" data-toc="entregas">Entregas</a>
           ${projectLink(p, 'btn btn-ghost btn-sm', 'Ver projeto')}
         </nav>
         <div class="prose">
+          ${longIntro ? `<section class="prose-sec" id="introducao">${md(a.intro, { cls: 'reveal' })}</section>` : ''}
           <blockquote class="challenge glass reveal">
             <p class="eyebrow">O desafio</p>
-            <p>${p.challenge}</p>
+            ${md(p.challenge)}
           </blockquote>
           ${a.sections.map(s => `
             <section class="prose-sec" id="${s.id}">
               <h2 class="reveal">${s.title}</h2>
-              ${s.body.map(t => `<p class="reveal">${t}</p>`).join('')}
+              ${md(s.body.join('\n\n'), { cls: 'reveal' })}
               ${s.figure ? figure(p, s.figure) : ''}
             </section>`).join('')}
           <section class="prose-sec" id="entregas">
             <h2 class="reveal">Entregas</h2>
-            <ul class="deliver-list reveal">${p.deliver.map(d => `<li>${d}</li>`).join('')}</ul>
+            <ul class="deliver-list reveal">${groupItems(p.deliver).map(d => `<li>${mdInline(d.text)}${d.children.length ? ` ${d.children.map(mdInline).join(', ')}` : ''}</li>`).join('')}</ul>
           </section>
         </div>
       </div>

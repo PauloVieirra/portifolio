@@ -1,4 +1,5 @@
 import { loadContent } from '../lib/content.js';
+import { md, mdInline, isLead } from '../lib/markdown.js';
 import '../lib/overlays.js';
 
 const { articles: ARTICLES, projects: PROJECTS } = await loadContent(['articles', 'projects']);
@@ -45,6 +46,8 @@ const renderArticle = (a) => {
   const next = ORDERED[(index + 1) % ORDERED.length];
   const project = PROJECTS.find(p => p.id === a.project);
   const sections = a.sections || [];
+  /* a short intro is the opening line; a long one opens the text and the summary takes the top */
+  const longIntro = a.intro && !isLead(a.intro);
   document.title = `${a.title} — Paulo Vieira · UX IA Engineer`;
   document.querySelector('meta[name="description"]').content = a.summary;
 
@@ -54,7 +57,7 @@ const renderArticle = (a) => {
         <a class="back-link reveal" href="artigos.html">← Todos os artigos</a>
         <p class="eyebrow reveal" style="--i:1"><time datetime="${a.date}">${fmtDate(a.date)}</time> · <span class="num">${a.readMin}</span> min de leitura</p>
         <h1 class="art-title reveal" style="--i:2">${a.title}</h1>
-        <p class="art-intro reveal" style="--i:3">${a.intro}</p>
+        <p class="art-intro reveal" style="--i:3">${mdInline(longIntro || !a.intro ? a.summary : a.intro)}</p>
         <div class="byline reveal" style="--i:4">
           <p class="author"><span class="brand-mark" aria-hidden="true">PV</span><span><b>Paulo Vieira</b><span>UX IA Engineer</span></span></p>
           <ul class="art-tags" aria-label="Temas">${(a.tags || []).map(t =>
@@ -67,15 +70,17 @@ const renderArticle = (a) => {
       <div class="container art-body" data-scene="projetos">
         <nav class="toc" aria-label="Neste artigo">
           <p class="eyebrow">Neste artigo</p>
+          ${longIntro ? '<a href="#introducao" data-toc="introducao">Introdução</a>' : ''}
           ${sections.map(s => `<a href="#${s.id}" data-toc="${s.id}">${s.title}</a>`).join('')}
           ${project ? `<a class="btn btn-ghost btn-sm" href="projeto.html?p=${encodeURIComponent(project.id)}">Ver o projeto <span class="arrow">→</span></a>` : ''}
         </nav>
         <div class="prose">
+          ${longIntro ? `<section class="prose-sec" id="introducao">${md(a.intro, { cls: 'reveal' })}</section>` : ''}
           ${sections.map(s => `
             <section class="prose-sec" id="${s.id}">
               <h2 class="reveal">${s.title}</h2>
-              ${s.body.map(t => `<p class="reveal">${t}</p>`).join('')}
-              ${s.quote ? `<blockquote class="pull reveal">${s.quote}</blockquote>` : ''}
+              ${md(s.body.join('\n\n'), { cls: 'reveal' })}
+              ${s.quote ? `<blockquote class="pull reveal">${mdInline(s.quote)}</blockquote>` : ''}
               ${s.figure ? figure(a, s.figure) : ''}
             </section>`).join('')}
         </div>

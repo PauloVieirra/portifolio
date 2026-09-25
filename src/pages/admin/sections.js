@@ -14,7 +14,7 @@ export function sectionsEditor(initial, { folder, quote }) {
       return h('fieldset', { class: 'adm-section' },
         h('legend', {}, `Seção ${i + 1}`),
         field('Título da seção', input(s.title, { oninput: (e) => { s.title = e.target.value; } })),
-        field('Texto', textarea(joinParagraphs(s.body), { rows: 6, oninput: (e) => { s.body = paragraphs(e.target.value); } }), 'Separe os parágrafos com uma linha em branco.'),
+        field('Texto', textarea(joinParagraphs(s.body), { rows: 6, oninput: (e) => { s.body = paragraphs(e.target.value); } }), 'Separe os parágrafos com uma linha em branco. Aceita markdown: ### subtítulo, **negrito**, *itálico*, listas com - e [link](https://…).'),
         quote && field('Citação em destaque (opcional)', input(s.quote || '', { oninput: (e) => { s.quote = e.target.value; } })),
         img.el,
         field('Legenda da figura', input(s.figure?.caption || '', { oninput: (e) => { s.figure = { src: s.figure?.src || '', caption: e.target.value }; } })),

@@ -61,8 +61,8 @@ export const validateImage = ({ type, size }) => {
   return true;
 };
 
-/* textarea ⇄ paragraphs: a blank line separates paragraphs; single line breaks are joined */
-export const paragraphs = (text) => String(text ?? '').split(/\n\s*\n/).map(s => s.trim().replace(/\s*\n\s*/g, ' ')).filter(Boolean);
+/* textarea ⇄ paragraphs: a blank line separates paragraphs; line breaks inside one are kept (markdown lists) */
+export const paragraphs = (text) => String(text ?? '').split(/\n\s*\n/).map(s => s.replace(/[ \t]+$/gm, '').replace(/^\n+|\s+$/g, '').replace(/^[ \t]+(?=\S)/, '')).filter(Boolean);
 export const joinParagraphs = (list) => (list || []).join('\n\n');
 
 export const normalizeSections = (sections, { quote }) => {

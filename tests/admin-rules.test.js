@@ -60,7 +60,7 @@ describe('validateImage', () => {
 });
 
 describe('paragraphs', () => {
-  it('splits on blank lines and joins wrapped lines', () => expect(paragraphs('a\nb\n\n\n c ')).toEqual(['a b', 'c']));
+  it('splits on blank lines and keeps line breaks (lists)', () => expect(paragraphs('a\n- b\n\n\n c ')).toEqual(['a\n- b', 'c']));
   it('round-trips', () => expect(paragraphs(joinParagraphs(['x', 'y']))).toEqual(['x', 'y']));
 });
 

@@ -66,7 +66,7 @@ function editArticle(root, row, all, projects) {
     field('Tags', f.tags, 'Separadas por vírgula. IA, UX, Design system e Pesquisa também são os filtros da home.'),
     img.el,
     h('div', { class: 'adm-grid2' }, field('Rótulo da capa', f.tag, 'Usado quando não há imagem.'), field('Cor 1 da capa', f.c1), field('Cor 2 da capa', f.c2)),
-    field('Introdução', f.intro),
+    field('Introdução', f.intro, 'Até ~300 caracteres num parágrafo: aparece no topo. Mais longa: abre o texto e o Resumo vai para o topo. Aceita markdown: ### subtítulo, **negrito**, *itálico*, listas com - e [link](https://…).'),
     h('h2', {}, 'Seções'), sections.el,
     h('div', { class: 'adm-actions' }, f.published),
     h('div', { class: 'adm-savebar glass' }, h('button', { class: 'btn btn-ghost', type: 'button', onclick: back }, 'Cancelar'), save)));

@@ -78,6 +78,14 @@ await step('sem login, nenhuma escrita passa pela RLS', async () => {
   assert.ok(up.error, 'upload anônimo deveria falhar');
 });
 
+await step('estudo de caso: entregas continuam como pílulas e o markdown não aparece cru', async () => {
+  const { page, errors } = await open('projeto.html?p=lumen');
+  assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.deliver-list')).display), 'flex');
+  assert.doesNotMatch(await page.locator('.prose').innerText(), /\*\*|^#{1,6}\s/m);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 await step('/login mostra o formulário e o painel sem sessão manda para lá', async () => {
   const page = await browser.newPage();
   await page.goto(`${BASE}/login`);
