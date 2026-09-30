@@ -1,0 +1,23 @@
+# Consulta o Supabase uma vez por dia para o projeto do plano gratuito não ser pausado por inatividade
+# (o Supabase pausa após 7 dias sem requisições). Usa a publishable key numa leitura pública (RLS).
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: '0 9 * * *' # todo dia às 09:00 UTC (06:00 em Brasília)
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          status=$(curl -sS -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 10 \
+            "$SUPABASE_URL/rest/v1/site_content?select=key&limit=1" \
+            -H "apikey: $SUPABASE_PUBLISHABLE_KEY")
+          echo "Supabase respondeu HTTP $status"
+          test "$status" = "200"
