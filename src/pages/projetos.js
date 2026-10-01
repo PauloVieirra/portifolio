@@ -8,7 +8,7 @@ document.documentElement.classList.add('is-ready');
 showConstructionNotice();
 
 /* =========================================================
-   WIKI — projects. Engine: src/lib/wiki.js
+   WIKI - projects. Engine: src/lib/wiki.js
    ========================================================= */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (id) => document.getElementById(id);
@@ -47,7 +47,7 @@ initWiki({
 });
 
 /* =========================================================
-   MOTION — reveal, aurora scenes, sticky nav
+   MOTION - reveal, aurora scenes, sticky nav
    ========================================================= */
 const revealIO = new IntersectionObserver((entries) => {
   entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); } });

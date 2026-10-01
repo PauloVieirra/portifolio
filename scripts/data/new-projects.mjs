@@ -11,7 +11,7 @@ export const NEW_PROJECTS = [
     c1: 'var(--aurora-violet-fill)', c2: 'var(--aurora-blue-fill)',
     url: '', img: img('photo-1568667256549-094345857637'),
     summary: 'Portal que digitalizou, organizou e relacionou mais de 6 mil atos normativos publicados desde os anos 80, com busca, revogação, gestão de usuários e auditoria.',
-    challenge: 'Um ato normativo raramente existe sozinho: ele altera, revoga ou regulamenta outros. Digitalizar o acervo sem preservar essas relações criaria apenas um arquivo pesquisável — e as pessoas continuariam sem saber qual regra está valendo hoje.',
+    challenge: 'Um ato normativo raramente existe sozinho: ele altera, revoga ou regulamenta outros. Digitalizar o acervo sem preservar essas relações criaria apenas um arquivo pesquisável, e as pessoas continuariam sem saber qual regra está valendo hoje.',
     role: 'Product Designer responsável por todo o ciclo de design: levantamento e entendimento da demanda, entrevistas com usuários, arquitetura da informação, protótipo navegável no Figma, validação com o cliente e testes de navegação.',
     stack: 'Figma · FigJam · Maze',
     deliver: [
@@ -29,7 +29,7 @@ export const NEW_PROJECTS = [
       sections: [
         { id: 'contexto', title: 'Contexto', body: [
           'Resoluções, portarias e instruções normativas regulam o dia a dia de uma instituição. Nesse caso, quatro décadas de atos estavam espalhadas entre pastas físicas, documentos digitalizados sem padrão e planilhas mantidas por poucas pessoas.',
-          'Encontrar um ato dependia de saber exatamente o que procurar — ou de perguntar a quem estava lá há mais tempo. E, mesmo encontrado, não havia como saber com segurança se ele ainda estava em vigor ou se tinha sido alterado por um ato posterior.',
+          'Encontrar um ato dependia de saber exatamente o que procurar ou de perguntar a quem estava lá há mais tempo. E, mesmo encontrado, não havia como saber com segurança se ele ainda estava em vigor ou se tinha sido alterado por um ato posterior.',
           'O pedido inicial era **digitalizar o acervo**. Logo ficou claro que o valor estava em outro lugar: **organizar e relacionar** os atos, para que a situação de cada norma ficasse evidente.' ],
           figure: { src: img('photo-1450101499163-c8848c66ca85'), caption: 'Boa parte do acervo existia apenas em papel, com anotações feitas à mão ao longo dos anos.' } },
         { id: 'processo', title: 'Processo', body: [
@@ -40,7 +40,7 @@ export const NEW_PROJECTS = [
           'Construí um protótipo navegável no Figma cobrindo consulta, cadastro, revogação e administração. Ele foi validado com o cliente em rodadas curtas e passou por **testes de navegação**, que mostraram onde os termos usados pela equipe não batiam com os termos que os usuários procuravam.' ],
           figure: { src: img('photo-1507925921958-8a62f3d1a50d'), caption: 'Mapeamento dos tipos de ato e das relações entre eles, antes de qualquer tela.' } },
         { id: 'solucao', title: 'Solução', body: [
-          'O centro do portal é a **ficha do ato**: o texto integral, os metadados e uma linha do tempo com tudo o que aconteceu com ele — quando foi publicado, quais atos o alteraram e se foi revogado.',
+          'O centro do portal é a **ficha do ato**: o texto integral, os metadados e uma linha do tempo com tudo o que aconteceu com ele (quando foi publicado, quais atos o alteraram e se foi revogado).',
           'As relações aparecem nos dois sentidos. Quem abre um ato revogado vê imediatamente qual norma o substituiu; quem abre o ato novo vê o que ele revogou.',
           'Para a equipe que mantém o acervo, o portal oferece:\n- cadastro e edição de atos com validação dos campos obrigatórios;\n- fluxo de revogação que registra autor, data e justificativa;\n- gestão de usuários e perfis de acesso;\n- trilha de auditoria de todas as ações.' ],
           figure: { src: img('photo-1581291518857-4e27b48ff24e'), caption: 'Primeiros esboços da ficha do ato, com a linha do tempo de alterações.' } },
@@ -58,8 +58,8 @@ export const NEW_PROJECTS = [
     tags: ['UX', 'Frontend', 'Educação'],
     c1: 'var(--aurora-mint-fill)', c2: 'var(--aurora-blue-fill)',
     url: '', img: img('photo-1580582932707-520aed937b7b'),
-    summary: 'Portal para gerenciar percentuais de bolsas de estudo, renovações e solicitações de alunos e dependentes — do levantamento ao protótipo funcional em código.',
-    challenge: 'As regras de concessão combinavam percentuais, vínculo (aluno ou dependente), prazos de renovação e critérios de elegibilidade. Qualquer ambiguidade nessas regras virava retrabalho — e, sem acesso direto ao cliente, esclarecê-las era ainda mais difícil.',
+    summary: 'Portal para gerenciar percentuais de bolsas de estudo, renovações e solicitações de alunos e dependentes, do levantamento ao protótipo funcional em código.',
+    challenge: 'As regras de concessão combinavam percentuais, vínculo (aluno ou dependente), prazos de renovação e critérios de elegibilidade. Qualquer ambiguidade nessas regras virava retrabalho e, sem acesso direto ao cliente, esclarecê-las era ainda mais difícil.',
     role: 'Product Designer em todas as etapas: levantamento e entendimento das regras de negócio, definição dos fluxos, prototipação e desenvolvimento do protótipo funcional em código que serviu de base para a equipe técnica.',
     stack: 'Figma · React JS',
     deliver: [
@@ -75,7 +75,7 @@ export const NEW_PROJECTS = [
       intro: 'Conceder, renovar e acompanhar bolsas de estudo envolvia planilhas, regras de negócio complexas e muita troca de mensagens. Conduzi o projeto do entendimento da demanda até um protótipo funcional em código.',
       sections: [
         { id: 'contexto', title: 'Contexto', body: [
-          'A instituição oferecia bolsas com diferentes percentuais para alunos e para dependentes de colaboradores. Cada bolsa precisava ser solicitada, analisada, aprovada e renovada periodicamente — e cada etapa tinha suas próprias regras.',
+          'A instituição oferecia bolsas com diferentes percentuais para alunos e para dependentes de colaboradores. Cada bolsa precisava ser solicitada, analisada, aprovada e renovada periodicamente, e cada etapa tinha suas próprias regras.',
           'O controle acontecia de forma fragmentada, o que tornava difícil saber a situação de uma solicitação, quando uma bolsa vencia ou por que um percentual tinha sido aplicado.' ],
           figure: { src: img('photo-1606761568499-6d2451b23c66'), caption: 'Bolsas para alunos e dependentes, com regras diferentes para cada perfil.' } },
         { id: 'processo', title: 'Processo', body: [
@@ -105,7 +105,7 @@ export const NEW_PROJECTS = [
     url: '', img: img('photo-1569336415962-a4bd9f69cd83'),
     summary: 'Plataforma que mostra à população onde e quando haverá atendimento público de serviços em cada cidade, com mapa, geolocalização e gestão das datas.',
     challenge: 'Informações de atendimento mudam com frequência e precisam chegar a quem está no celular, muitas vezes com conexão ruim. Com prazo curto, era preciso alinhar o escopo rápido e validar com algo que funcionasse de verdade, não com telas estáticas.',
-    role: 'Product Designer e responsável pelo protótipo funcional: conduzi a Lean Inception, defini fluxos e interface e desenvolvi o protótipo em React JS com Supabase — tabelas, autenticação, regras de segurança e armazenamento de imagens.',
+    role: 'Product Designer e responsável pelo protótipo funcional: conduzi a Lean Inception, defini fluxos e interface e desenvolvi o protótipo em React JS com Supabase, incluindo tabelas, autenticação, regras de segurança e armazenamento de imagens.',
     stack: 'React JS · Supabase · API de CEP do IBGE · API de mapas',
     deliver: [
       'Mapa com geolocalização animada dos pontos de atendimento',
@@ -118,10 +118,10 @@ export const NEW_PROJECTS = [
       'Interface adaptativa, pensada primeiro para o celular',
     ],
     article: {
-      intro: 'Para saber quando um serviço público passaria pela sua cidade, as pessoas precisavam ligar — e nem sempre havia resposta. Com prazo curto, levei a demanda da Lean Inception a um protótipo funcional em React com Supabase.',
+      intro: 'Para saber quando um serviço público passaria pela sua cidade, as pessoas precisavam ligar, e nem sempre havia resposta. Com prazo curto, levei a demanda da Lean Inception a um protótipo funcional em React com Supabase.',
       sections: [
         { id: 'contexto', title: 'Contexto', body: [
-          'Alguns serviços públicos são levados às cidades em veículos e unidades móveis, com datas e locais que mudam ao longo do ano. Para a população, a única forma de saber quando o atendimento chegaria era telefonar — e as datas nem sempre estavam disponíveis.',
+          'Alguns serviços públicos são levados às cidades em veículos e unidades móveis, com datas e locais que mudam ao longo do ano. Para a população, a única forma de saber quando o atendimento chegaria era telefonar, e as datas nem sempre estavam disponíveis.',
           'O resultado era informação desencontrada: gente que perdia o atendimento por não saber da data e equipes que atendiam abaixo da capacidade por falta de divulgação.' ],
           figure: { src: img('photo-1524661135-423995f22d0b'), caption: 'Atendimentos itinerantes em diferentes cidades, com datas que mudam ao longo do ano.' } },
         { id: 'processo', title: 'Processo', body: [
@@ -133,11 +133,11 @@ export const NEW_PROJECTS = [
           'Para a população, a experiência começa no mapa: a pessoa informa o CEP ou permite a localização, e o mapa se move com uma animação até a sua cidade, mostrando os próximos atendimentos, os serviços oferecidos e as datas.',
           'Para a equipe, um painel permite cadastrar atendimentos, definir locais e datas e divulgar novas agendas, com acesso protegido por autenticação e regras de segurança.',
           '### Adaptativo, não apenas responsivo',
-          'Como a maioria das pessoas usaria o sistema pelo celular, não bastava encolher a versão de desktop. Optei por uma interface **adaptativa**: no celular, o mapa ocupa a tela e as informações aparecem em painéis que sobem da parte de baixo, próximos do polegar — uma experiência mais próxima de um aplicativo do que de um site redimensionado.' ],
+          'Como a maioria das pessoas usaria o sistema pelo celular, não bastava encolher a versão de desktop. Optei por uma interface **adaptativa**: no celular, o mapa ocupa a tela e as informações aparecem em painéis que sobem da parte de baixo, próximos do polegar, numa experiência mais próxima de um aplicativo do que de um site redimensionado.' ],
           figure: { src: img('photo-1512941937669-90a1b58e7e9c'), caption: 'No celular, a experiência foi desenhada como a de um aplicativo.' } },
         { id: 'aprendizados', title: 'Aprendizados', body: [
           'Com prazo curto, um **protótipo funcional** acelera mais do que atrasa: ele elimina rodadas de explicação e mostra, com dados reais, o que funciona e o que não funciona.',
-          'E pensar a experiência a partir do dispositivo que as pessoas realmente usam muda as decisões de interface desde o início — adaptar é diferente de apenas redimensionar.' ] },
+          'E pensar a experiência a partir do dispositivo que as pessoas realmente usam muda as decisões de interface desde o início. Adaptar é diferente de apenas redimensionar.' ] },
       ],
     },
   },
@@ -170,7 +170,7 @@ export const NEW_PROJECTS = [
           figure: { src: img('photo-1586281380349-632531db7ed4'), caption: 'Diagnóstico da interface atual: usabilidade, acessibilidade e organização dos serviços.' } },
         { id: 'processo', title: 'Processo', body: [
           'Comecei com um **diagnóstico** da interface existente, avaliando usabilidade, acessibilidade e a forma como os serviços estavam organizados.',
-          'A partir dele, reorganizei os serviços em torno das necessidades do cidadão e defini uma nova linguagem visual: tipografia mais legível, hierarquia clara, cores com contraste adequado e componentes reutilizáveis — sempre dentro da identidade institucional do cliente.',
+          'A partir dele, reorganizei os serviços em torno das necessidades do cidadão e defini uma nova linguagem visual: tipografia mais legível, hierarquia clara, cores com contraste adequado e componentes reutilizáveis, sempre dentro da identidade institucional do cliente.',
           'Cada tela foi pensada em três tamanhos, do celular ao desktop, e os componentes foram especificados com seus estados de foco, erro e carregamento.' ],
           figure: { src: img('photo-1553877522-43269d4ea984'), caption: 'Definição da nova linguagem visual e dos componentes.' } },
         { id: 'solucao', title: 'Solução', body: [

@@ -9,10 +9,10 @@ export const ARTICLE = {
   project: '',
   img: 'https://images.unsplash.com/photo-1555421689-491a97ff2040?w=1600&q=80&auto=format&fit=crop',
   summary: 'Como criei um conversor de imagens e vídeos em arquivos editáveis no Figma usando um LLM como modelo de visão, RAG, regras obrigatórias e fundamentos de design.',
-  intro: 'Antes de existirem ferramentas prontas para isso, eu já transformava imagens e vídeos em arquivos editáveis no Figma usando um LLM como modelo de visão. A proposta é simples — o que faz funcionar é o que está por trás.',
+  intro: 'Antes de existirem ferramentas prontas para isso, eu já transformava imagens e vídeos em arquivos editáveis no Figma usando um LLM como modelo de visão. A proposta é simples. O que faz funcionar é o que está por trás.',
   sections: [
     { id: 'a-proposta', title: 'A proposta', body: [
-      'Criei um conversor de **imagens e vídeos para arquivos editáveis no Figma**. A ideia é transformar uma referência visual em um design estruturado, organizado e pronto para trabalhar — em vez de um print que precisa ser redesenhado do zero.',
+      'Criei um conversor de **imagens e vídeos para arquivos editáveis no Figma**. A ideia é transformar uma referência visual em um design estruturado, organizado e pronto para trabalhar, em vez de um print que precisa ser redesenhado do zero.',
       'https://www.linkedin.com/feed/update/urn:li:activity:7432372253549531136',
       'O ponto de partida é um LLM usado como **modelo de visão**: ele lê a referência e descreve a interface. Mas um modelo sozinho "gera layout"; ele não garante que o arquivo final seja algo que um designer consiga usar. Foi aí que entrou a maior parte do trabalho.' ] },
     { id: 'rag', title: 'RAG: consultar antes de gerar', body: [

@@ -11,7 +11,7 @@ document.documentElement.classList.add('is-ready');
 showConstructionNotice();
 
 /* =========================================================
-   ARTICLE — pick the article from the URL and render it
+   ARTICLE - pick the article from the URL and render it
    artigo.html?a=<id>  (also accepts artigo.html#<id>)
    ========================================================= */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -31,7 +31,7 @@ const cover = (a, cls = '', label = a.tag) => `
     : `<div class="cover-ui glass"><span class="tag">${esc(label)}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>`;
 
 const renderNotFound = () => {
-  document.title = 'Artigo não encontrado — Paulo Vieira';
+  document.title = 'Artigo não encontrado | Paulo Vieira';
   main.innerHTML = `
     <section class="container not-found">
       <p class="eyebrow">Artigo não encontrado</p>
@@ -46,7 +46,7 @@ const renderArticle = (a) => {
   const sections = a.sections || [];
   /* a short intro is the opening line; a long one opens the text and the summary takes the top */
   const longIntro = a.intro && !isLead(a.intro);
-  document.title = `${a.title} — Paulo Vieira · UX IA Engineer`;
+  document.title = `${a.title} | Paulo Vieira · UX IA Engineer`;
   document.querySelector('meta[name="description"]').content = a.summary;
 
   main.innerHTML = `
@@ -120,7 +120,7 @@ index < 0 ? renderNotFound() : renderArticle(ORDERED[index]);
 initLightbox();
 
 /* =========================================================
-   MOTION — reveal, aurora scenes, reading progress, cover approach, toc
+   MOTION - reveal, aurora scenes, reading progress, cover approach, toc
    ========================================================= */
 const revealIO = new IntersectionObserver((entries) => {
   entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); } });

@@ -20,11 +20,20 @@ on conflict (id) do nothing;
 
 insert into public.timeline (position, kind, period, title, org, description, title_full)
 select * from (values
-  (0, 'formacao', 'Em andamento', 'MBA em Inovação Orientada à IA e UX', 'Formação · Superior em Desenvolvimento Mobile (2023)', null, 'MBA em Inovação Orientada à Inteligência Artificial e Experiência do Usuário'),
-  (1, 'trabalho', '2025 — hoje', 'Product Designer', 'SEA Tecnologia', 'Pesquisa com usuários, prototipação avançada no Figma, design systems e acessibilidade, com protótipos funcionais em React e React Native.', null),
-  (2, 'trabalho', '2024', 'UX e UI Design', 'Sebrae · Vgents · Diamond Tecnologia', 'Testes de usabilidade e acessibilidade na intranet Conexão Sebrae, guias de estilo e um app em React Native com Supabase para uma clínica de psicologia.', null),
-  (3, 'trabalho', '2021 — 2022', 'Desenvolvedor Web', 'ONU / UNICEF', 'API em Laravel (PHP), sugestões de melhoria para o sistema e ajustes de front-end, no ritmo diário do Scrum.', null),
-  (4, 'trabalho', '2013 — 2020', 'Análise de sistemas', 'Banco Sicoob (2018 — 2020) · Banco do Brasil (2013 — 2015)', 'Levantamento e especificação de requisitos, documentação e fundamentos de UX e UI aplicados ao processo de adesão do cliente.', null)
+  (0, 'formacao', 'Em andamento', 'MBA em Inovação Orientada à IA e UX', 'Pós-graduação', null, 'MBA em Inovação Orientada à Inteligência Artificial e Experiência do Usuário'),
+  (1, 'formacao', '2025', 'IA UX Design', 'UX Unicórnio · Curso', null, null),
+  (2, 'formacao', '2025', 'Google UX Design', 'Google · Curso', null, null),
+  (3, 'formacao', '2024', 'UX/UI', 'Uxcell · Curso', null, null),
+  (4, 'formacao', '2023', 'Superior em Desenvolvimento Mobile', 'Graduação', null, null),
+  (5, 'formacao', '2023', 'Protótipo com Figma', 'Curso', null, null),
+  (6, 'formacao', '2023', 'React Native e React JS', 'Curso', null, null),
+  (7, 'formacao', '2023', 'Desenvolvimento Front-end: JavaScript, HTML5 e CSS', 'Curso', null, null),
+  (8, 'formacao', '2023', 'Metodologia Scrum', 'Certiprof · Curso', null, null),
+  (9, 'formacao', '2022', 'UI Design', 'UX Unicórnio · Curso', null, null),
+  (10, 'trabalho', '2025 - hoje', 'Product Designer', 'SEA Tecnologia', 'Pesquisa com usuários, prototipação avançada no Figma, design systems e acessibilidade, com protótipos funcionais em React e React Native.', null),
+  (11, 'trabalho', '2024', 'UX e UI Design', 'Sebrae · Vgents · Diamond Tecnologia', 'Testes de usabilidade e acessibilidade na intranet Conexão Sebrae, guias de estilo e um app em React Native com Supabase para uma clínica de psicologia.', null),
+  (12, 'trabalho', '2021 - 2022', 'Desenvolvedor Web', 'ONU / UNICEF', 'API em Laravel (PHP), sugestões de melhoria para o sistema e ajustes de front-end, no ritmo diário do Scrum.', null),
+  (13, 'trabalho', '2013 - 2020', 'Análise de sistemas', 'Banco Sicoob (2018 - 2020) · Banco do Brasil (2013 - 2015)', 'Levantamento e especificação de requisitos, documentação e fundamentos de UX e UI aplicados ao processo de adesão do cliente.', null)
 ) as v(position, kind, period, title, org, description, title_full)
 where not exists (select 1 from public.timeline);
 

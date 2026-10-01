@@ -1,4 +1,4 @@
-/* Admin panel — shared tokens/components first, then the panel layout. */
+/* Admin panel - shared tokens/components first, then the panel layout. */
 @import '../tokens/tokens.css';
 @import '../components.css';
 
@@ -73,3 +73,15 @@ body { background: var(--bg); color: var(--fg); min-height: 100vh; }
   .adm-user { margin-top: 0; margin-left: auto; }
   .adm-tags li { grid-template-columns: 1fr 1fr auto auto; }
 }
+
+/* Trajetória: one group per column of /trajetoria */
+.adm-group + .adm-group { margin-top: 40px; }
+.adm-group .adm-head h2 { font-size: clamp(18px, 2vw, 22px); }
+.adm-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; padding: 16px; margin-bottom: 16px; border-radius: var(--radius-md); }
+.adm-note p { flex: 1 1 320px; font-size: 14px; color: var(--muted); }
+
+/* Vídeos: one-time setup (SQL to run in Supabase) */
+.adm-setup { display: grid; gap: 12px; justify-content: stretch; }
+.adm-setup p, .adm-setup ol { font-size: 14px; color: var(--fg); margin: 0; }
+.adm-setup ol { padding-left: 20px; display: grid; gap: 4px; }
+.adm-sql { width: 100%; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-glass); background: var(--surface-glass-strong-bg); resize: vertical; }

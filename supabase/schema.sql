@@ -1,4 +1,4 @@
--- Portfólio — schema da área de gestão. Idempotente: pode ser executado de novo.
+-- Portfólio - schema da área de gestão. Idempotente: pode ser executado de novo.
 create extension if not exists pgcrypto;
 
 create table if not exists public.admins (
@@ -61,17 +61,34 @@ create table if not exists public.site_content (
   updated_at timestamptz not null default now()
 );
 
+-- Videos: the /videos grid; the featured one (at most one) is the presentation video on the home
+create table if not exists public.videos (
+  id uuid primary key default gen_random_uuid(),
+  position int not null default 0,
+  published boolean not null default true,
+  featured boolean not null default false,
+  title text not null,
+  description text,
+  src text,
+  poster text,
+  duration text,
+  updated_at timestamptz not null default now()
+);
+create unique index if not exists videos_one_featured on public.videos ((true)) where featured;
+
 create or replace function public.touch_updated_at() returns trigger language plpgsql as $$
 begin new.updated_at = now(); return new; end $$;
 drop trigger if exists projects_touch on public.projects;
 create trigger projects_touch before update on public.projects for each row execute function public.touch_updated_at();
 drop trigger if exists articles_touch on public.articles;
 create trigger articles_touch before update on public.articles for each row execute function public.touch_updated_at();
+drop trigger if exists videos_touch on public.videos;
+create trigger videos_touch before update on public.videos for each row execute function public.touch_updated_at();
 drop trigger if exists site_content_touch on public.site_content;
 create trigger site_content_touch before update on public.site_content for each row execute function public.touch_updated_at();
 
-grant select on public.projects, public.articles, public.timeline, public.site_content to anon, authenticated;
-grant insert, update, delete on public.projects, public.articles, public.timeline, public.site_content to authenticated;
+grant select on public.projects, public.articles, public.timeline, public.site_content, public.videos to anon, authenticated;
+grant insert, update, delete on public.projects, public.articles, public.timeline, public.site_content, public.videos to authenticated;
 grant select on public.admins to authenticated;
 
 alter table public.admins enable row level security;
@@ -79,6 +96,7 @@ alter table public.projects enable row level security;
 alter table public.articles enable row level security;
 alter table public.timeline enable row level security;
 alter table public.site_content enable row level security;
+alter table public.videos enable row level security;
 
 drop policy if exists admins_read on public.admins;
 create policy admins_read on public.admins for select to authenticated using (public.is_admin());
@@ -103,6 +121,11 @@ create policy site_content_read on public.site_content for select using (true);
 drop policy if exists site_content_write on public.site_content;
 create policy site_content_write on public.site_content for all to authenticated using (public.is_admin()) with check (public.is_admin());
 
+drop policy if exists videos_read on public.videos;
+create policy videos_read on public.videos for select using (published or public.is_admin());
+drop policy if exists videos_write on public.videos;
+create policy videos_write on public.videos for all to authenticated using (public.is_admin()) with check (public.is_admin());
+
 -- Columns added after the first release (no-op on a fresh install)
 alter table public.articles add column if not exists featured boolean not null default false;
 alter table public.articles add column if not exists gallery jsonb not null default '[]'::jsonb;
@@ -119,3 +142,18 @@ drop policy if exists media_update on storage.objects;
 create policy media_update on storage.objects for update to authenticated using (bucket_id = 'media' and public.is_admin());
 drop policy if exists media_delete on storage.objects;
 create policy media_delete on storage.objects for delete to authenticated using (bucket_id = 'media' and public.is_admin());
+
+-- Storage: public bucket for video files (50 MB each, the free plan's limit); only admins write
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('videos', 'videos', true, 52428800, array['video/mp4', 'video/webm', 'video/quicktime'])
+on conflict (id) do update set public = excluded.public, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
+
+drop policy if exists videos_files_insert on storage.objects;
+create policy videos_files_insert on storage.objects for insert to authenticated with check (bucket_id = 'videos' and public.is_admin());
+drop policy if exists videos_files_update on storage.objects;
+create policy videos_files_update on storage.objects for update to authenticated using (bucket_id = 'videos' and public.is_admin());
+drop policy if exists videos_files_delete on storage.objects;
+create policy videos_files_delete on storage.objects for delete to authenticated using (bucket_id = 'videos' and public.is_admin());
+
+-- the API picks up new tables and columns right away
+notify pgrst, 'reload schema';

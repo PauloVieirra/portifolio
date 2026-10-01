@@ -1,6 +1,15 @@
 {
   "rewrites": [
+    { "source": "/projetos", "destination": "/projetos.html" },
+    { "source": "/artigos", "destination": "/artigos.html" },
+    { "source": "/videos", "destination": "/videos.html" },
+    { "source": "/processo", "destination": "/processo.html" },
+    { "source": "/trajetoria", "destination": "/trajetoria.html" },
+    { "source": "/contato", "destination": "/contato.html" },
     { "source": "/login", "destination": "/login.html" },
     { "source": "/admin", "destination": "/admin.html" }
+  ],
+  "redirects": [
+    { "source": "/servicos", "destination": "/processo", "permanent": true }
   ]
 }

@@ -1,0 +1,205 @@
+<section class="section" id="processo" data-scene="servicos">
+  <div class="container">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+      <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"></circle></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 7 2 2 3.5-3.5M4 15l2 2 3.5-3.5M13 8h7M13 16h7"></path></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 21V4m0 0h11l-2 4 2 4H5"></path></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.8a3.5 3.5 0 0 1 0 6.4M18.5 14.5a6.5 6.5 0 0 1 3 5.5"></path></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"></path><path d="m3 12.5 9 5 9-5M3 16.5l9 5 9-5"></path></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 20h16M7 16v-4M12 16V7M17 16v-7"></path></symbol>
+      <symbol id="i-prompt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="3"></rect><path d="m7 10 2.5 2L7 14M12 14h5"></path></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></symbol>
+      <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3c.6 4.6 2.4 6.4 7 7-4.6.6-6.4 2.4-7 7-.6-4.6-2.4-6.4-7-7 4.6-.6 6.4-2.4 7-7zM19 16c.3 1.8.9 2.4 2.5 2.7-1.6.3-2.2.9-2.5 2.6-.3-1.7-.9-2.3-2.5-2.6 1.6-.3 2.2-.9 2.5-2.7z"></path></symbol>
+      <symbol id="i-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 4 10 2-5h6"></path></symbol>
+      <symbol id="i-loop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"></path><path d="M20 4v4h-4"></path></symbol>
+      </defs>
+    </svg>
+
+    <div class="section-head">
+      <p class="eyebrow reveal">Processo</p>
+      <h1 class="section-title reveal" style="--i:1">O <strong>framework certo</strong> para cada projeto</h1>
+      <p class="lead reveal" style="--i:2">Não existe um processo único. Escolho o método pela natureza da demanda: o prazo, o quanto o problema já está claro e o quanto já se sabe sobre quem vai usar. Em qualquer um deles, o protótipo é em código e quase sempre vira o front-end.</p>
+    </div>
+
+    <!-- Framework picker: two tabs (state in the URL hash: #lean-inception, #design-thinking). src/lib/sections/frameworks.js -->
+    <p class="fw-ask reveal">Quando uso cada um</p>
+    <div class="fw-tabs reveal" role="tablist" aria-label="Frameworks">
+      <button class="fw-tab glass" type="button" role="tab" id="tab-lean" aria-controls="lean-inception" aria-selected="true" data-hash="lean-inception">
+        <span class="fw-tag">Prazo curto</span>
+        <strong>Lean Inception</strong>
+        <span class="fw-sum">Demanda rápida, com pouco tempo: em poucos dias o time chega a um objetivo sólido e a um MVP definido.</span>
+        <span class="fw-time num">1 a 5 dias</span>
+      </button>
+      <button class="fw-tab glass" type="button" role="tab" id="tab-dt" aria-controls="design-thinking" aria-selected="false" tabindex="-1" data-hash="design-thinking">
+        <span class="fw-tag">Mais tempo</span>
+        <strong>Design Thinking</strong>
+        <span class="fw-sum">Projetos com espaço para pesquisa: entender a fundo quem usa, testar cedo e voltar quantas vezes for preciso.</span>
+        <span class="fw-time num">Semanas a meses</span>
+      </button>
+    </div>
+
+    <div class="fw-panel" role="tabpanel" id="lean-inception" aria-labelledby="tab-lean">
+      <dl class="fw-facts">
+        <div class="glass"><dt>Quando uso</dt><dd><ul><li>Prazo curto e escopo ainda aberto</li><li>Várias áreas precisam concordar rápido</li><li>O objetivo é chegar a um MVP sólido</li></ul></dd></div>
+        <div class="glass"><dt>Duração</dt><dd>De 1 a 5 dias de workshop com o cliente e o time</dd></div>
+        <div class="glass"><dt>Resultado</dt><dd>MVP definido, priorizado e já prototipado em código</dd></div>
+      </dl>
+      <h2 class="fw-title">Lean Inception, passo a passo</h2>
+      <ol class="flow">
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">01</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-target"></use></svg></span>
+            <div class="flow-text">
+              <h3>Visão do produto</h3>
+              <p>Todos assinam a mesma frase: para quem é o produto, que problema resolve e por que é diferente.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Visão do produto</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">02</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-check"></use></svg></span>
+            <div class="flow-text">
+              <h3>É, não é, faz, não faz</h3>
+              <p>Os limites ficam claros antes de qualquer tela. O que fica de fora também é decisão.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Limites do escopo</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">03</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-flag"></use></svg></span>
+            <div class="flow-text">
+              <h3>Objetivos</h3>
+              <p>O que o negócio precisa alcançar, em poucas frases, para guiar as prioridades.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Objetivos priorizados</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">04</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-users"></use></svg></span>
+            <div class="flow-text">
+              <h3>Personas e jornadas</h3>
+              <p>Quem vai usar e como é o dia a dia dessas pessoas, etapa por etapa.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Personas</li><li>Jornadas</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">05</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-layers"></use></svg></span>
+            <div class="flow-text">
+              <h3>Funcionalidades e revisão</h3>
+              <p>Levantamos as funcionalidades e revisamos cada uma por esforço, valor de negócio e valor de UX.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Funcionalidades revisadas</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">06</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-chart"></use></svg></span>
+            <div class="flow-text">
+              <h3>Sequenciador e MVP</h3>
+              <p>As funcionalidades viram ondas de entrega. A primeira onda é o MVP, com a hipótese que ele precisa provar.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Canvas MVP</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal flow-step--key">
+          <span class="flow-node num" aria-hidden="true">07</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-prompt"></use></svg></span>
+            <div class="flow-text">
+            <span class="flow-badge">Em código</span>
+              <h3>Protótipo funcional</h3>
+              <p>O MVP sai do papel em dias: protótipo em React com dados reais, pronto para validar e para virar o front-end.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Protótipo em código</li></ul>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="fw-panel" role="tabpanel" id="design-thinking" aria-labelledby="tab-dt" hidden>
+      <dl class="fw-facts">
+        <div class="glass"><dt>Quando uso</dt><dd><ul><li>O problema ainda não está claro</li><li>É preciso entender a fundo quem vai usar</li><li>Errar a solução custaria caro</li></ul></dd></div>
+        <div class="glass"><dt>Duração</dt><dd>Semanas a meses, em ciclos de aprendizado</dd></div>
+        <div class="glass"><dt>Resultado</dt><dd>Solução validada com usuários reais, pronta para evoluir</dd></div>
+      </dl>
+      <h2 class="fw-title">Design Thinking, em ciclos</h2>
+      <ol class="flow flow--loop">
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">01</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-users"></use></svg></span>
+            <div class="flow-text">
+              <h3>Empatizar</h3>
+              <p>Pesquisa com usuários, entrevistas, observação, desk research e benchmarking para entender o contexto real.</p>
+            <p class="flow-ai"><svg aria-hidden="true"><use href="#i-sparkle"></use></svg>IA ajuda a organizar e cruzar os dados da pesquisa.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Entrevistas</li><li>Benchmarking</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">02</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-search"></use></svg></span>
+            <div class="flow-text">
+              <h3>Definir</h3>
+              <p>O que aprendi vira insights, e os insights viram o problema certo a resolver.</p>
+            <p class="flow-ai"><svg aria-hidden="true"><use href="#i-sparkle"></use></svg>Síntese de insights assistida por IA.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Personas</li><li>Problema definido</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">03</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-sparkle"></use></svg></span>
+            <div class="flow-text">
+              <h3>Idear</h3>
+              <p>Muitas alternativas antes de escolher uma: geração de ideias com o time e priorização.</p>
+            <p class="flow-ai"><svg aria-hidden="true"><use href="#i-sparkle"></use></svg>Mais alternativas em menos tempo, com IA.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Conceitos priorizados</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal flow-step--key">
+          <span class="flow-node num" aria-hidden="true">04</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-prompt"></use></svg></span>
+            <div class="flow-text">
+            <span class="flow-badge">Em código</span>
+              <h3>Prototipar</h3>
+              <p>Do rascunho ao Figma, e do Figma ao protótipo funcional em código, que quase sempre vira o front-end.</p>
+            <p class="flow-ai"><svg aria-hidden="true"><use href="#i-sparkle"></use></svg>Telas e código gerados mais rápido com IA.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Protótipo em código</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-step reveal">
+          <span class="flow-node num" aria-hidden="true">05</span>
+          <div class="flow-body">
+            <span class="flow-icon" aria-hidden="true"><svg><use href="#i-pulse"></use></svg></span>
+            <div class="flow-text">
+              <h3>Testar</h3>
+              <p>Testes de usabilidade com pessoas reais. O que aprendo volta para as etapas anteriores.</p>
+            <p class="flow-ai"><svg aria-hidden="true"><use href="#i-sparkle"></use></svg>Análise de feedback com IA.</p>
+              <ul class="flow-out" aria-label="Entregas"><li>Testes de usabilidade</li></ul>
+            </div>
+          </div>
+        </li>
+        <li class="flow-return" aria-hidden="true"></li>
+      </ol>
+      <p class="flow-note glass reveal"><svg aria-hidden="true"><use href="#i-loop"></use></svg>Não é uma linha reta: o que o teste revela volta para Definir e Idear, e o ciclo recomeça mais perto da solução certa.</p>
+    </div>
+  </div>
+</section>

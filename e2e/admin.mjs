@@ -1,4 +1,4 @@
-// e2e/admin.mjs — ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run e2e:admin  (com o preview rodando na 4173)
+// e2e/admin.mjs - ADMIN_EMAIL=… ADMIN_PASSWORD=… npm run e2e:admin  (com o preview rodando na 4173)
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 import { createClient } from '@supabase/supabase-js';

@@ -1,14 +1,18 @@
 import { loadContent } from '../lib/content.js';
 import { showConstructionNotice } from '../lib/notice.js';
 import { initWiki } from '../lib/wiki.js';
+import { initArticlesCarousel } from '../lib/sections/articles-carousel.js';
 import '../lib/overlays.js';
 
-const { articles: ARTICLES } = await loadContent(['articles']);
+const { articles: ARTICLES, projects: PROJECTS } = await loadContent(['articles', 'projects']);
 document.documentElement.classList.add('is-ready');
 showConstructionNotice();
 
+/* Featured carousel (same block as the home), then the full list */
+initArticlesCarousel(ARTICLES, PROJECTS);
+
 /* =========================================================
-   WIKI — articles. Engine: src/lib/wiki.js
+   WIKI - articles. Engine: src/lib/wiki.js
    ========================================================= */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (id) => document.getElementById(id);
@@ -51,7 +55,7 @@ initWiki({
 });
 
 /* =========================================================
-   MOTION — reveal, aurora scenes, sticky nav
+   MOTION - reveal, aurora scenes, sticky nav
    ========================================================= */
 const revealIO = new IntersectionObserver((entries) => {
   entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); revealIO.unobserve(en.target); } });

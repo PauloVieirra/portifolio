@@ -1,4 +1,4 @@
-/* Article reader — shared by projeto.html (case studies) and artigo.html (articles).
+/* Article reader - shared by projeto.html (case studies) and artigo.html (articles).
    Header, cover that approaches on scroll, sticky index + reading column, end CTA, next card. */
 
 /* =========================================================
@@ -26,7 +26,7 @@
 .art-cover .cover-ui { width: min(52%, 420px); translate: -50% calc(-50% + (1 - var(--near)) * 40px); }
 
 /* =========================================================
-   3. BODY — sticky index + reading column
+   3. BODY - sticky index + reading column
    ========================================================= */
 .art-body { display: grid; grid-template-columns: 1fr; gap: 48px; padding-block: clamp(56px, 8vw, 112px); }
 .toc { display: none; }
@@ -43,7 +43,7 @@
 .deliver-list li { font-size: 14px; padding: 8px 16px; border-radius: var(--radius-pill); background: var(--surface-glass-strong-bg); border: 1px solid var(--button-ghost-border); }
 
 /* =========================================================
-   4. END — CTA + next project
+   4. END - CTA + next project
    ========================================================= */
 .art-end { display: grid; gap: 16px; padding-bottom: clamp(64px, 8vw, 120px); }
 .end-cta { border-radius: var(--radius-lg); padding: clamp(32px, 5vw, 64px); display: grid; gap: 20px; justify-items: start; }
@@ -63,7 +63,7 @@
 .not-found { padding-block: clamp(80px, 14vw, 180px); display: grid; gap: 20px; justify-items: start; }
 
 /* =========================================================
-   5. RESPONSIVE — DS breakpoints (412 / 834 / 1440)
+   5. RESPONSIVE - DS breakpoints (412 / 834 / 1440)
    ========================================================= */
 @media (min-width: 600px) {
   .art-facts { grid-template-columns: repeat(3, 1fr); }

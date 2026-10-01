@@ -1,12 +1,13 @@
-// scripts/build-seed.mjs — node scripts/build-seed.mjs → supabase/seed.sql
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+// scripts/build-seed.mjs - node scripts/build-seed.mjs → supabase/seed.sql
+import { writeFileSync, mkdirSync } from 'node:fs';
 import { PROJECTS } from '../src/data/projects.js';
 import { ARTICLES } from '../src/data/articles.js';
 import { toProjectRow, toArticleRow } from '../src/lib/content-map.js';
 import { extractHome } from './lib/extract-home.mjs';
+import { readHomeBlocks } from './lib/partials.mjs';
 import { insertSQL, sqlValue } from './lib/sql.mjs';
 
-const home = extractHome(readFileSync('index.html', 'utf8'));
+const home = extractHome(readHomeBlocks());
 const tl = home.timeline;
 const timelineSQL = `insert into public.timeline (position, kind, period, title, org, description, title_full)
 select * from (values

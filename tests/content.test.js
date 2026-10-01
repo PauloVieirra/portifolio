@@ -32,6 +32,21 @@ describe('loadContent', () => {
     expect(warn).toHaveBeenCalled();
   });
 
+  it('a missing videos table falls back only the videos, not the rest', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const out = await loadContent(['projects', 'videos'], { client: fake({
+      projects: { data: [{ id: 'p1', title: 'P1', summary: 'S' }], error: null },
+      videos: { data: null, error: { message: 'relation "public.videos" does not exist' } },
+    }) });
+    expect(out.projects[0]).toMatchObject({ id: 'p1' });
+    expect(out.videos).toEqual([]);
+  });
+
+  it('reads the published videos', async () => {
+    const out = await loadContent(['videos'], { client: fake({ videos: { data: [{ id: 'v1', title: 'V', featured: true }], error: null } }) });
+    expect(out.videos).toEqual([{ id: 'v1', title: 'V', featured: true }]);
+  });
+
   it('falls back when the database is slower than the timeout', async () => {
     vi.spyOn(console, 'warn').mockImplementation(() => {});
     const out = await loadContent(['projects'], { timeoutMs: 20, client: fake({ projects: { data: [], error: null } }, 200) });

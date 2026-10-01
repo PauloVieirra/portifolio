@@ -10,7 +10,7 @@ export const bubblesHTML = (bubbles) => bubbles.map((b, i) => `
             </ul>`).join('');
 
 export const timelineHTML = (rows) => rows.map(r => `
-          <article class="tl-item reveal">
+          <article class="tl-item reveal" data-kind="${esc(r.kind)}">
             <span class="tl-when num">${esc(r.period)}</span>
             <div><h3${r.title_full ? ` title="${esc(r.title_full)}"` : ''}>${esc(r.title)}</h3>${r.org ? `<span class="org">${esc(r.org)}</span>` : ''}${r.description ? `
               <p>${esc(r.description)}</p>` : ''}</div>
@@ -30,18 +30,20 @@ const SOCIALS = [['linkedin', 'LinkedIn'], ['github', 'GitHub'], ['dribbble', 'D
 export const socialsHTML = (c) => SOCIALS.filter(([k]) => c[k])
   .map(([k, label]) => `<a class="chip glass" href="${esc(c[k])}" target="_blank" rel="noopener" aria-label="${label}">${label} ↗</a>`).join('');
 
+/* Fills whichever of these blocks the page has: the home (hero bubbles), /trajetoria (timeline), /contato (contact) */
 export function renderHome(site, timeline) {
-  if (site?.hero_bubbles?.length) document.querySelector('#heroVisual [role="group"]').innerHTML = bubblesHTML(site.hero_bubbles);
-  if (timeline?.length) {
-    const tl = document.getElementById('timeline');
+  const $ = (sel) => document.querySelector(sel);
+  if (site?.hero_bubbles?.length && $('#heroVisual')) $('#heroVisual [role="group"]').innerHTML = bubblesHTML(site.hero_bubbles);
+  const tl = $('#timeline');
+  if (timeline?.length && tl) {
     tl.querySelectorAll('.tl-item').forEach(n => n.remove());
     tl.insertAdjacentHTML('beforeend', timelineHTML(timeline));
   }
-  if (site?.services?.length) document.querySelector('#servicos .services').innerHTML = servicesHTML(site.services);
-  if (site?.skills?.length) document.querySelector('#servicos .skills').innerHTML = skillsHTML(site.skills);
-  if (site?.contact) {
-    const a = document.getElementById('emailAddr');
+  if (site?.services?.length && $('#servicos .services')) $('#servicos .services').innerHTML = servicesHTML(site.services);
+  if (site?.skills?.length && $('#servicos .skills')) $('#servicos .skills').innerHTML = skillsHTML(site.skills);
+  if (site?.contact && $('#contato')) {
+    const a = $('#emailAddr');
     if (site.contact.email) { a.href = `mailto:${site.contact.email}`; a.textContent = site.contact.email; }
-    document.querySelector('#contato .socials').innerHTML = socialsHTML(site.contact);
+    $('#contato .socials').innerHTML = socialsHTML(site.contact);
   }
 }

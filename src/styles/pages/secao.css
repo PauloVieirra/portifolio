@@ -1,0 +1,5 @@
+/* Page stylesheet for /servicos, /trajetoria and /contato: one home section on its own page.
+   Shared layers first, then the section blocks (same rules as the home). */
+@import '../tokens/tokens.css';
+@import '../components.css';
+@import '../sections.css';

@@ -1,17 +1,17 @@
 /* =========================================================
-   ARTICLES — single source of truth for the writing section.
+   ARTICLES - single source of truth for the writing section.
    Read by artigos.html (searchable list) and artigo.html (reader).
    The reader is built from the id in the URL: artigo.html?a=<id>
 
    Fields
    - id        slug used in the URL (no spaces or accents)
-   - date      publication date, ISO (YYYY-MM-DD) — used for sorting and shown as "12 mar 2026"
+   - date      publication date, ISO (YYYY-MM-DD) - used for sorting and shown as "12 mar 2026"
    - readMin   reading time in minutes
    - tags      search/filter keywords for artigos.html (combined with AND:
                IA + UX shows only articles that have both)
    - img       cover image path (e.g. 'assets/images/artigo-x.png'). Empty = colour placeholder
    - c1 / c2   placeholder colours (aurora tokens) · tag = short label on the placeholder
-   - project   optional id from src/data/projects.js — shows a "Projeto relacionado" card
+   - project   optional id from src/data/projects.js - shows a "Projeto relacionado" card
    - intro     opening paragraph under the title
    - sections  [{ id, title, body: [paragraphs], quote?: 'pull quote', figure?: { src, caption } }]
    ========================================================= */

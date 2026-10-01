@@ -31,7 +31,7 @@ function editArticle(root, row, all, projects) {
     summary: textarea(a.summary, { rows: 3, required: true }),
     date: input(a.date, { type: 'date', required: true }), read_min: input(a.read_min ?? '', { type: 'number', min: 1, max: 120 }),
     tags: input((a.tags || []).join(', ')), tag: input(a.tag),
-    project: select(a.project || '', [['', '— nenhum —'], ...projects.map(p => [p.id, p.title])]),
+    project: select(a.project || '', [['', 'Nenhum'], ...projects.map(p => [p.id, p.title])]),
     c1: select(a.c1, AURORA_OPTIONS), c2: select(a.c2, AURORA_OPTIONS),
     intro: textarea(a.intro, { rows: 4 }), published: checkbox('Publicado', a.published),
     featured: checkbox('Destaque na home (abre o carrossel de artigos)', a.featured),

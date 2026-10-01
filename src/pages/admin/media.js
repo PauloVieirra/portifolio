@@ -1,5 +1,5 @@
 import { supabase } from '../../lib/supabase.js';
-import { IMAGE_TYPES, validateImage } from '../../lib/admin-rules.js';
+import { IMAGE_TYPES, validateImage, VIDEO_TYPES, validateVideo } from '../../lib/admin-rules.js';
 import { h, input, toast } from './ui.js';
 
 /* Images go to the public `media` bucket as <folder>/<uuid>.<ext>; the page stores the public URL. */
@@ -78,3 +78,35 @@ export function imagesEditor({ label, value = [], folder, onChange, hint }) {
     h('div', { class: 'adm-actions' }, file, status), h('div', { class: 'adm-actions adm-url' }, url, addUrl));
   return { el, value: () => list };
 }
+
+/* Video files go to the public `videos` bucket as <uuid>.<ext> (50 MB at most); the row stores the public URL */
+export async function uploadVideo(file) {
+  const ok = validateVideo(file);
+  if (ok !== true) throw new Error(ok);
+  const path = `${crypto.randomUUID()}.${VIDEO_TYPES[file.type]}`;
+  const { error } = await supabase.storage.from('videos').upload(path, file, { contentType: file.type, cacheControl: '31536000' });
+  if (error) throw new Error(error.message);
+  return supabase.storage.from('videos').getPublicUrl(path).data.publicUrl;
+}
+
+/* Source of a video: paste a YouTube / Vimeo / https link, or send a file */
+export function videoField({ label, value = '' }) {
+  let current = value;
+  const status = h('span', { class: 'hint', 'aria-live': 'polite' });
+  const url = input(current, { placeholder: 'https://youtu.be/… ou envie um arquivo', 'aria-label': `${label}: link`, oninput: (e) => { current = e.target.value.trim(); } });
+  const file = h('input', { type: 'file', accept: Object.keys(VIDEO_TYPES).join(','), 'aria-label': `${label}: enviar arquivo`, onchange: async (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const ok = validateVideo(f);
+    if (ok !== true) { toast(ok, 'error'); e.target.value = ''; return; }
+    status.textContent = `Enviando ${f.name}…`;
+    try { current = await uploadVideo(f); url.value = current; toast('Vídeo enviado.'); }
+    catch (err) { toast(err.message, 'error'); }
+    finally { status.textContent = ''; e.target.value = ''; }
+  } });
+  const el = h('div', { class: 'field adm-image' }, h('span', { class: 'label' }, label),
+    h('small', { class: 'hint' }, 'Cole o link do YouTube ou do Vimeo, ou envie um arquivo MP4, WebM ou MOV de até 50 MB.'),
+    url, h('div', { class: 'adm-actions' }, file, status));
+  return { el, value: () => current };
+}
+

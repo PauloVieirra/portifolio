@@ -1,5 +1,5 @@
 /* =========================================================
-   WIKI — shared by projetos.html and artigos.html.
+   WIKI - shared by projetos.html and artigos.html.
    Search (from 3 letters), combinable tag filters (AND), sort and
    pagination (5 per page). State mirrors the URL: ?q=&tags=A,B&sort=&page=
    Markup contract: #q #qClear #qHint #searchForm #tagFilters #resultCount
@@ -11,7 +11,7 @@
      sorters: { key: fn },      first key is the default order
      noun: ['projeto', 'projetos'],
      emptyTitle, hintIdle,
-     row(item, ctx)             HTML for one <a class="entry"> — ctx: { terms, hl, esc, tags }
+     row(item, ctx)             HTML for one <a class="entry"> - ctx: { terms, hl, esc, tags }
      transitionName             optional view-transition name given to the clicked row's .cover
    })
    ========================================================= */

@@ -3,6 +3,7 @@ import { h } from './ui.js';
 import { renderProjects } from './projects.js';
 import { renderArticles } from './articles.js';
 import { renderTimeline } from './timeline.js';
+import { renderVideos } from './videos.js';
 import { renderHero } from './hero.js';
 import { renderServices } from './services.js';
 import { renderContact } from './contact.js';
@@ -12,6 +13,7 @@ export const SECTIONS = {
   projetos: ['Projetos', renderProjects],
   artigos: ['Artigos', renderArticles],
   trajetoria: ['Trajetória', renderTimeline],
+  videos: ['Vídeos', renderVideos],
   hero: ['Hero', renderHero],
   servicos: ['Serviços', renderServices],
   contato: ['Contato', renderContact],

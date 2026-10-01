@@ -101,7 +101,7 @@ img { display: block; max-width: 100%; }
 .num { font-variant-numeric: tabular-nums; }
 
 /* =========================================================
-   3. AURORA — fixed animated overlays behind the page
+   3. AURORA - fixed animated overlays behind the page
    Blobs move per active section (body[data-scene]) and drift
    with scroll through --scroll (set in JS).
    ========================================================= */
@@ -127,7 +127,7 @@ img { display: block; max-width: 100%; }
 @keyframes drift-a { to { translate: 4vw 3vh; scale: 1.08; } }
 @keyframes drift-b { to { translate: -5vw -4vh; scale: .94; } }
 
-/* Scene choreography — each section re-arranges the overlays */
+/* Scene choreography - each section re-arranges the overlays */
 body[data-scene="projetos"]  .blob-violet { transform: translate(34vw, 30vh) rotate(-20deg) scale(.8); opacity: .55; }
 body[data-scene="projetos"]  .blob-blue   { transform: translate(-60vw, 20vh) scale(1.2); }
 body[data-scene="projetos"]  .blob-peach  { transform: translate(40vw, -40vh) scale(.8); opacity: .6; }
@@ -160,7 +160,7 @@ body[data-scene="contato"]  .blob-mint   { transform: translate(3vw, calc(5vw - 
 main, .topnav, .site-footer { position: relative; z-index: 1; }
 
 /* =========================================================
-   4. COMPONENTS — glass, buttons, chips
+   4. COMPONENTS - glass, buttons, chips
    ========================================================= */
 .glass {
   background: var(--surface-glass-bg);
@@ -233,7 +233,7 @@ main, .topnav, .site-footer { position: relative; z-index: 1; }
 @keyframes pop-in { from { opacity: 0; transform: translateY(24px) scale(.98); } }
 
 /* =========================================================
-   6. COVER — blurred colour field + glass mock (project covers)
+   6. COVER - blurred colour field + glass mock (project covers)
    ========================================================= */
 .cover { position: relative; aspect-ratio: 16 / 10; border-radius: calc(var(--radius-lg) - 8px); overflow: hidden; background: var(--surface); isolation: isolate; }
 .cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease-out); }
@@ -256,7 +256,7 @@ main, .topnav, .site-footer { position: relative; z-index: 1; }
 .site-footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
 
 /* =========================================================
-   8. PAGE TRANSITION — cross-document view transition
+   8. PAGE TRANSITION - cross-document view transition
    index.html ↔ projeto.html: the page cross-fades and the clicked
    card's cover morphs into the article cover (name set in JS).
    ========================================================= */
@@ -278,7 +278,7 @@ main, .topnav, .site-footer { position: relative; z-index: 1; }
 @media (min-width: 1440px) {
   :root { --page-max: 1320px; }
 }
-/* Phones: camera / notch clearance above the nav — same on every screen */
+/* Phones: camera / notch clearance above the nav - same on every screen */
 @media (max-width: 833px) {
   :root { --nav-safe: max(24px, env(safe-area-inset-top)); }
   .topnav { padding-top: var(--nav-safe); }
@@ -292,19 +292,19 @@ main, .topnav, .site-footer { position: relative; z-index: 1; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
-/* Filter chips — shared by index.html (carousel) and projetos.html (wiki list) */
+/* Filter chips - shared by index.html (carousel) and projetos.html (wiki list) */
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
 .filter { height: 40px; padding: 0 20px; border-radius: var(--radius-pill); font-size: 14px; cursor: pointer; border: 1px solid var(--button-ghost-border); background: var(--button-ghost-bg); color: var(--muted); transition: background-color .3s, color .3s; }
 .filter[aria-pressed="true"] { background: var(--button-primary-bg); color: var(--button-primary-text); border-color: var(--button-primary-bg); }
 
-/* Mobile drawer — current page/section marker (mirrors .nav-links) */
+/* Mobile drawer - current page/section marker (mirrors .nav-links) */
 .drawer-panel nav a { position: relative; display: flex; align-items: center; gap: 12px; color: var(--muted); transition: color .25s; }
 .drawer-panel nav a::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--eyebrow-text); transform: scale(0); transition: transform .3s var(--ease-out), margin-left .3s var(--ease-out); flex: none; margin-left: -20px; }
 .drawer-panel nav a:hover, .drawer-panel nav a.is-active { color: var(--fg); }
 .drawer-panel nav a.is-active { font-weight: var(--typography-weight-medium); }
 .drawer-panel nav a.is-active::before { transform: scale(1); margin-left: 0; }
 
-/* "Em construção" notice (src/lib/notice.js) — first visit only, never covers the whole page */
+/* "Em construção" notice (src/lib/notice.js) - first visit only, never covers the whole page */
 .site-notice { position: fixed; z-index: 60; right: 24px; bottom: 24px; width: min(360px, calc(100vw - 32px));
   padding: 20px; border-radius: var(--radius-lg); display: grid; gap: 10px; justify-items: start;
   opacity: 0; translate: 0 16px; transition: opacity .3s var(--ease-out), translate .3s var(--ease-out); }

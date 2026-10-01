@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Processo | Paulo Vieira · UX IA Engineer</title>
+<meta name="description" content="Como Paulo Vieira, UX IA Engineer, escolhe o processo: Lean Inception para demandas rápidas, Design Thinking para projetos com mais tempo, sempre com protótipo funcional em código.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>
+/* Preview frames sized to the page height report a viewport taller than the monitor; pin --vh to the monitor there */
+(() => {
+  const root = document.documentElement;
+  const fit = () => {
+    const canvas = innerHeight > Math.max(screen.availHeight || 0, 1400);
+    root.classList.toggle('is-canvas', canvas);
+    if (canvas) root.style.setProperty('--vh', `${Math.min(screen.availHeight || 900, 1080) / 100}px`);
+    else root.style.removeProperty('--vh');
+  };
+  fit();
+  addEventListener('resize', fit);
+})();
+</script>
+<!-- Page content is loaded from Supabase: <main> stays hidden until it is rendered (is-ready, set by the page module);
+     the timer shows it anyway if the module ever fails -->
+<style>html:not(.is-ready) main{visibility:hidden}</style>
+<script>setTimeout(() => document.documentElement.classList.add('is-ready'), 4000)</script>
+<link rel="stylesheet" href="/src/styles/pages/secao.css">
+<!-- How the work is done: Lean Inception or Design Thinking, by project. Markup: src/partials/processo-frameworks.html · behaviour: src/lib/sections/frameworks.js -->
+<script type="module" src="/src/pages/secao.js" blocking="render"></script>
+</head>
+<body data-scene="servicos">
+<div class="page-frame">
+
+  <!-- Aurora overlays (decorative) -->
+  <div class="aurora" aria-hidden="true">
+    <div class="blob blob-violet"></div>
+    <div class="blob blob-blue"></div>
+    <div class="blob blob-mint"></div>
+    <div class="blob blob-peach"></div>
+    <div class="blob blob-rose"></div>
+    <div class="veil"></div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- @include topnav.html page="processo" -->
+
+  <main id="content">
+    <!-- the frameworks and when each one is used (the home keeps the 6-step overview: src/partials/processo.html) -->
+    <!-- @include processo-frameworks.html -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span class="num" id="year">2026</span> Paulo Vieira · UX IA Engineer</span>
+      <a href="/">← Voltar ao início</a>
+    </div>
+  </footer>
+
+  <!-- @include drawer.html -->
+
+  <div class="toast glass" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+</body>
+</html>

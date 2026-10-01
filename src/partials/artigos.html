@@ -1,0 +1,29 @@
+<section class="section" id="artigos" data-scene="artigos">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow reveal">Artigos em destaque</p>
+      <{{h|h2}} class="section-title reveal" style="--i:1"><strong>Notas de campo</strong> sobre design, produto e tecnologia</{{h|h2}}>
+      <a href="/artigos" class="btn btn-ghost btn-sm reveal" style="--i:2;justify-self:start">Ver todos os artigos <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+
+    <div class="filters reveal" role="group" aria-label="Filtrar artigos">
+      <button class="filter" aria-pressed="true" data-filter="todos">Todos</button>
+      <button class="filter" aria-pressed="false" data-filter="IA">IA</button>
+      <button class="filter" aria-pressed="false" data-filter="UX">UX</button>
+      <button class="filter" aria-pressed="false" data-filter="Design system">Design system</button>
+      <button class="filter" aria-pressed="false" data-filter="Pesquisa">Pesquisa</button>
+    </div>
+
+  </div>
+  <div class="carousel reveal" style="--i:1" role="region" aria-roledescription="carrossel" aria-label="Artigos em destaque">
+    <div class="projects-grid" id="projectsGrid" tabindex="0"><!-- rendered from ARTICLES in JS --></div>
+  </div>
+  <div class="container carousel-bar reveal" style="--i:2">
+    <p class="carousel-count num" aria-live="polite"><b id="cIndex">01</b> / <span id="cTotal">06</span></p>
+    <div class="carousel-line" aria-hidden="true"><i id="cProgress"></i></div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" id="cPrev" type="button" aria-label="Artigo anterior">←</button>
+      <button class="carousel-btn" id="cNext" type="button" aria-label="Próximo artigo">→</button>
+    </div>
+  </div>
+</section>

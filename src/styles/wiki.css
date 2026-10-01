@@ -1,4 +1,4 @@
-/* Wiki list — shared by projetos.html and artigos.html.
+/* Wiki list - shared by projetos.html and artigos.html.
    Search (from 3 letters), combinable tag filters (AND), sort, 5-per-page pager.
    Behaviour: components/wiki.js */
 :root {
@@ -45,7 +45,7 @@
 .sort select { height: 40px; padding: 0 16px; border-radius: var(--radius-pill); border: 1px solid var(--button-ghost-border); background: var(--button-ghost-bg); font: inherit; font-size: 14px; color: var(--fg); cursor: pointer; }
 
 /* =========================================================
-   3. LIST — one project per row
+   3. LIST - one project per row
    ========================================================= */
 .entries { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
 .entry { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 12px; border-radius: var(--radius-lg); transition: transform .5s var(--ease-out), box-shadow .5s var(--ease-out); }
@@ -75,7 +75,7 @@ mark { background: var(--search-mark-bg); color: var(--search-mark-text); border
 .empty p { color: var(--muted); max-width: 48ch; }
 
 /* =========================================================
-   4. PAGINATION — 5 per page
+   4. PAGINATION - 5 per page
    ========================================================= */
 .pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-block: 40px clamp(64px, 8vw, 120px); }
 .pager[hidden] { display: none; }
@@ -87,7 +87,7 @@ mark { background: var(--search-mark-bg); color: var(--search-mark-text); border
 .page-btn:disabled { opacity: .35; cursor: default; }
 
 /* =========================================================
-   5. RESPONSIVE — DS breakpoints (412 / 834 / 1440)
+   5. RESPONSIVE - DS breakpoints (412 / 834 / 1440)
    ========================================================= */
 @media (min-width: 600px) {
   .entry { grid-template-columns: 200px 1fr; align-items: center; gap: 24px; }

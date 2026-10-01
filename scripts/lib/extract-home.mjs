@@ -8,12 +8,12 @@ export function extractHome(html) {
     .map(m => ({ value: decode(m[1]), label: decode(m[2]),
       tags: all(/<use href="#([^"]+)"><\/use><\/svg><span>([\s\S]*?)<\/span>/g, m[3]).map(t => ({ label: decode(t[2]), icon: t[1] })) }));
 
-  const timeline = all(/<article class="tl-item reveal">([\s\S]*?)<\/article>/g, html).map((m, position) => {
-    const h3 = m[1].match(/<h3(?: title="([^"]*)")?>([\s\S]*?)<\/h3>/);
-    const title = decode(h3[2]), org = one(/class="org">([\s\S]*?)<\/span>/, m[1]);
-    return { position, kind: /MBA|Superior|Graduação|Formação|Curso/i.test(title + ' ' + org) ? 'formacao' : 'trabalho',
-      period: one(/tl-when num">([\s\S]*?)<\/span>/, m[1]), title, org: org || null,
-      description: one(/<p>([\s\S]*?)<\/p>/, m[1]) || null, title_full: h3[1] ? decode(h3[1]) : null };
+  const timeline = all(/<article class="tl-item reveal"(?: data-kind="([^"]*)")?>([\s\S]*?)<\/article>/g, html).map(([, kind, body], position) => {
+    const h3 = body.match(/<h3(?: title="([^"]*)")?>([\s\S]*?)<\/h3>/);
+    const title = decode(h3[2]), org = one(/class="org">([\s\S]*?)<\/span>/, body);
+    return { position, kind: kind || (/MBA|Superior|Graduação|Formação|Curso/i.test(title + ' ' + org) ? 'formacao' : 'trabalho'),
+      period: one(/tl-when num">([\s\S]*?)<\/span>/, body), title, org: org || null,
+      description: one(/<p>([\s\S]*?)<\/p>/, body) || null, title_full: h3[1] ? decode(h3[1]) : null };
   });
 
   const services = all(/<article class="service[^"]*"[^>]*>[\s\S]*?<h3>([\s\S]*?)<\/h3>\s*<p>([\s\S]*?)<\/p>\s*<ul>([\s\S]*?)<\/ul>/g, html)

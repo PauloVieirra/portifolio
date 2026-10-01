@@ -70,6 +70,19 @@ export const validateImage = ({ type, size }) => {
 };
 
 /* textarea ⇄ paragraphs: a blank line separates paragraphs; line breaks inside one are kept (markdown lists) */
+/* video files go to the `videos` bucket (supabase/schema.sql); the source may also be a YouTube / Vimeo / https link */
+export const VIDEO_TYPES = { 'video/mp4': 'mp4', 'video/webm': 'webm', 'video/quicktime': 'mov' };
+export const MAX_VIDEO_BYTES = 50 * 1024 * 1024;
+export const validateVideo = ({ type, size }) => {
+  if (!VIDEO_TYPES[type]) return 'Formato não suportado. Use MP4, WebM ou MOV.';
+  if (size > MAX_VIDEO_BYTES) return 'O vídeo passa de 50 MB. Envie pelo YouTube ou Vimeo e cole o link.';
+  return true;
+};
+export const validateVideoSrc = (v) => {
+  const s = String(v ?? '').trim();
+  return !s || /^(https?:\/\/|assets\/)[^\s"'<>]+$/.test(s) || 'Endereço do vídeo inválido: envie um arquivo ou cole um link https:// (YouTube, Vimeo ou arquivo).';
+};
+
 export const paragraphs = (text) => String(text ?? '').split(/\n\s*\n/).map(s => s.replace(/[ \t]+$/gm, '').replace(/^\n+|\s+$/g, '').replace(/^[ \t]+(?=\S)/, '')).filter(Boolean);
 export const joinParagraphs = (list) => (list || []).join('\n\n');
 

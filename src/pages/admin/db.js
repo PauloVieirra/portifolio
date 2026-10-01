@@ -16,5 +16,10 @@ export const countWhere = async (table, col, value) => {
   if (error) throw new Error(error.message);
   return count ?? 0;
 };
+/* tables with at most one featured row (videos): unmark every other one before marking `id` */
+export const clearFeatured = (table, exceptId) => {
+  const q = supabase.from(table).update({ featured: false }).eq('featured', true);
+  return run(exceptId ? q.neq('id', exceptId) : q);
+};
 export const getSite = async (key) => (await run(supabase.from('site_content').select('value').eq('key', key).maybeSingle()))?.value ?? null;
 export const saveSite = (key, value) => run(supabase.from('site_content').upsert({ key, value }, { onConflict: 'key' }));

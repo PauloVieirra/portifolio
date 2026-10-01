@@ -1,4 +1,4 @@
-# Portfólio — Paulo Vieira · UX IA Engineer
+# Portfólio - Paulo Vieira · UX IA Engineer
 
 Site multi-página em HTML, CSS e JavaScript puros, servido e empacotado com [Vite](https://vite.dev).
 Veio de um export do Open Design (ver `design-export/`); a conversão preserva o design pixel a pixel.
@@ -12,25 +12,35 @@ npm run build     # gera dist/
 npm run preview   # serve o dist/ localmente
 ```
 
-`base: './'` no `vite.config.js`: o `dist/` funciona em qualquer subpasta (GitHub Pages, S3, etc.).
+`base: './'` no `vite.config.js`: os assets usam caminhos relativos. O menu usa rotas limpas na raiz do domínio
+(`/projetos`, `/artigos`, `/videos`, `/processo`, `/trajetoria`, `/contato`; `/servicos` redireciona para `/processo`), resolvidas pelos `rewrites` do `vercel.json` e,
+em `npm run dev` / `npm run preview`, por um plugin do `vite.config.js`. Outro host precisa das mesmas regras.
 
 ## Estrutura
 
 ```
-index.html            Home
-projetos.html         Arquivo de projetos (busca, filtros, paginação — estado na URL)
+index.html            Home (todas as seções)                                         → /
+projetos.html         Arquivo de projetos (busca, filtros, paginação na URL)          → /projetos
 projeto.html          Estudo de caso        → projeto.html?p=<id>
-artigos.html          Arquivo de artigos
+artigos.html          Artigos em destaque + arquivo                                   → /artigos
 artigo.html           Leitor de artigo      → artigo.html?a=<id>
+videos.html           Vídeos (grid de 9 players; dados em src/data/videos.js)        → /videos
+processo.html         Processo (infográfico das etapas do trabalho)                  → /processo
+trajetoria.html       Trajetória                                                     → /trajetoria
+contato.html          Contato                                                        → /contato
 design-system.html    Catálogo de tokens (página de apoio)
 
 src/
-  data/               projects.js, articles.js — fonte única do conteúdo
-  pages/              um módulo por página (render + interações)
+  data/               projects.js, articles.js - fonte única do conteúdo
+  partials/           menu (topnav, drawer) e as seções da home, incluídos com <!-- @include arquivo.html -->
+                      (scripts/lib/partials.mjs); cada seção aparece na home e na página dela
+  pages/              um módulo por página (render + interações); secao.js serve processo/trajetoria/contato
   lib/                overlays.js (menu mobile), wiki.js (motor de busca/filtros), supabase.js (client)
+  lib/sections/       comportamento de cada seção (bento, carrossel, linha do tempo, contato)
   styles/
     tokens/           tokens gerados do Design System (não editar à mão)
     components.css    base compartilhada + paleta "aurora"
+    sections.css      seções da home (também usadas nas páginas de cada seção)
     wiki.css          listas pesquisáveis
     article.css       layout de leitura
     pages/            CSS de entrada de cada página (importa as camadas na ordem da cascata)
@@ -71,6 +81,6 @@ Imagens de capa/figuras (`img`, `figure.src`) vão em `public/assets/images/` e 
   `-webkit-backdrop-filter` e mantém só o prefixado, o que apaga o efeito de vidro no Firefox.
 - **Scripts de página com `blocking="render"`.** Os scripts originais rodavam no fim do `<body>`, antes da
   primeira pintura; módulos são adiados. O atributo (reaplicado no build por um plugin em `vite.config.js`)
-  mantém o conteúdo renderizado antes do primeiro frame — necessário para as view transitions entre páginas.
+  mantém o conteúdo renderizado antes do primeiro frame - necessário para as view transitions entre páginas.
 - O script inline no `<head>` da home (`--vh` / `.is-canvas`) foi mantido como está: só age dentro de frames de
   preview mais altos que a tela e é inerte num navegador normal.

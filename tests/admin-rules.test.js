@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   slugify, validateSlug, findDuplicateTags, validateBubbles, validateContact,
   validateImage, paragraphs, joinParagraphs, normalizeSections, nextPosition, normalizeImages, validateUrl, validateImageUrl,
+  validateVideo, validateVideoSrc,
 } from '../src/lib/admin-rules.js';
 
 const bubble = (value, ...tags) => ({ value, label: 'Rótulo', tags: tags.map(label => ({ label, icon: 'i-atom' })) });
@@ -102,5 +103,19 @@ describe('validateUrl / validateImageUrl', () => {
   it('accepts image urls and local assets, rejects others', () => {
     expect(validateImageUrl('https://a.com/i.png')).toBe(true); expect(validateImageUrl('assets/images/x.png')).toBe(true); expect(validateImageUrl('')).toBe(true);
     expect(validateImageUrl('x" onerror="alert(1)')).toMatch(/imagem/);
+  });
+});
+
+describe('videos', () => {
+  it('accepts MP4, WebM and MOV up to 50 MB', () => {
+    expect(validateVideo({ type: 'video/mp4', size: 10 * 1024 * 1024 })).toBe(true);
+    expect(validateVideo({ type: 'video/webm', size: 50 * 1024 * 1024 })).toBe(true);
+    expect(validateVideo({ type: 'video/mp4', size: 51 * 1024 * 1024 })).toMatch(/50 MB/);
+    expect(validateVideo({ type: 'video/x-msvideo', size: 1 })).toMatch(/Formato/);
+  });
+  it('accepts links and local paths as the source, never markup', () => {
+    for (const ok of ['', 'https://youtu.be/dQw4w9WgXcQ', 'https://vimeo.com/1', 'https://x.supabase.co/storage/v1/object/public/videos/a.mp4', 'assets/videos/a.mp4'])
+      expect(validateVideoSrc(ok)).toBe(true);
+    for (const bad of ['javascript:alert(1)', 'youtu.be/x', 'https://a.com/"><script>']) expect(validateVideoSrc(bad)).not.toBe(true);
   });
 });

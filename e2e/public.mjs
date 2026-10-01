@@ -1,4 +1,4 @@
-// e2e/public.mjs — npm run build && npx vite preview (porta 4173) em outro terminal, depois: npm run e2e
+// e2e/public.mjs - npm run build && npx vite preview (porta 4173) em outro terminal, depois: npm run e2e
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright-core';
 import { createClient } from '@supabase/supabase-js';
@@ -25,13 +25,21 @@ const open = async (path, { block = false } = {}) => {
 
 await step('home renderiza o conteúdo do Supabase', async () => {
   const { page, errors } = await open('index.html');
-  const timeline = await rows('timeline'), site = await rows('site_content');
-  assert.equal(await page.locator('#timeline .tl-item').count(), timeline.length);
-  assert.equal(await page.locator('#timeline .tl-item h3').first().textContent(), timeline.sort((a, b) => a.position - b.position)[0].title);
+  const site = await rows('site_content');
   assert.equal(await page.locator('#heroVisual .kpi').count(), 4);
-  const skills = site.find(r => r.key === 'skills').value;
-  assert.equal(await page.locator('#servicos .skills .chip').count(), skills.length);
+  assert.ok(site.length > 0);
+  assert.equal(await page.locator('#processo, #trajetoria, #servicos, #contato').count(), 0);   // these live on their own pages
   assert.equal(await page.locator('#projectsGrid .project').count(), (await rows('articles', ['published', true])).length);
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
+await step('/trajetoria renderiza a linha do tempo do Supabase, em duas colunas', async () => {
+  const { page, errors } = await open('trajetoria');
+  const timeline = (await rows('timeline')).sort((a, b) => a.position - b.position);
+  assert.equal(await page.locator('#timeline .tl-item').count(), timeline.length);
+  for (const kind of ['trabalho', 'formacao'])
+    assert.equal(await page.locator(`.tl-col[data-kind="${kind}"] .tl-item`).count(), timeline.filter(t => t.kind === kind).length);
   assert.deepEqual(errors, []);
   await page.close();
 });

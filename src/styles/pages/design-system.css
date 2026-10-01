@@ -1,4 +1,4 @@
-/* Page stylesheet — shared layers first, in the original cascade order, then this screen. */
+/* Page stylesheet - shared layers first, in the original cascade order, then this screen. */
 @import '../tokens/tokens.css';
 
   :root { color-scheme: light dark; }

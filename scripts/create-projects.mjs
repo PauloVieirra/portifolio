@@ -25,9 +25,9 @@ const known = new Set(existing.map(p => p.id));
 const maxPos = Math.max(-1, ...existing.filter(p => !SAMPLES.includes(p.id)).map(p => p.position));
 const toCreate = NEW_PROJECTS.filter(p => !known.has(p.id)).map((p, i) => ({ ...toProjectRow(p, maxPos + 1 + i), published: false }));
 
-console.log(`Excluir (${toDelete.length}): ${toDelete.map(p => `${p.id} — ${p.title}`).join('; ') || 'nenhum'}`);
+console.log(`Excluir (${toDelete.length}): ${toDelete.map(p => `${p.id} - ${p.title}`).join('; ') || 'nenhum'}`);
 console.log(`Excluir artigos de exemplo (${articlesToDelete.length}): ${articlesToDelete.map(a => a.title).join('; ') || 'nenhum'}`);
-console.log(`Criar como rascunho (${toCreate.length}): ${toCreate.map(p => `${p.id} — ${p.title}`).join('; ') || 'nenhum (já existem)'}`);
+console.log(`Criar como rascunho (${toCreate.length}): ${toCreate.map(p => `${p.id} - ${p.title}`).join('; ') || 'nenhum (já existem)'}`);
 if (!apply) { console.log('\nSimulação: nada foi alterado.'); process.exit(0); }
 
 mkdirSync('.backups', { recursive: true });

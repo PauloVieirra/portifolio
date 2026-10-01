@@ -1,4 +1,9 @@
-/* Page stylesheet — shared layers first, in the original cascade order. */
+/* Page stylesheet - shared layers first, in the original cascade order, then the featured carousel
+   (src/styles/sections.css) and the list. */
 @import '../tokens/tokens.css';
 @import '../components.css';
+@import '../sections.css';
 @import '../wiki.css';
+
+/* the carousel's "see all" button points at this page: the full list is right below */
+#artigos .section-head > .btn { display: none; }

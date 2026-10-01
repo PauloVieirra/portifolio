@@ -13,8 +13,8 @@ describe('bubblesHTML', () => {
 
 describe('timelineHTML', () => {
   it('renders period/title/org/description and the full-title tooltip', () => {
-    const html = timelineHTML([{ period: '2025 — hoje', title: 'MBA', title_full: 'MBA "longo"', org: 'Formação', description: 'Texto' }]);
-    expect(html).toContain('<span class="tl-when num">2025 — hoje</span>');
+    const html = timelineHTML([{ period: '2025 - hoje', title: 'MBA', title_full: 'MBA "longo"', org: 'Formação', description: 'Texto' }]);
+    expect(html).toContain('<span class="tl-when num">2025 - hoje</span>');
     expect(html).toContain('<h3 title="MBA &quot;longo&quot;">MBA</h3><span class="org">Formação</span>');
     expect(html).toContain('<p>Texto</p>');
   });

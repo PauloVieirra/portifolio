@@ -1,5 +1,5 @@
 /* =========================================================
-   PROJECTS — single source of truth for the portfolio.
+   PROJECTS - single source of truth for the portfolio.
    Read by index.html (carousel cards), projetos.html (searchable list) and projeto.html (article page).
    The article page is built from the id in the URL: projeto.html?p=<id>
 

@@ -1,20 +1,32 @@
 import { loadContent } from '../lib/content.js';
 import { showConstructionNotice } from '../lib/notice.js';
-import { renderHome, esc } from '../lib/home-render.js';
-import { featuredFirst, filterTags } from '../lib/content-map.js';
+import { renderHome } from '../lib/home-render.js';
 import { closeOverlays } from '../lib/overlays.js';
+import { renderFeaturedProjects } from '../lib/sections/featured-projects.js';
+import { initArticlesCarousel } from '../lib/sections/articles-carousel.js';
+import { playerHTML, initPlayers } from '../lib/video-player.js';
 
 /* Content comes from Supabase (src/lib/content.js; falls back to src/data + the static HTML). The admin-managed
-   home blocks are rendered first, so the carousel, orbit, timeline and reveal code below see the final DOM.
-   PROJECTS fill the featured bento and name each article's related project; ARTICLES fill the carousel. */
-const { projects: PROJECTS, articles: ARTICLES, timeline: TIMELINE, site: SITE } =
-  await loadContent(['projects', 'articles', 'timeline', 'site']);
-renderHome(SITE, TIMELINE);
+   home blocks are rendered first, so the carousel, orbit and reveal code below see the final DOM.
+   PROJECTS fill the featured bento and name each article's related project; ARTICLES fill the carousel.
+   Projects and articles also have their own pages, built from the same partial (src/partials) and section module
+   (src/lib/sections); Processo, Trajetória and Contato live only on their pages. */
+const { projects: PROJECTS, articles: ARTICLES, site: SITE, videos: VIDEOS } = await loadContent(['projects', 'articles', 'site', 'videos']);
+renderHome(SITE);
+/* presentation video: the one marked "Destaque na home" in the admin; without one the section leaves the page */
+const presentation = VIDEOS.find(v => v.featured);
+if (presentation) {
+  const introVideo = document.getElementById('introVideo');
+  introVideo.innerHTML = playerHTML(presentation, { label: `Vídeo de apresentação: ${presentation.title}` });
+  initPlayers(introVideo);
+} else document.getElementById('apresentacao').remove();
 document.documentElement.classList.add('is-ready');
 showConstructionNotice();
+renderFeaturedProjects(PROJECTS);
+initArticlesCarousel(ARTICLES, PROJECTS);
 
 /* =========================================================
-   IN-PAGE LINKS — scroll only this page
+   IN-PAGE LINKS - scroll only this page
    ========================================================= */
 /* Runs in the capture phase so it wins over any host click handler: a plain
    scrollIntoView() also scrolls whatever frame embeds this page. */
@@ -35,194 +47,7 @@ addEventListener('click', (e) => {
 }, true);
 
 /* =========================================================
-   ARTICLES — featured carousel, filter by tag, open reader
-   ========================================================= */
-/* No published articles: the section and its menu links leave the page (they return with the first article) */
-if (!ARTICLES.length) {
-  document.getElementById('artigos').remove();
-  document.querySelectorAll('a[href="#artigos"]').forEach(a => a.remove());
-} else {
-  const grid = document.getElementById('projectsGrid');
-  /* Reader page is assembled from the article id in the URL */
-  const articleHref = (a) => `artigo.html?a=${encodeURIComponent(a.id)}`;
-  const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/\./g, '').replace(/ de /g, ' ');
-  /* "Destaque na home" articles open the carousel; the rest follow, newest first */
-  const FEATURED = featuredFirst([...ARTICLES].sort((a, b) => b.date.localeCompare(a.date)));
-  const projectOf = (a) => a.project && PROJECTS.find(p => p.id === a.project);
-  grid.innerHTML = FEATURED.map((a, i) => {
-    const rel = projectOf(a);
-    return `
-    <article class="project glass" aria-roledescription="slide" aria-label="${i + 1} de ${FEATURED.length}: ${esc(a.title)}" style="--c1:${a.c1}; --c2:${a.c2}" data-tags="${esc(a.tags.join('|'))}" data-index="${i}">
-      <div class="cover">${a.img
-        ? `<img src="${esc(a.img)}" alt="Capa do artigo ${esc(a.title)}" loading="lazy" width="1600" height="1000">`
-        : `<div class="cover-ui glass"><span class="tag">${esc(a.tag)}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
-      <div class="project-body">
-        <div class="project-meta"><time datetime="${esc(a.date)}">${fmtDate(a.date)}</time><span><span class="num">${esc(a.readMin)}</span> min de leitura</span></div>
-        <h3><a class="project-open" href="${articleHref(a)}">${esc(a.title)}</a></h3>
-        <p>${esc(a.summary)}</p>
-        <ul class="project-deliver" aria-label="Temas">${a.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-        ${rel ? `<p class="project-stack">Projeto relacionado: ${esc(rel.title)}</p>` : ''}
-        <div class="project-foot">
-          <a class="btn btn-ghost" href="${articleHref(a)}">Ler artigo <span class="arrow" aria-hidden="true">→</span></a>
-          <span class="project-more" aria-hidden="true"><span class="num">${a.sections.length}</span> seções</span>
-        </div>
-      </div>
-    </article>`;
-  }).join('');
-
-  grid.addEventListener('click', (e) => {
-    const card = e.target.closest('.project');
-    if (!card) return;
-    if (drag.moved) { e.preventDefault(); return; }
-    if (!card.classList.contains('is-active')) { e.preventDefault(); goTo(visible().indexOf(card)); return; }
-    card.querySelector('.cover').style.viewTransitionName = 'article-cover';   // morphs into the reader cover
-    if (!e.target.closest('a')) location.href = articleHref(FEATURED[+card.dataset.index]);
-  });
-  /* coming back from an article: clear the morph name so only one element carries it */
-  addEventListener('pageshow', () => grid.querySelectorAll('.cover').forEach(c => { c.style.viewTransitionName = ''; }));
-
-  /* filters come from the published articles' tags (src/lib/content-map.js · filterTags) */
-  document.querySelector('#artigos .filters').innerHTML = ['todos', ...filterTags(ARTICLES)].map((t, i) =>
-    `<button class="filter" aria-pressed="${i === 0}" data-filter="${esc(t)}">${i === 0 ? 'Todos' : esc(t)}</button>`).join('');
-
-  document.querySelectorAll('.filter').forEach(btn => btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter').forEach(b => b.setAttribute('aria-pressed', b === btn));
-    const f = btn.dataset.filter;
-    grid.querySelectorAll('.project').forEach(card => card.classList.toggle('is-hidden', !(f === 'todos' || card.dataset.tags.split('|').includes(f))));
-    grid.scrollLeft = 0;
-    updateCarousel();
-  }));
-
-  /* =========================================================
-     CAROUSEL — scroll-linked approach, arrows, keys, drag
-     ========================================================= */
-  const visible = () => [...grid.querySelectorAll('.project:not(.is-hidden)')];
-  let active = 0;
-  const updateCarousel = () => {
-    const cards = visible();
-    const mid = grid.scrollLeft + grid.clientWidth / 2;
-    let best = 0, bestD = Infinity;
-    cards.forEach((card, i) => {
-      const c = card.offsetLeft + card.offsetWidth / 2;
-      const o = Math.max(-1.5, Math.min(1.5, (c - mid) / card.offsetWidth));   // signed, in slide widths
-      card.style.setProperty('--o', o.toFixed(3));
-      card.style.setProperty('--p', Math.max(0, 1 - Math.abs(o)).toFixed(3));
-      if (Math.abs(o) < bestD) { bestD = Math.abs(o); best = i; }
-    });
-    active = best;
-    cards.forEach((card, i) => card.classList.toggle('is-active', i === best));
-    const max = grid.scrollWidth - grid.clientWidth;
-    document.getElementById('cProgress').style.setProperty('--progress', cards.length < 2 ? 1 : (max > 0 ? grid.scrollLeft / max : 1).toFixed(3));
-    document.getElementById('cIndex').textContent = String(best + 1).padStart(2, '0');
-    document.getElementById('cTotal').textContent = String(cards.length).padStart(2, '0');
-    document.getElementById('cPrev').disabled = best === 0;
-    document.getElementById('cNext').disabled = best === cards.length - 1;
-  };
-  const goTo = (i) => {
-    const cards = visible(), card = cards[Math.max(0, Math.min(cards.length - 1, i))];
-    if (!card) return;
-    grid.scrollTo({ left: card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2, behavior: reduce ? 'auto' : 'smooth' });
-  };
-  let cTick = false;
-  grid.addEventListener('scroll', () => { if (!cTick) { cTick = true; requestAnimationFrame(() => { cTick = false; updateCarousel(); }); } }, { passive: true });
-  addEventListener('resize', updateCarousel);
-  document.getElementById('cPrev').addEventListener('click', () => goTo(active - 1));
-  document.getElementById('cNext').addEventListener('click', () => goTo(active + 1));
-  grid.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(active + 1); }
-    if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(active - 1); }
-  });
-  /* mouse drag (touch already scrolls natively).
-     Snap stays off until our own release glide lands exactly on the target slide, so the
-     browser never snaps back to the starting card mid-gesture (that was the "rebound"). */
-  const drag = { on: false, moved: false, x: 0, left: 0, start: 0, v: 0, lx: 0, lt: 0 };
-  let glideRaf = 0;
-  const slideLeft = (card) => card.offsetLeft + card.offsetWidth / 2 - grid.clientWidth / 2;
-  const glide = (i) => {
-    const cards = visible(), card = cards[Math.max(0, Math.min(cards.length - 1, i))];
-    const done = () => grid.classList.remove('is-free');
-    if (!card) return done();
-    const from = grid.scrollLeft, to = slideLeft(card), dist = Math.abs(to - from);
-    if (reduce || dist < 1) { grid.scrollLeft = to; return done(); }
-    const dur = Math.max(320, Math.min(700, 260 + dist * .5)), t0 = performance.now();
-    const step = (t) => {
-      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);   // ease-out: continues the throw, settles softly
-      grid.scrollLeft = from + (to - from) * e;
-      if (k < 1) glideRaf = requestAnimationFrame(step); else { grid.scrollLeft = to; done(); }
-    };
-    glideRaf = requestAnimationFrame(step);
-  };
-  grid.addEventListener('dragstart', (e) => e.preventDefault());
-  grid.addEventListener('pointerdown', (e) => {
-    if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('.project-foot a')) return;
-    cancelAnimationFrame(glideRaf);
-    Object.assign(drag, { on: true, moved: false, x: e.clientX, left: grid.scrollLeft, start: active, v: 0, lx: e.clientX, lt: e.timeStamp });
-  });
-  addEventListener('pointermove', (e) => {
-    if (!drag.on) return;
-    const dx = e.clientX - drag.x;
-    if (!drag.moved && Math.abs(dx) > 6) { drag.moved = true; grid.classList.add('is-free', 'is-dragging'); }
-    if (!drag.moved) return;
-    grid.scrollLeft = drag.left - dx;
-    const dt = e.timeStamp - drag.lt;
-    if (dt > 0) { drag.v = .8 * ((e.clientX - drag.lx) / dt) + .2 * drag.v; drag.lx = e.clientX; drag.lt = e.timeStamp; }
-  });
-  addEventListener('pointerup', (e) => {
-    if (!drag.on) return;
-    drag.on = false;
-    if (!drag.moved) { grid.classList.remove('is-free'); return; }
-    grid.classList.remove('is-dragging');
-    const moved = grid.scrollLeft - drag.left, w = visible()[drag.start]?.offsetWidth || grid.clientWidth;
-    const flick = e.timeStamp - drag.lt < 100 && Math.abs(drag.v) > .35;       // fast throw counts even if short
-    const steps = Math.round(moved / w);                                          // dragged past whole slides
-    let target = drag.start + steps;
-    if (steps === 0 && (Math.abs(moved) > w * .12 || flick)) target += Math.sign(moved);  // intent: advance one
-    glide(target);
-    setTimeout(() => { drag.moved = false; }, 0);
-  });
-  updateCarousel();
-}
-
-/* =========================================================
-   PROJECTS — featured bento; open the case study
-   ========================================================= */
-/* "Destaque na home" (featured) projects open the bento; the others fill it up to three, in the admin's order */
-const worksEl = document.getElementById('works');
-const projectHref = (p) => `projeto.html?p=${encodeURIComponent(p.id)}`;
-const flagged = PROJECTS.filter(p => p.featured);
-const WORKS = [...flagged, ...PROJECTS.filter(p => !p.featured)].slice(0, 3);
-const worksRest = PROJECTS.length - WORKS.length;
-worksEl.innerHTML = WORKS.map((p, i) => `
-  <a class="work reveal${i === 0 ? ' work--lead' : ''}" href="${projectHref(p)}" style="--i:${i}; --c1:${p.c1}; --c2:${p.c2}">
-    <div class="cover" aria-hidden="true">${p.img
-      ? `<img src="${esc(p.img)}" alt="" loading="lazy" width="1600" height="1000">`
-      : `<div class="cover-ui glass"><span class="tag">${esc(p.tag)}</span><span class="ln m"></span><span class="ln s"></span></div>`}</div>
-    <span class="work-go glass" aria-hidden="true">→</span>
-    <div class="work-panel glass">
-      <div class="work-meta"><span>${esc(p.catLabel)}</span><span class="num">${esc(p.year)}</span></div>
-      <h3>${esc(p.title)}</h3>
-      <div class="work-more"><div>
-        <p>${esc(p.summary)}</p>
-        <ul class="work-tags" aria-label="Temas">${p.tags.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
-      </div></div>
-    </div>
-  </a>`).join('') + (worksRest > 0 ? `
-  <div class="works-more glass reveal" style="--i:3">
-    <p>Mais <b class="num">${worksRest}</b> ${worksRest === 1 ? 'projeto' : 'projetos'} na busca, com filtros por tema.</p>
-    <a href="projetos.html" class="btn btn-ghost btn-sm">Ver todos os projetos <span class="arrow" aria-hidden="true">→</span></a>
-  </div>` : '');
-/* the strip sits outside the grid so the cards can become a swipe rail on small screens */
-const worksMoreEl = worksEl.querySelector('.works-more');
-if (worksMoreEl) worksEl.after(worksMoreEl);
-/* the clicked cover morphs into the case-study cover */
-worksEl.addEventListener('click', (e) => {
-  const card = e.target.closest('.work');
-  if (card) card.querySelector('.cover').style.viewTransitionName = 'project-cover';
-});
-addEventListener('pageshow', () => worksEl.querySelectorAll('.cover').forEach(c => { c.style.viewTransitionName = ''; }));
-
-/* =========================================================
-   MOTION — reveal, scenes, nav state, parallax
+   MOTION - reveal, scenes, spine, parallax
    ========================================================= */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -231,7 +56,6 @@ const revealIO = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px' });
 document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 
-const navLinks = document.querySelectorAll('[data-nav]');
 const scenes = [...document.querySelectorAll('main > [data-scene]')];
 /* Active section = the last one whose top has crossed 60% of the screen (it fills 40%+ of it).
    Pure geometry on every scroll tick, so it reads the same going down and coming back up. */
@@ -240,11 +64,6 @@ const setScene = (scene) => {
   if (scene === currentScene) return;
   currentScene = scene;
   document.body.dataset.scene = scene;
-  navLinks.forEach(a => {
-    const on = a.dataset.nav === scene;
-    a.classList.toggle('is-active', on);
-    if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
-  });
   spineDots.forEach(d => d.classList.toggle('is-active', d.dataset.scene === scene));
 };
 const trackScene = () => {
@@ -255,7 +74,7 @@ const trackScene = () => {
   setScene(scenes[idx].dataset.scene);
 };
 
-/* SPINE — one line from the hero eyebrow to the contact card, a dot beside each section title */
+/* SPINE - one line from the hero eyebrow to the contact card, a dot beside each section title */
 const mainEl = document.getElementById('content');
 const spine = document.getElementById('spine');
 const spineDots = [];
@@ -296,15 +115,11 @@ addEventListener('load', () => { layoutSpine(); fillSpine(); });
 document.fonts && document.fonts.ready.then(layoutSpine);
 
 const topnav = document.getElementById('topnav');
-const timeline = document.getElementById('timeline');
 let ticking = false;
 const onScroll = () => {
   const y = scrollY;
   topnav.classList.toggle('is-stuck', y > 24);
   document.documentElement.style.setProperty('--scroll', Math.min(y / innerHeight, 6).toFixed(3));
-  const r = timeline.getBoundingClientRect();
-  const t = Math.min(Math.max((innerHeight * 0.6 - r.top) / r.height, 0), 1);
-  timeline.style.setProperty('--tl', t.toFixed(3));
   trackScene();
   fillSpine();
   ticking = false;
@@ -312,11 +127,9 @@ const onScroll = () => {
 addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 onScroll();
 
-const tlIO = new IntersectionObserver((entries) => entries.forEach(en => en.isIntersecting && en.target.classList.add('is-in')), { rootMargin: '-40% 0px -40% 0px' });
-timeline.querySelectorAll('.tl-item').forEach(el => tlIO.observe(el));
 
 /* =========================================================
-   HERO ORBIT — KPI bubbles circle the portrait on a tilted
+   HERO ORBIT - KPI bubbles circle the portrait on a tilted
    ellipse. Front half renders over the photo, back half behind.
    Clicking a bubble rotates the orbit until it sits in front and
    its tags fan out, one by one, along its right edge (lists over
@@ -537,42 +350,5 @@ timeline.querySelectorAll('.tl-item').forEach(el => tlIO.observe(el));
   document.fonts?.ready.then(() => { measure(); place(); });
   measure(); place(); requestAnimationFrame(tick);
 })();
-
-/* =========================================================
-   CONTACT — copy e-mail, validation, success state
-   ========================================================= */
-const toast = document.getElementById('toast');
-const showToast = (msg) => { toast.textContent = msg; toast.classList.add('is-on'); clearTimeout(showToast.t); showToast.t = setTimeout(() => toast.classList.remove('is-on'), 2200); };
-document.getElementById('copyEmail').addEventListener('click', async () => {
-  const email = document.getElementById('emailAddr').textContent;
-  try { await navigator.clipboard.writeText(email); showToast('E-mail copiado'); }
-  catch { showToast(email); }
-});
-
-const form = document.getElementById('contactForm');
-const rules = {
-  name: v => v.trim().length >= 2 || 'Informe seu nome.',
-  email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Informe um e-mail válido.',
-  msg: v => v.trim().length >= 20 || 'Escreva pelo menos 20 caracteres.'
-};
-const check = (input) => {
-  const rule = rules[input.name]; if (!rule) return true;
-  const res = rule(input.value);
-  const field = input.closest('.field');
-  field.classList.toggle('has-error', res !== true);
-  field.querySelector('.err').textContent = res === true ? '' : res;
-  return res === true;
-};
-form.querySelectorAll('input, textarea').forEach(i => i.addEventListener('blur', () => check(i)));
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const ok = [...form.querySelectorAll('input, textarea')].map(check).every(Boolean);
-  if (!ok) { form.querySelector('.has-error input, .has-error textarea').focus(); return; }
-  document.getElementById('sentName').textContent = form.elements.name.value.trim().split(' ')[0];
-  document.getElementById('formWrap').classList.add('is-sent');
-});
-document.getElementById('resetForm').addEventListener('click', () => {
-  form.reset(); document.getElementById('formWrap').classList.remove('is-sent');
-});
 
 document.getElementById('year').textContent = new Date().getFullYear();
